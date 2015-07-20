@@ -40,7 +40,26 @@
 \newcommand{\chapterfrontpage}[2]{
 	\begin{graybox}
 	This chapter has been previously published as: \\
+%	\ \newline
 	#1
+	% http://gking.harvard.edu/files/bibentry2.pdf
+%	\bibentry{#1}
+%	\fullcite{#1}
+	\end{graybox}
+	\vfill
+	\section*{Abstract}
+	#2
+	\clearpage
+}
+
+\newcommand{\chapterfrontpagesubmitted}[2]{
+	\begin{graybox}
+	This chapter has been submitted to: \\
+%	\ \newline
+	#1
+	% http://gking.harvard.edu/files/bibentry2.pdf
+%	\bibentry{#1}
+%	\fullcite{#1}
 	\end{graybox}
 	\vfill
 	\section*{Abstract}

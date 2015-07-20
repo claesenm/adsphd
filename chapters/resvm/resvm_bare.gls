@@ -1,0 +1,6 @@
+\begin{theglossary}\glogroupM
+
+\gloitem {\glosslabel{glo:MD}{MD}}molecular dynamics\relax
+\glodelim 
+		\glsnumformat{3}\delimT 
+\end{theglossary}

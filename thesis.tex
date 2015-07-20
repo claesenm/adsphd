@@ -6,11 +6,19 @@
 
 % To use biblatex:
 %\documentclass[biblatex,biblatexstyle=authoryear,showinstructions,showlabels]{adsphd}
+%\documentclass[biblatex,biblatexstyle=trad-plain,showinstructions,showlabels]{adsphd}
+%\newcommand{\citep}[1]{\parencite{#1}}
+%\newcommand{\citet}[1]{\textcite{#1}}
 
 % Preamble {{{}{
 
 \usepackage[english,dutch]{babel}
-\usepackage{natbib}
+\usepackage{natbib, bibentry}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[vlined,ruled,commentsnumbered]{algorithm2e}
+%\usepackage{subfigure}
+
 
 \usepackage{nomencl}   % For nomenclature
 \usepackage[style=long,number=none]{glossary} % For list of abbreviations
@@ -164,9 +172,12 @@
 \instructionschapters\cleardoublepage
 
 \includechapter{introduction}
-\includechapter{manual} % Remove this chapter
+%\includechapter{manual} % Remove this chapter
 
+\includechapter{resvm}
+\includechapter{ensemblesvm}
 \includechapter{mic2015}
+\includechapter{diabetesjmlr}
 % Insert here your own chapters
 % Chapters are expected to be in a tex-file with the given name dot
 % tex and in a directory with the given name in the chapters
@@ -184,7 +195,7 @@
 \backmatter
 
 \includebibliography
-\instructionsbibliography
+%\instructionsbibliography
 
 \includecv{curriculum}
 

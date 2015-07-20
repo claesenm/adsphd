@@ -1,7 +1,12 @@
 \chapter{Hyperparameter Search in Machine Learning} \label{ch:mic2015}
 
-\chapterfrontpage{blah}
-{We describe the hyperparameter search problem in the field of machine learning and discuss its main challenges from an optimization perspective. Machine learning methods attempt to build models that capture some element of interest based on given data. Most common learning algorithms feature a set of hyperparameters that must be determined before training commences. The choice of hyperparameters can significantly affect the resulting model's performance, but determining good values can be complex; hence a disciplined, theoretically sound search strategy is essential.}
+\chapterfrontpage{
+Claesen, M., \& De Moor, B. (2015). \textbf{Hyperparameter Search in Machine Learning}. 
+In \emph{Proceedings of the 11th Metaheuristics International Conference (MIC)}, Agadir, Morocco.
+Manuscript available at \url{http://arxiv.org/abs/1502.02127}.
+}
+{We describe the hyperparameter search problem in the field of machine learning and discuss its main challenges from an optimization perspective. Machine learning methods attempt to build models that capture some element of interest based on given data. Most common learning algorithms feature a set of hyperparameters that must be determined before training commences. The choice of hyperparameters can significantly affect the resulting model's performance, but determining good values can be complex; hence a disciplined, theoretically sound search strategy is essential.
+}
 
 
 \section{Introduction}
@@ -58,8 +63,8 @@ Software packages are being released which implement various dedicated optimizat
 A fully automated, self-configuring learning strategy can be considered the holy grail of machine learning. Though the current state-of-the-art still has a long way to go before this goal can be reached, it is evident that hyperparameter search is a crucial element in its pursuit. Automated hyperparameter search is a hot topic within the machine learning community which we believe can benefit greatly from the techniques and lessons learnt in metaheuristic optimization.
 
 
-\section*{Acknowledgments}
-This research was funded by the Flemisch Government via the following funding channels: FWO: projects:  G.0871.12N (Neural circuits); IWT: TBM-Logic Insulin(100793), TBM Rectal Cancer(100783), TBM IETA(130256), PhD grants (111065); Industrial Research fund (IOF): IOF Fellowship 13-0260; iMinds Medical Information Technologies SBO 2015, ICON projects (MSIpad, MyHealthData); VLK Stichting E. van der Schueren: rectal cancer and the Belgian Federal Government via FOD: Cancer Plan 2012-2015 KPC-29-023 (prostate) and COST: Action: BM1104: Mass Spectrometry Imaging.
+%\section*{Acknowledgments}
+%This research was funded by the Flemisch Government via the following funding channels: FWO: projects:  G.0871.12N (Neural circuits); IWT: TBM-Logic Insulin(100793), TBM Rectal Cancer(100783), TBM IETA(130256), PhD grants (111065); Industrial Research fund (IOF): IOF Fellowship 13-0260; iMinds Medical Information Technologies SBO 2015, ICON projects (MSIpad, MyHealthData); VLK Stichting E. van der Schueren: rectal cancer and the Belgian Federal Government via FOD: Cancer Plan 2012-2015 KPC-29-023 (prostate) and COST: Action: BM1104: Mass Spectrometry Imaging.
 
 
 
