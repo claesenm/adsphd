@@ -1,0 +1,24 @@
+\contentsline {chapter}{Abstract}{iii}{section*.2}
+\select@language {english}
+\select@language {dutch}
+\select@language {english}
+\contentsline {chapter}{Contents}{vii}{section*.4}
+\contentsline {chapter}{\numberline {1}This is introduction}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}Manual}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Tips and Tricks}{5}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Full cover page}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Finetuning the backref package}{6}{subsection.2.1.2}
+\contentsline {chapter}{\numberline {3}Hyperparameter Search in Machine Learning}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Introduction}{10}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Example: controlling model complexity}{10}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Formalizing hyperparameter search}{11}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}Challenges in hyperparameter search}{11}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Costly objective function evaluations}{11}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Randomness}{12}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Complex search spaces}{12}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}Current approaches}{13}{section.3.3}
+\contentsline {section}{\numberline {3.4}Conclusion}{13}{section.3.4}
+\contentsline {chapter}{\numberline {4}This is conclusion}{15}{chapter.4}
+\contentsline {chapter}{\numberline {A}This is myappendix}{17}{appendix.A}
+\contentsline {chapter}{Bibliography}{19}{section*.8}
+\contentsline {chapter}{This is curriculum}{23}{section*.18}

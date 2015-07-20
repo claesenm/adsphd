@@ -22,3 +22,28 @@
 \newcommand{\darkgray}[1]{\textcolor{darkgray}{#1}}
 \newcommand{\lightgray}[1]{\textcolor{lightgray}{#1}}
 \newcommand{\bred}[1]{\textbf{\textcolor{red}{#1}}}
+
+
+\newcommand{\REF}{\todo{REF}}
+
+\newcommand{\train}{\mathbf{X}^{(tr)}}
+\newcommand{\test}{\mathbf{X}^{(te)}}
+\newcommand{\obj}{\mathcal{F}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\definecolor{MyGray}{rgb}{0.91,0.91,0.93}
+\makeatletter\newenvironment{graybox}{%
+   \begin{lrbox}{\@tempboxa}\begin{minipage}{\columnwidth}}{\end{minipage}\end{lrbox}%
+   \colorbox{MyGray}{\usebox{\@tempboxa}}
+}\makeatother
+
+\newcommand{\chapterfrontpage}[2]{
+	\begin{graybox}
+	This chapter has been previously published as: \\
+	#1
+	\end{graybox}
+	\vfill
+	\section*{Abstract}
+	#2
+	\clearpage
+}
