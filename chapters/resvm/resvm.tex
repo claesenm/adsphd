@@ -6,15 +6,12 @@ Claesen, M., De Smet, F., Suykens, J. A., \& De Moor, B. (2015). \textbf{A robus
 }{
 We present a novel approach to learn binary classifiers when only positive and unlabeled instances are available (PU learning). This problem is routinely cast as a supervised task with label noise in the negative set. We use an ensemble of SVM models trained on bootstrap resamples of the training data for increased robustness against label noise. The approach can be considered in a bagging framework which provides an intuitive explanation for its mechanics in a semi-supervised setting. We compared our method to state-of-the-art approaches in simulations using multiple public benchmark data sets. The included benchmark comprises three settings with increasing label noise: (i) fully supervised, (ii) PU learning and (iii) PU learning with false positives. Our approach shows a marginal improvement over existing methods in the second setting and a significant improvement in the third.
 }
+\clearpage
 
-\newcommand{\dataset}{{\cal D}}
 \newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
-
-\newcommand{\posset}{\mathcal{P}}
-\newcommand{\unlset}{\mathcal{U}}
-\newcommand{\negset}{\mathcal{N}}
-\newcommand{\fspace}{\mathcal{F}}
-\newcommand{\testset}{\mathcal{T}}
+%\newcommand{\dataset}{{\cal D}}
+%\newcommand{\fspace}{\mathcal{F}}
+%\newcommand{\testset}{\mathcal{T}}
 
 \makeatletter
 \newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
@@ -31,48 +28,48 @@ Practical applications of PU learning typically feature large, imbalanced traini
 Though these applications share a common underlying learning problem, the final evaluation criteria may be fundamentally different. For instance, in  prioritization one wishes to obtain high precision since highly ranked targets may be subjected to further biological analysis. Intrusion detection, on the other hand, necessitates high recall to ensure that no anomalies go unnoticed.
 
 
-Following \citet{MORDELET-2010-523336}, we will use the term \emph{contamination} to refer to the fraction of mislabeled instances in a given set. We will denote the positive and unlabeled training instances by $\mathcal{P}$ and $\mathcal{U}$, respectively. Contamination in $\mathcal{P}$ refers to false positives while contamination in $\mathcal{U}$ refers to the presence of positives in $\mathcal{U}$. Usually $\mathcal{U}$ contains mostly true negative instances (e.g. contamination below $0.5$) and $\mathcal{P}$ is assumed to be uncontaminated. 
+Following Mordelet and Vert \citep{MORDELET-2010-523336}, we will use the term \emph{contamination} to refer to the fraction of mislabeled instances in a given set. We will denote the positive and unlabeled training instances by $\positive$ and $\unlabeled$, respectively. Contamination in $\positive$ refers to false positives while contamination in $\unlabeled$ refers to the presence of positives in $\positive$. Usually $\unlabeled$ contains mostly true negative instances (e.g. contamination below $0.5$) and $\positive$ is assumed to be uncontaminated. 
 
-The distributions of the positive and a contaminated unlabeled set overlap even when those of the positive and underlying negative sets do not, which makes classification more difficult compared to a traditional supervised setting. \citet{Elkan:2008:LCO:1401890.1401920} and \citet{blanchard2010semi} report statistical approaches to estimate the contamination of the unlabeled set and additionally show that distinguishing positives from unlabeled instances is a valid proxy for distinguishing positives from negatives.
+The distributions of the positive and a contaminated unlabeled set overlap even when those of the positive and underlying negative sets do not, which makes classification more difficult compared to a traditional supervised setting. Elkan and Noto \citep{Elkan:2008:LCO:1401890.1401920} and Blanchard et al. \citep{blanchard2010semi} report statistical approaches to estimate the contamination of the unlabeled set and additionally show that distinguishing positives from unlabeled instances is a valid proxy for distinguishing positives from negatives.
 
 
-The assumption in PU learning that $\mathcal{P}$ is uncontaminated may be violated in applications due to various reasons \citep{frenay}. Additionally, outliers in the positive set may have a similar effect on classification performance \citep{pechenizkiy2006class}. We propose a novel PU learning method that is less vulnerable to potential contamination in $\mathcal{P}$ called the robust ensemble of support vector machines (RESVM). RESVM is compared to other methods in a series of simulations based on several public data sets.
+The assumption in PU learning that $\positive$ is uncontaminated may be violated in applications due to various reasons \citep{frenay}. Additionally, outliers in the positive set may have a similar effect on classification performance \citep{pechenizkiy2006class}. We propose a novel PU learning method that is less vulnerable to potential contamination in $\positive$ called the robust ensemble of support vector machines (RESVM). RESVM is compared to other methods in a series of simulations based on several public data sets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Related work}
-PU learning approaches can be split into two main conceptual categories: (i) approaches that account for the contamination of the unlabeled set explicitly by modeling the label noise and (ii) approaches that try to infer an uncontaminated (negative) subset $\hat{\mathcal{N}}$ from $\unlset$ and then train supervised algorithms to distinguish $\posset$ from $\hat{\mathcal{N}}$. When \emph{very} few labeled examples are available, the structure within the data is the main source of information which can be exploited by semi-supervised clustering techniques \citep{bksc2}. 
+PU learning approaches can be split into two main conceptual categories: (i) approaches that account for the contamination of the unlabeled set explicitly by modeling the label noise and (ii) approaches that try to infer an uncontaminated (negative) subset $\hat{\negative}$ from $\unlabeled$ and then train supervised algorithms to distinguish $\positive$ from $\hat{\negative}$. When \emph{very} few labeled examples are available, the structure within the data is the main source of information which can be exploited by semi-supervised clustering techniques \citep{bksc2}. 
 
-\paragraph{Accounting for the contamination of $\mathcal{U}$ in the modeling process}
+\paragraph{Accounting for the contamination of $\unlabeled$ in the modeling process}
 This can be done by weighting individual data points, such as in weighted logistic regression \citep{Elkan:2008:LCO:1401890.1401920,Lee03learningwith}. Another approach is by changing the penalties on misclassification during training, as is done in class-weighted SVM \citep{Liu:2003:BTC:951949.952139}, bagging SVM \citep{MORDELET-2010-523336} and RT-SVM \citep{Liu:2005:PSC:2138033.2138052}. 
 
-\paragraph{Inferring an uncontaminated subset from $\mathcal{U}$}
-Another class of approaches tries to infer a negative set $\hat{\mathcal{N}}$ from $\mathcal{U}$. After the inferential step, binary classifiers are trained to distinguish $\mathcal{P}$ from $\mathcal{\hat{N}}$ in a supervised fashion. Examples of such two-step approaches include S-EM \citep{liu02partially}, mapping convergence (MC) \citep{Yu:2005:SCM:1108759.1108762} and ROC-SVM \citep{Li03learningto}.
+\paragraph{Inferring an uncontaminated subset from $\unlabeled$}
+Another class of approaches tries to infer a negative set $\hat{\negative}$ from $\unlabeled$. After the inferential step, binary classifiers are trained to distinguish $\positive$ from $\hat{\negative}$ in a supervised fashion. Examples of such two-step approaches include S-EM \citep{liu02partially}, mapping convergence (MC) \citep{Yu:2005:SCM:1108759.1108762} and ROC-SVM \citep{Li03learningto}.
 
 \paragraph{Class-weighted SVM and related approaches} The approach we suggest belongs to the first class of methods and is closely related to class-weighted SVM and bagging SVM (which uses class-weighted SVM internally). We will discuss both of these approaches in more detail before moving on to the proposed method. We evaluated our method compared to both class-weighted SVM and bagging SVM.
 
 
 \subsection{Class-weighted SVM} \label{bsvm}
-Class-weighted SVM (CWSVM) is a supervised technique in which the penalty for misclassification differs per class. \citet{Liu:2003:BTC:951949.952139} first applied class-weighted SVM for PU learning by considering the unlabeled set to be negative with noise on its labels. CWSVM is trained to distinguish $\mathcal{P}$ from $\mathcal{U}$. During training, misclassification of positive instances is penalized more than misclassification of unlabeled instances to emphasize the higher degree of certainty on positive labels. In the context of PU learning, the optimization problem for training CWSVM can be written as:
+Class-weighted SVM (CWSVM) is a supervised technique in which the penalty for misclassification differs per class. Liu et al. \citep{Liu:2003:BTC:951949.952139} first applied class-weighted SVM for PU learning by considering the unlabeled set to be negative with noise on its labels. CWSVM is trained to distinguish $\positive$ from $\unlabeled$. During training, misclassification of positive instances is penalized more than misclassification of unlabeled instances to emphasize the higher degree of certainty on positive labels. In the context of PU learning, the optimization problem for training CWSVM can be written as:
 \begin{align}
-%\mathbf{min\ } & \frac{1}{2}||\mathbf{w}||^2_2+C_{\mathcal{P}}\sum_{i\in\mathcal{P}} \xi_i + C_{\mathcal{U}}\sum_{i\in\mathcal{U}} \xi_i\\\
+%\mathbf{min\ } & \frac{1}{2}||\mathbf{w}||^2_2+C_{\positive}\sum_{i\in\positive} \xi_i + C_{\unlabeled}\sum_{i\in\unlabeled} \xi_i\\\
 %\mathbf{subject\ to\ } &y_i(\mathbf{w}^T\mathbf{x}_i+b)\geq 1-\xi_i, &i=1,\ldots,N \\
-\min_{\alpha,\xi,b}\ & \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_j y_i y_j \kappa(\mathbf{x}_i,\mathbf{x}_j)+C_{\mathcal{P}}\sum_{i \in\mathcal{P}} \xi_i + C_{\mathcal{U}}\sum_{i\in\mathcal{U}} \xi_i, \label{eq:bsvm} \\
-\text{s.t. } &y_i(\sum_{j=1}^N \alpha_j y_j \kappa(\mathbf{x}_i,\mathbf{x}_j)+b)\geq 1-\xi_i, &i=1,\ldots,N, \nonumber \\
+\min_{\alpha,\xi,b}\ & \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_j y_i y_j \kernelfun(\mathbf{x}_i,\mathbf{x}_j)+C_{\positive}\sum_{i \in\positive} \xi_i + C_{\unlabeled}\sum_{i\in\unlabeled} \xi_i, \label{eq:bsvm} \\
+\text{s.t. } &y_i(\sum_{j=1}^N \alpha_j y_j \kernelfun(\mathbf{x}_i,\mathbf{x}_j)+\svmbias)\geq 1-\xi_i, &i=1,\ldots,N, \nonumber \\
 &\xi_i \geq 0, &i=1,\ldots,N, \nonumber
 \end{align}
-with $\alpha \in \mathbb{R}^N$ the support values, $\mathbf{y} \in \{-1,+1\}^N$ the label vector, $\kappa(\cdot,\cdot)$ the kernel function, $b$ the bias term and $\xi \in \mathbb{R}^N$ the slack variables. The misclassification penalties $C_{\mathcal{P}}$ and $C_{\mathcal{U}}$ require tuning (typically $C_{\mathcal{P}} > C_{\mathcal{U}}$ to emphasize known labels). SVM formulations with unequal penalties across classes have been used previously to tackle imbalanced data sets \citep{osuna1997}. 
+with $\alpha \in \mathbb{R}^N$ the support values, $\mathbf{y} \in \{-1,+1\}^N$ the label vector, $\kernelfun(\cdot,\cdot)$ the kernel function, $\svmbias$ the bias term and $\xi \in \mathbb{R}^N$ the slack variables. The misclassification penalties $C_{\positive}$ and $C_{\unlabeled}$ require tuning (typically $C_{\positive} > C_{\unlabeled}$ to emphasize known labels). SVM formulations with unequal penalties across classes have been used previously to tackle imbalanced data sets \citep{osuna1997}. 
 
 \subsection{Bagging SVM} \label{baggingsvm}
-Mordelet and Vert introduce bagging SVM as a meta-algorithm which consists of aggregating classifiers trained to discriminate $\mathcal{P}$ from a small, random resample of\ $\mathcal{U}$ \citep{MORDELET-2010-523336}. They posit that PU learning problems have a particular structure that leads to instability of classifiers, namely the sensitivity of classifiers to the contamination of the unlabeled set.  Bagging is a common technique used to improve the performance of instable classifiers \citep{Breiman:1996:BP:231986.231989}.
+Mordelet and Vert introduce bagging SVM as a meta-algorithm which consists of aggregating classifiers trained to discriminate $\positive$ from a small, random resample of\ $\unlabeled$ \citep{MORDELET-2010-523336}. They posit that PU learning problems have a particular structure that leads to instability of classifiers, namely the sensitivity of classifiers to the contamination of the unlabeled set.  Bagging is a common technique used to improve the performance of instable classifiers \citep{Breiman:1996:BP:231986.231989}.
 
-In bagging SVM, random resamples of $\unlset$ are drawn and CWSVM classifiers are trained to discriminate $\posset$ from each resample. By resampling $\unlset$, the contamination is varied. This induces variability in the classifiers which the aggregation procedure can then exploit. The size of the bootstrap resample of $\mathcal{U}$ is a tuning parameter in bagging SVM. The ratio $C_{\mathcal{P}}/C_{\mathcal{U}}$ is fixed so that the following holds:
+In bagging SVM, random resamples of $\unlabeled$ are drawn and CWSVM classifiers are trained to discriminate $\positive$ from each resample. By resampling $\unlabeled$, the contamination is varied. This induces variability in the classifiers which the aggregation procedure can then exploit. The size of the bootstrap resample of $\unlabeled$ is a tuning parameter in bagging SVM. The ratio $C_{\positive}/C_{\unlabeled}$ is fixed so that the following holds:
 \begin{equation}
-|\mathcal{P}| \times C_{\mathcal{P}} = n_{\mathcal{U}} \times C_{\mathcal{U}}, \label{eq:bagpenalties}
+|\positive| \times C_{\positive} = n_{\unlabeled} \times C_{\unlabeled}, \label{eq:bagpenalties}
 \end{equation}
-with $|\mathcal{P}|$ the size of the positive set and $n_{\mathcal{U}}$ the size of resamples from the unlabeled set. This choice of weights is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. All base models in bagging SVM classify the full set of positives against a subset of unlabeled instances and use a high misclassification penalty on the positives similar to CWSVM. %, similar to a single class-weighted SVM model.
+with $|\positive|$ the size of the positive set and $n_{\unlabeled}$ the size of resamples from the unlabeled set. This choice of weights is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. All base models in bagging SVM classify the full set of positives against a subset of unlabeled instances and use a high misclassification penalty on the positives similar to CWSVM. %, similar to a single class-weighted SVM model.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,9 +79,9 @@ with $|\mathcal{P}|$ the size of the positive set and $n_{\mathcal{U}}$ the size
 
 \section{Robust Ensemble of SVMs}
 
-We propose a new technique called the robust ensemble of SVMs (RESVM). RESVM is a bagging method using CWSVM base models as discussed in Section~\ref{bsvm}. Base model training sets are constructed by bootstrap resampling both $\mathcal{P}$ and $\mathcal{U}$ separately, both of which may be contaminated. 
+We propose a new technique called the robust ensemble of SVMs (RESVM). RESVM is a bagging method using CWSVM base models as discussed in Section~\ref{bsvm}. Base model training sets are constructed by bootstrap resampling both $\positive$ and $\unlabeled$ separately, both of which may be contaminated. 
 
-The key difference between RESVM and bagging SVM is that the former resamples $\mathcal{P}$ in addition to $\mathcal{U}$ to increase variability between base models. RESVM additionally features an extra degree of freedom to control the relative misclassification penalty between positive and unlabeled instances, which is fixed in bagging SVM. \citet{MORDELET-2010-523336} report no significant changes when varying the relative penalty in bagging SVM, though our experiments show that it is important in RESVM (see $w_{pos}$ in Table~\ref{table:hyperparameters}).
+The key difference between RESVM and bagging SVM is that the former resamples $\positive$ in addition to $\unlabeled$ to increase variability between base models. RESVM additionally features an extra degree of freedom to control the relative misclassification penalty between positive and unlabeled instances, which is fixed in bagging SVM. Mordelet and Vert \citep{MORDELET-2010-523336} report no significant changes when varying the relative penalty in bagging SVM, though our experiments show that it is important in RESVM (see $w_{pos}$ in Table~\ref{table:hyperparameters}).
 
 Before elaborating on the details of RESVM, we briefly illustrate the effect of resampling contaminated sets. Subsequently we summarize the mechanisms of bagging and why they are advantageous when learning with label noise in the RESVM approach. Finally, we provide the full RESVM training approach and the way ensemble decision values are computed based on the base model decision values.
 
@@ -95,7 +92,7 @@ Before elaborating on the details of RESVM, we briefly illustrate the effect of 
 
 \subsection{Bootstrap resampling contaminated sets} \label{resampling}
 
-The RESVM approach resamples both $\mathcal{P}$ and $\mathcal{U}$, both of which are potentially contaminated. Resampling contaminated sets with replacement induces variability in contamination across the resampled sets (e.g. resamples of $\mathcal{U}$ and $\mathcal{P}$ that are used for training). The variability in contamination between resamples increases for increasing contamination of the original set. We assume contamination levels below $50\%$, e.g. less than half the instances in a given set are mislabeled. Due to the law of large numbers the contamination in bootstrap resamples of increasing size converges to the expected contamination, which equals that of the original set that is being resampled. As a result, the variability in contamination decreases for increasing resample size. Figure~\ref{fig:contamination} illustrates this property empirically based on $20,000$ repeated measurements for each resample size: the expected value (mean) equals the original contamination, but the variability in resample contamination decreases for increasing resample size.
+The RESVM approach resamples both $\positive$ and $\unlabeled$, both of which are potentially contaminated. Resampling contaminated sets with replacement induces variability in contamination across the resampled sets (e.g. resamples of $\unlabeled$ and $\positive$ that are used for training). The variability in contamination between resamples increases for increasing contamination of the original set. We assume contamination levels below $50\%$, e.g. less than half the instances in a given set are mislabeled. Due to the law of large numbers the contamination in bootstrap resamples of increasing size converges to the expected contamination, which equals that of the original set that is being resampled. As a result, the variability in contamination decreases for increasing resample size. Figure~\ref{fig:contamination} illustrates this property empirically based on $20,000$ repeated measurements for each resample size: the expected value (mean) equals the original contamination, but the variability in resample contamination decreases for increasing resample size.
 
 \begin{figure}[!h]
   \centering
@@ -109,35 +106,35 @@ The RESVM approach resamples both $\mathcal{P}$ and $\mathcal{U}$, both of which
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Bagging predictors}
-\citet{Breiman:1996:BP:231986.231989} introduced bagging as a technique to construct strong ensembles by combining a set of base models. \citet{breiman2000randomizing} stated that ``the essential problem in combining classifiers is growing a suitably diverse ensemble of base classifiers'' which can be done in various ways \citep{brown2005diversity}. In bagging, the ensemble models use majority voting to aggregate decisions of base models which are trained on bootstrap resamples of the training set. From a Bayesian point of view, bagging can be interpreted as a Monte Carlo integration over an approximated posterior distribution \citep{rao1997out}. 
+Breiman \citep{Breiman:1996:BP:231986.231989} introduced bagging as a technique to construct strong ensembles by combining a set of base models and stated that ``the essential problem in combining classifiers is growing a suitably diverse ensemble of base classifiers'' which can be done in various ways \citep{brown2005diversity}. In bagging, the ensemble models use majority voting to aggregate decisions of base models which are trained on bootstrap resamples of the training set. From a Bayesian point of view, bagging can be interpreted as a Monte Carlo integration over an approximated posterior distribution \citep{rao1997out}. 
 
-In his landmark paper, \citet{Breiman:1996:BP:231986.231989} noted that base model instability is an important factor in the success of bagging which led to the use of inherently instable methods like decision trees in early bagging approaches \citep{dietterich2000experimental, breiman2001random}. The main mechanism of bagging is often said to be variance reduction \citep{bauer1999empirical,breiman2000randomizing}. In more recent work, \citet{grandvalet2004bagging} explained that base model instability is not related to the intrinsic variability of a predictor but rather to the presence of influential instances in a data set for a given predictor (so-called \emph{leverage points}). The effect of bagging is explained as equalizing the influence of all training instances, which is beneficial when highly influential instances are harmful for the predictor's accuracy. 
+In his landmark paper, Breiman \citep{Breiman:1996:BP:231986.231989} noted that base model instability is an important factor in the success of bagging which led to the use of inherently instable methods like decision trees in early bagging approaches \citep{dietterich2000experimental, breiman2001random}. The main mechanism of bagging is often said to be variance reduction \citep{bauer1999empirical,breiman2000randomizing}. In more recent work, Grandvalet \citep{grandvalet2004bagging} explained that base model instability is not related to the intrinsic variability of a predictor but rather to the presence of influential instances in a data set for a given predictor (so-called \emph{leverage points}). The effect of bagging is explained as equalizing the influence of all training instances, which is beneficial when highly influential instances are harmful for the predictor's accuracy. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Justification of the RESVM algorithm}
-We have shown the effect of resampling contaminated sets and provided some basic insight into the mechanics of bagging. We will now link these two elements to justify bagging approaches in the context of contaminated training sets. Its usefulness can be considered by both the variance reduction argument of \citet{bauer1999empirical} and equalizing the influence of training points as described by \citet{grandvalet2004bagging}.
+We have shown the effect of resampling contaminated sets and provided some basic insight into the mechanics of bagging. We will now link these two elements to justify bagging approaches in the context of contaminated training sets. Its usefulness can be considered by both the variance reduction argument of Bauer and Kohavi \citep{bauer1999empirical} and equalizing the influence of training points as described by Grandvalet \citep{grandvalet2004bagging}.
 
-\paragraph{Variance reduction} Resampling a contaminated set yields different levels of contamination in the resamples as explained in Section~\ref{resampling}. Varying the contamination between base model training sets induces variability between base models without increasing bias. This observation enables us to create a diverse set of base models by resampling both $\mathcal{P}$ and $\mathcal{U}$. The variance reduction of bagging is an excellent mechanism to exploit the variability of base models based on resampling \citep{bauer1999empirical,breiman2000randomizing}. In the context of RESVM, a tradeoff takes place between increased variability (by training on smaller resamples, see Figure~\ref{fig:contamination}) and base models with increased stability (larger training sets for the SVM models).
+\paragraph{Variance reduction} Resampling a contaminated set yields different levels of contamination in the resamples as explained in Section~\ref{resampling}. Varying the contamination between base model training sets induces variability between base models without increasing bias. This observation enables us to create a diverse set of base models by resampling both $\positive$ and $\unlabeled$. The variance reduction of bagging is an excellent mechanism to exploit the variability of base models based on resampling \citep{bauer1999empirical,breiman2000randomizing}. In the context of RESVM, a tradeoff takes place between increased variability (by training on smaller resamples, see Figure~\ref{fig:contamination}) and base models with increased stability (larger training sets for the SVM models).
 
-\paragraph{Equalizing influence} The influence of a training instance on an SVM model can be quantified in terms of its dual weight (the associated $\alpha$ value). Three distinct cases can be distinguished: (i) the training instance is correctly classified and not within the margin ($\alpha = 0$, not a SV), (ii) the training instance lies on the margin and is correctly classified ($\alpha \in [0, C]$, free SV) and (iii) the training instance is incorrectly classified or within the margin ($\alpha = C$, bounded SV), where $C$ is the misclassification penalty associated to the training instance \citep{bottou2007support}. Instances that are misclassified during training become bounded SVs, which have the maximal $\alpha$ value and can therefore be considered leverage points of the SVM model. When learning with label noise, the mislabeled training instances are likely to end up as bounded SVs. In a best case scenario, the mislabeled training instances are classified in concordance to their true label by the SVM model (which means they must be a bounded SV as the training procedure identifies this as a misclassification). As such, mislabeled training instances act as leverage points for SVM models. Following \citet{grandvalet2004bagging}, bagging equalizes the influence of training instances (e.g. lowers the influence of mislabeled leverage points in comparison to the rest of the data) which yields improved robustness against contamination in the context of RESVM. 
+\paragraph{Equalizing influence} The influence of a training instance on an SVM model can be quantified in terms of its dual weight (the associated $\alpha$ value). Three distinct cases can be distinguished: (i) the training instance is correctly classified and not within the margin ($\alpha = 0$, not a SV), (ii) the training instance lies on the margin and is correctly classified ($\alpha \in [0, C]$, free SV) and (iii) the training instance is incorrectly classified or within the margin ($\alpha = C$, bounded SV), where $C$ is the misclassification penalty associated to the training instance \citep{bottou2007support}. Instances that are misclassified during training become bounded SVs, which have the maximal $\alpha$ value and can therefore be considered leverage points of the SVM model. When learning with label noise, the mislabeled training instances are likely to end up as bounded SVs. In a best case scenario, the mislabeled training instances are classified in concordance to their true label by the SVM model (which means they must be a bounded SV as the training procedure identifies this as a misclassification). As such, mislabeled training instances act as leverage points for SVM models. Following Grandvalet \citep{grandvalet2004bagging}, bagging equalizes the influence of training instances (e.g. lowers the influence of mislabeled leverage points in comparison to the rest of the data) which yields improved robustness against contamination in the context of RESVM. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{RESVM training}
-RESVM uses CWSVM base models trained on resamples from the original training set, where both $\mathcal{P}$ and $\mathcal{U}$ are being resampled. The technique involves $5$ hyperparameters: $3$ to define the resampling strategy and $2$ for the base models. Additional hyperparameters may be involved, for example $\gamma$ for the RBF kernel $\kappa(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \| \mathbf{x}_i-\mathbf{x}_j\|^2)$.
+RESVM uses CWSVM base models trained on resamples from the original training set, where both $\positive$ and $\unlabeled$ are being resampled. The technique involves $5$ hyperparameters: $3$ to define the resampling strategy and $2$ for the base models. Additional hyperparameters may be involved, for example $\gamma$ for the RBF kernel $\kernelfun(\mathbf{x}_i, \mathbf{x}_j) = \exp(-\gamma \| \mathbf{x}_i-\mathbf{x}_j\|^2)$.
 
 The number of base models to include in the ensemble, $n_{nmodels}$, is the first hyperparameter. Using more base models improves the stability of the ensemble (up to a certain plateau) at a linear increase in computational cost for training and prediction. $n_{models}$ is not a traditional hyperparameter in the sense that a good value can be determined during training, for example based on out-of-bag error estimates \citep{banfield2007comparison}.\footnote{\label{labelednote}Note that the error estimates in out-of-bag techniques must account for potential contamination. See our discussion of hyperparameter tuning for a possible score function.}
 
-By resampling $\mathcal{P}$, RESVM takes potential contamination of the labeled instances into account by design. Since the contamination between $\mathcal{P}$ and $\mathcal{U}$ can vary, the ability to vary the size of resamples from $\mathcal{P}$ and $\mathcal{U}$ separately is required. This results in two tuning parameters: $n_{pos}$ and $n_{unl}$. In general, using small base model training sets results in increased base model variability which then necessitates using more base models in the ensemble to obtain a given level of stability. In our experiments, we have tuned $n_{pos}$ and $n_{unl}$ but it is also possible to obtain good values using out-of-bag techniques \citep{martinez2010out}.\footnoteref{labelednote}
+By resampling $\positive$, RESVM takes potential contamination of the labeled instances into account by design. Since the contamination between $\positive$ and $\unlabeled$ can vary, the ability to vary the size of resamples from $\positive$ and $\unlabeled$ separately is required. This results in two tuning parameters: $n_{pos}$ and $n_{unl}$. In general, using small base model training sets results in increased base model variability which then necessitates using more base models in the ensemble to obtain a given level of stability. In our experiments, we have tuned $n_{pos}$ and $n_{unl}$ but it is also possible to obtain good values using out-of-bag techniques \citep{martinez2010out}.\footnoteref{labelednote}
 
-RESVM additionally inherits at least $2$ hyperparameters from its SVM base models, namely misclassification penalties for both classes and, if applicable, hyperparameters related to the kernel function. We define the CWSVM penalties in see Eq.~\eqref{eq:bsvm} based on $2$ hyperparameters $C_{\mathcal{U}}$ and $w_{pos}$:
+RESVM additionally inherits at least $2$ hyperparameters from its SVM base models, namely misclassification penalties for both classes and, if applicable, hyperparameters related to the kernel function. We define the CWSVM penalties in see Eq.~\eqref{eq:bsvm} based on $2$ hyperparameters $C_{\unlabeled}$ and $w_{pos}$:
 \begin{equation}
-C_{\mathcal{P}} = C_{\mathcal{U}} \times w_{pos} \times \frac{n_{unl}}{n_{pos}}. \label{eq:resvmpenalties}
+C_{\positive} = C_{\unlabeled} \times w_{pos} \times \frac{n_{unl}}{n_{pos}}. \label{eq:resvmpenalties}
 \end{equation}
 
 $w_{pos}$ enables reweighting labeled and unlabeled instances after equalizing class imbalance. In bagging SVM, $w_{pos}$ is always fixed to $1$. 
@@ -161,25 +158,25 @@ The RESVM training approach has been summarised in Algorithm~\ref{RESVM}. The al
 
 \begin{algorithm}[!h]
 \DontPrintSemicolon
-\KwData{$\mathcal{P}$: the set of positive instances.}
-\mydata{$\mathcal{U}$: the set of unlabeled instances.}
+\KwData{$\positive$: the set of positive instances.}
+\mydata{$\unlabeled$: the set of unlabeled instances.}
 \KwIn{$n_{models}$: number of base models to include in the ensemble.}
-\myinput{$n_{unl}$: size of bootstrap resamples of $\mathcal{U}$.}
-\myinput{$n_{pos}$: size of bootstrap resamples of $\mathcal{P}$.}
-\myinput{$C_{\mathcal{U}}$: misclassification penalty for $\mathcal{U}$ in class-weighted SVM.}
+\myinput{$n_{unl}$: size of bootstrap resamples of $\unlabeled$.}
+\myinput{$n_{pos}$: size of bootstrap resamples of $\positive$.}
+\myinput{$C_{\unlabeled}$: misclassification penalty for $\unlabeled$ in class-weighted SVM.}
 \myinput{$w_{pos}$: relative positive misclassification penalty coefficient.}
-\myinput{$\kappa(\cdot,\cdot)$: kernel function to be used by base models.}
+\myinput{$\kernelfun(\cdot,\cdot)$: kernel function to be used by base models.}
 \KwOut{$\Omega$: RESVM with $n_{models}$ base models.} %: $f(\mathbf{x}) : \mathbb{R}^d \mapsto \mathbb{R}$.}
 \Begin{
 $\Omega \leftarrow \emptyset$; \;
 %\texttt{// set base model misclassification penalties} \;
-$C_{\mathcal{P}} \leftarrow C_{\mathcal{U}} \times w_{pos} \times \frac{n_{unl}}{n_{pos}}$; \;
+$C_{\positive} \leftarrow C_{\unlabeled} \times w_{pos} \times \frac{n_{unl}}{n_{pos}}$; \;
 \For{$i \leftarrow 1$ \KwTo $n_{models}$}{
-\texttt{// create base model training set from $\mathcal{P}$ and $\mathcal{U}$.} \;
-$\mathcal{P}^{(i)} \leftarrow$ sample $n_{pos}$ instances from $\mathcal{P}$ with replacement;\;
-$\mathcal{U}^{(i)} \leftarrow$ sample $n_{unl}$ instances from $\mathcal{U}$ with replacement;\;
+\texttt{// create base model training set from $\positive$ and $\unlabeled$.} \;
+$\positive^{(i)} \leftarrow$ sample $n_{pos}$ instances from $\positive$ with replacement;\;
+$\unlabeled^{(i)} \leftarrow$ sample $n_{unl}$ instances from $\unlabeled$ with replacement;\;
 \texttt{// train CWSVM base model $\psi^{(i)}$ and add to ensemble $\Omega$.} \;
-$\psi^{(i)} \leftarrow$ train CWSVM for $\mathcal{P}^{(i)}$ vs. $\mathcal{U}^{(i)}$ (parameters $C_{\mathcal{P}}$, $C_{\mathcal{U}}$, $\kappa$); \;
+$\psi^{(i)} \leftarrow$ train CWSVM for $\positive^{(i)}$ vs. $\unlabeled^{(i)}$ (parameters $C_{\positive}$, $C_{\unlabeled}$, $\kernelfun$); \;
 $\Omega \leftarrow \{\Omega,\psi^{(i)}\}$; \; %\tcc{add new model to ensemble $\mathcal{E}$}\;
 }
 }
@@ -232,12 +229,12 @@ Our experiments consist of repeated simulations on a variety of data sets under 
 
 To assess what situations are favorable per approach, we have investigated three different settings with distinct label noise configurations. For every data set, we performed 10 iterations per simulation in the following settings:
 \begin{enumerate}
-\item \textbf{supervised}: no contamination in $\mathcal{P}$ or $\mathcal{U}$ ($\mathcal{U}$ is the negative class).
-\item \textbf{PU learning}: contamination in $\mathcal{U}$ but not in $\mathcal{P}$. %This is the setting for which CWSVM and bagging SVM were designed.
-\item \textbf{semi-supervised}: contamination in both $\mathcal{P}$ and $\mathcal{U}$. The contamination levels in $\mathcal{P}$ and $\mathcal{U}$ were always chosen equal.
+\item \textbf{supervised}: no contamination in $\positive$ or $\unlabeled$ ($\unlabeled$ is the negative class).
+\item \textbf{PU learning}: contamination in $\unlabeled$ but not in $\positive$. %This is the setting for which CWSVM and bagging SVM were designed.
+\item \textbf{semi-supervised}: contamination in both $\positive$ and $\unlabeled$. The contamination levels in $\positive$ and $\unlabeled$ were always chosen equal.
 \end{enumerate}
 
-The contamination levels we used were chosen per data set based on when differences between the three approaches become visible. A summary is available in Table~\ref{table:datasets} in Section~\ref{data}. When applicable, contamination was introduced by flipping class labels (e.g. true positives in $\mathcal{U}$ and true negatives in $\mathcal{P}$). This effectively changes the empirical densities of the classes in the training set (illustrated in Figure~\ref{fig:densities} in the next Section).
+The contamination levels we used were chosen per data set based on when differences between the three approaches become visible. A summary is available in Table~\ref{table:datasets} in Section~\ref{data}. When applicable, contamination was introduced by flipping class labels (e.g. true positives in $\unlabeled$ and true negatives in $\positive$). This effectively changes the empirical densities of the classes in the training set (illustrated in Figure~\ref{fig:densities} in the next Section).
 
 Every binary learning task was repeated 20 times to get reliable assessments of all methods. Each repetition involves redoing all steps shown in Figure~\ref{fig:benchmark}, including resampling of training sets based on the known true positives and true negatives. Contamination was introduced at random where applicable by flipping class labels.% Figure~\ref{fig:benchmark} illustrates all steps in a single benchmark iteration for one digit in a particular learning setting.
 
@@ -255,9 +252,9 @@ The same search grids were used in all three settings for a given data set to il
 \frac{\mathtt{recall}^2}{Pr(\hat{y}=1)},
 \label{puscore}
 \end{equation}
-where $Pr(y=1)$ is the fraction of known positive labels in the predicted set and $Pr(\hat{y}=1)$ is the fraction of positive predictions made by the classifier. Note that this score function is not ideal when $\mathcal{P}$ is contaminated, though we obtained good results even in that setting.
+where $Pr(y=1)$ is the fraction of known positive labels in the predicted set and $Pr(\hat{y}=1)$ is the fraction of positive predictions made by the classifier. Note that this score function is not ideal when $\positive$ is contaminated, though we obtained good results even in that setting.
 
-The following parameters were tuned per method: (CWSVM) $C_{\mathcal{P}}$ and $C_{\mathcal{U}}$, (BAG) $C_{\mathcal{U}}$ and $n_{\mathcal{U}}$ and (RESVM) $C_{\mathcal{U}}$, $w_{pos}$, $n_{pos}$ and $n_{unl}$. In both ensemble approaches we consistently used 50 base models.
+The following parameters were tuned per method: (CWSVM) $C_{\positive}$ and $C_{\unlabeled}$, (BAG) $C_{\unlabeled}$ and $n_{\unlabeled}$ and (RESVM) $C_{\unlabeled}$, $w_{pos}$, $n_{pos}$ and $n_{unl}$. In both ensemble approaches we consistently used 50 base models.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -297,7 +294,7 @@ Most data sets have a prespecified test set, except for \texttt{synthetic} and \
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.40\textwidth]{densities.pdf}
-  \caption{Empirical densities of the \texttt{synthetic} data used for training per problem setting (visualized in input space). The supervised densities (top row) are based on samples of the underlying positive and negative classes. The use of high contamination ($30\%$) induces similar empirical densities for $\mathcal{P}$ and $\mathcal{U}$ in the semi-supervised setting (bottom row).} % This poses a challenging learning problem.} 
+  \caption{Empirical densities of the \texttt{synthetic} data used for training per problem setting (visualized in input space). The supervised densities (top row) are based on samples of the underlying positive and negative classes. The use of high contamination ($30\%$) induces similar empirical densities for $\positive$ and $\unlabeled$ in the semi-supervised setting (bottom row).} % This poses a challenging learning problem.} 
   \label{fig:densities}
 \end{figure}
 
@@ -310,7 +307,7 @@ In every setting each original data set was resampled without replacement to con
 \begin{tabular}{crcrrcrr}
 \toprule
  & & contamination & \multicolumn{2}{c}{training set} & & \multicolumn{2}{c}{test set} \\ \cline{4-5} \cline{7-8}
-data set & $d$ & in percent & $|\mathcal{P}|$ & $|\mathcal{U}|$ & & $|\mathcal{P}|$ & $|\mathcal{N}|$ \\
+data set & $d$ & in percent & $|\positive|$ & $|\unlabeled|$ & & $|\positive|$ & $|\mathcal{N}|$ \\
 \midrule
 \texttt{synthetic} & $2$ & $30$ & $100$ & $200$ & & $5,000$ & $5,000$ \\
 \texttt{cancer} & $10$ & $30$   & $50$ & $200$ & & $100$ & $100$ \\
@@ -336,10 +333,10 @@ data set & $d$ & in percent & $|\mathcal{P}|$ & $|\mathcal{U}|$ & & $|\mathcal{P
 %\clearpage
 \newpage
 \section{Results and discussion}
-We will summarize all results of our simulation experiments comparing class-weighted SVM (CWSVM), bagging SVM (BAG) and the robust ensemble of SVMs (RESVM). First we will show the results of each setting separately. Subsequently we present an overview of the number of wins per setting for each method across all data sets. Section~\ref{varycontamination} shows the results of an experiment to assess the effect of contamination in $\mathcal{P}$ and $\mathcal{U}$ on all methods. Finally, we include an interesting observation regarding the optimal hyperparameters of RESVM that were found using cross-validation on the \texttt{mnist} data set per setting in Table~\ref{table:hyperparameters}.
+We will summarize all results of our simulation experiments comparing class-weighted SVM (CWSVM), bagging SVM (BAG) and the robust ensemble of SVMs (RESVM). First we will show the results of each setting separately. Subsequently we present an overview of the number of wins per setting for each method across all data sets. Section~\ref{varycontamination} shows the results of an experiment to assess the effect of contamination in $\positive$ and $\unlabeled$ on all methods. Finally, we include an interesting observation regarding the optimal hyperparameters of RESVM that were found using cross-validation on the \texttt{mnist} data set per setting in Table~\ref{table:hyperparameters}.
 %\newpage
 \subsection{Results for supervised classification}
-Table~\ref{table:supervised} summarizes our results in a fully supervised setting. In these experiments both $\mathcal{P}$ and $\mathcal{U}$ are uncontaminated. Based on the number of wins per simulation and the confidence intervals, we can conclude that all methods are competitive in this setting. 
+Table~\ref{table:supervised} summarizes our results in a fully supervised setting. In these experiments both $\positive$ and $\unlabeled$ are uncontaminated. Based on the number of wins per simulation and the confidence intervals, we can conclude that all methods are competitive in this setting. 
 
 The confidence intervals show that all methods obtain comparable results for all simulations except \texttt{mnist} digit $8$, where CWSVM performs poorly compared to the others. This performance difference could be caused by the fact we used linear class-weighted SVM while both ensemble methods implicitly yield nonlinear decision boundaries. A linear model may be too simple to properly distinguish this digit from the others.
 
@@ -385,7 +382,7 @@ Test result encoding: $\bullet$ $p < 0.05$, $\bullet\ \bullet$ $p < 0.01$ and $\
 
 
 \subsection{Results for PU learning}
-The results of our experiments in a PU learning setting are shown in Table~\ref{table:pulearning}. In the pure PU learning setting, $\mathcal{P}$ is uncontaminated but $\mathcal{U}$ is contaminated. Class-weighted SVM tends to suffer from the largest loss in performance between supervised learning and pure PU learning based on area under PR curves. Class-weighted SVM obtains less wins than it did in the supervised simulations (21 wins in PU learning compared to 73 in the supervised setting), except on the \texttt{cancer} data set. Bagging SVM and RESVM maintain strong performance. Bagging SVM obtains a comparable number of wins and RESVM gains many compared to the supervised setting.
+The results of our experiments in a PU learning setting are shown in Table~\ref{table:pulearning}. In the pure PU learning setting, $\positive$ is uncontaminated but $\unlabeled$ is contaminated. Class-weighted SVM tends to suffer from the largest loss in performance between supervised learning and pure PU learning based on area under PR curves. Class-weighted SVM obtains less wins than it did in the supervised simulations (21 wins in PU learning compared to 73 in the supervised setting), except on the \texttt{cancer} data set. Bagging SVM and RESVM maintain strong performance. Bagging SVM obtains a comparable number of wins and RESVM gains many compared to the supervised setting.
 
 On the \texttt{mnist} data, RESVM consistently exhibits the best performance (based on the Wilcoxon signed-rank test), though the effective improvement over bagging SVM is marginal. On \texttt{sensit} with classes 2 or 3 as positive, bagging SVM obtains the majority of wins though the confidence intervals of its area under the PR curve overlap completely with those of RESVM. On the other data sets, no worthwile differences were obtained between both ensemble methods.
 
@@ -463,7 +460,7 @@ Test result encoding: $\bullet$ $p < 0.05$, $\bullet\ \bullet$ $p < 0.01$ and $\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Results of semi-supervised classification}
-In the semi-supervised setting we deliberately violated the assumption of an uncontaminated positive training set by contaminating $\mathcal{P}$ and $\mathcal{U}$. The results listed in Table~\ref{table:semisupervised} confirm that both class-weighted and bagging SVM are vulnerable to contamination in $\mathcal{P}$ and experience very large performance losses. We believe this is induced by using high misclassification penalties for training instances in $\mathcal{P}$ without any resampling to account for potential false positives. In bagging SVM this leads to a systematic bias in all base models. The resampling strategy of RESVM prevents systematic bias over all base models. 
+In the semi-supervised setting we deliberately violated the assumption of an uncontaminated positive training set by contaminating $\positive$ and $\unlabeled$. The results listed in Table~\ref{table:semisupervised} confirm that both class-weighted and bagging SVM are vulnerable to contamination in $\positive$ and experience very large performance losses. We believe this is induced by using high misclassification penalties for training instances in $\positive$ without any resampling to account for potential false positives. In bagging SVM this leads to a systematic bias in all base models. The resampling strategy of RESVM prevents systematic bias over all base models. 
 
 The results clearly show that RESVM is more robust to false positives, evidenced by a much lower drop in predictive performance for almost all data sets. The performance difference between bagging SVM and RESVM is statistically significant for all data sets except \texttt{covtype} and \texttt{sensit}. Surprisingly, CWSVM obtains 8 wins on \texttt{sensit} with class 2 as positive. RESVM shows the best and most consistent performance overall. 
 
@@ -498,7 +495,7 @@ In the previous tables we have shown the results per data set for each setting. 
 \subsubsection{Critical difference diagrams} \label{cds}
 In every setting, we compared the performance of the three learning approaches across all data sets using non-parametric statistical tests. For each data set, approaches were ranked based on their mean area under the PR curve across all iterations. Multiclass data sets count once per class. Friedman tests per setting yielded significant evidence of differences between the three learning approaches at the $\alpha=0.05$ level, though this was marginal in the supervised setting ($p=0.034$). The Nemenyi post-hoc test \citep{nemenyi1962distribution} was used after each omnibus test to assess differences between all approaches. The critical difference diagrams in Figure~\ref{fig:cds} visualize the results.
 
-Critical difference diagrams were introduced by \citet{demvsar2006statistical} to visualize a comparison of multiple learning approaches over multiple data sets. These diagrams depict the average rank of each approach (lower is better) along with the critical difference (CD). The critical difference is the minimum difference in average ranks that yields a significant result in the Nemenyi post-hoc test. It depends on the significance level ($\alpha=0.05$), the number of learning approaches ($3$) and the number of data sets ($17$). 
+Critical difference diagrams were introduced by Dem{\v{s}}ar \citep{demvsar2006statistical} to visualize a comparison of multiple learning approaches over multiple data sets. These diagrams depict the average rank of each approach (lower is better) along with the critical difference (CD). The critical difference is the minimum difference in average ranks that yields a significant result in the Nemenyi post-hoc test. It depends on the significance level ($\alpha=0.05$), the number of learning approaches ($3$) and the number of data sets ($17$). 
 
 \begin{figure}%
 \centering
@@ -513,7 +510,7 @@ Critical difference diagrams were introduced by \citet{demvsar2006statistical} t
 From Figure~\ref{fig:cds} we can conclude that bagging SVM and RESVM are comparable in the PU learning setting (both significantly better than CWSVM). In the semi-supervised setting, bagging SVM is statistically significantly better than CWSVM and RESVM is significantly better than both other approaches across all data sets.
 
 \subsubsection{Win counts} \label{wins}
-The number of wins per method across all data sets are summarized in Table~\ref{table:wins}. The top half shows the total number of wins across all data sets, which weights \texttt{mnist} and \texttt{sensit} heavier than the other data sets since we performed several one-vs-all experiments. Because RESVM consistently performed very strong on \texttt{mnist}, the top half is an overly optimistic representation.
+The number of wins per method across all data sets are summarized in Table~\ref{table:wins}. The top half shows the total number of wins across all data sets, which weighs \texttt{mnist} and \texttt{sensit} heavier than the other data sets since we performed several one-vs-all experiments. Because RESVM consistently performed very strong on \texttt{mnist}, the top half is an overly optimistic representation.
 
 The bottom half of Table~\ref{table:wins} contains normalized results, where every data set contributes equally. Based on these numbers we can conclude that there is little difference between the three methods in a supervised setting. In the PU learning setting, ensemble methods become favorable over CWSVM (bagging SVM and RESVM being competitive). Finally, in the semi-supervised setting RESVM pulls far ahead of both other methods and obtains $65\%$ of the normalized wins, which is over three times more than bagging SVM and over five times more than class-weighted SVM.
 
@@ -542,20 +539,20 @@ semi-supervised  & 17.0  & 14.2 & & 24.0 & 20.0 & & \textbf{79.0} & \textbf{65.8
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Effect of contamination} \label{varycontamination}
-In this Section we show the effect of different levels of contamination in $\mathcal{P}$ and $\mathcal{U}$ on the \texttt{synthetic} data set. In these simulations, we fixed the contamination level in one part of the training set ($\mathcal{P}$ or $\mathcal{U}$) and the contamination of other was varied. The fixed contamination was set to $30\%$. Twenty simulations were run per contamination setting.
+In this Section we show the effect of different levels of contamination in $\positive$ and $\unlabeled$ on the \texttt{synthetic} data set. In these simulations, we fixed the contamination level in one part of the training set ($\positive$ or $\unlabeled$) and the contamination of other was varied. The fixed contamination was set to $30\%$. Twenty simulations were run per contamination setting.
 
 In these experiments, we used random search to tune hyperparameters of each method \citep{bergstra2012random} using the Optunity package.\footnote{Optunity is available at: \url{http://www.optunity.net}.} Briefly, hyperparameters were searched by random sampling 100 tuples uniformly within a given box and subsequently the best tuple was selected as before. We ensured that the optimal hyperparameters were never too close to the edge of the feasible region (if so, the box was expanded). Note that this approach of testing a fixed number of tuples favors methods with less hyperparameters. Even though RESVM has more hyperparameters than the other methods, good models can be obtained at the same search cost.
 
-The results are shown in Figure~\ref{fig:contaminationeffect}. In general, contamination in $\mathcal{P}$ causes larger performance losses than the same level of contamination in $\mathcal{U}$ for all algorithms. As expected, the difference in sensitivity to contamination in $\mathcal{P}$ and $\mathcal{U}$ is smallest for RESVM in which $\mathcal{P}$ and $\mathcal{U}$ are resampled similarly. At high contamination levels, RESVM is the only method that still works well (even at $60\%$). 
+The results are shown in Figure~\ref{fig:contaminationeffect}. In general, contamination in $\positive$ causes larger performance losses than the same level of contamination in $\unlabeled$ for all algorithms. As expected, the difference in sensitivity to contamination in $\positive$ and $\unlabeled$ is smallest for RESVM in which $\positive$ and $\unlabeled$ are resampled similarly. At high contamination levels, RESVM is the only method that still works well (even at $60\%$). 
 
-Figure~\ref{fig:contaminationU} illustrates that RESVM and bagging SVM behave in a similar fashion at contamination levels of $\mathcal{U}$ up to $50\%$ and both outperform class-weighted SVM. RESVM outperforms bagging SVM for contamination levels of $30$--$50\%$ but the consistency (width of CI) and performance losses of both methods are comparable. Figure~\ref{fig:contaminationP} shows the increased robustness of RESVM to contamination in $\mathcal{P}$ resulting in reduced loss of generalization performance for increasing contamination. 
+Figure~\ref{fig:contaminationU} illustrates that RESVM and bagging SVM behave in a similar fashion at contamination levels of $\unlabeled$ up to $50\%$ and both outperform class-weighted SVM. RESVM outperforms bagging SVM for contamination levels of $30$--$50\%$ but the consistency (width of CI) and performance losses of both methods are comparable. Figure~\ref{fig:contaminationP} shows the increased robustness of RESVM to contamination in $\positive$ resulting in reduced loss of generalization performance for increasing contamination. 
 
 
 \begin{figure}%
 \centering
-\subfloat[Effect of contamination in $\mathcal{U}$.\label{fig:contaminationU}]{\includegraphics[width=0.48\textwidth]{contamination_U.pdf}}\hfill
-\subfloat[Effect of contamination in $\mathcal{P}$.\label{fig:contaminationP}]{\includegraphics[width=0.48\textwidth]{contamination_P.pdf}}\\
-  \caption{Effect of different levels of contamination in $\mathcal{U}$ and $\mathcal{P}$ on generalization performance. The plots show point estimates of the mean area under the PR curve across experiments and the associated $95\%$ confidence intervals.} 
+\subfloat[Effect of contamination in $\unlabeled$.\label{fig:contaminationU}]{\includegraphics[width=0.48\textwidth]{contamination_U.pdf}}\hfill
+\subfloat[Effect of contamination in $\positive$.\label{fig:contaminationP}]{\includegraphics[width=0.48\textwidth]{contamination_P.pdf}}\\
+  \caption{Effect of different levels of contamination in $\unlabeled$ and $\positive$ on generalization performance. The plots show point estimates of the mean area under the PR curve across experiments and the associated $95\%$ confidence intervals.} 
   \label{fig:contaminationeffect}
 \end{figure}
 
@@ -602,20 +599,20 @@ semi-sup.  & 12.8 &  6.4 &  4.8 &  2.1 &  4.8 &  6.4 &  4.8 &  3.2 &  3.2 &  3.2
 
 An interesting observation is that the size of the training sets that are being used decreases for increasing contamination. Increasing label noise induces RESVM to favor smaller base model training sets for which the variability in contamination is larger (see Figure~\ref{fig:contamination}). Though this may appear counterintuitive, bagging approaches are known to exhibit a bias-variance tradeoff \citep{bauer1999empirical} for which using weaker base models with increased variability may yield better ensembles \citep{biasvariance}.
 
-The optimal value of the misclassification penalty for positive training instances relative to unlabeled instances, $w_{pos}$, changes between learning settings (see Equation~\eqref{eq:resvmpenalties}). It exhibits expected behaviour: the maximum value is obtained when the certainty on $\mathcal{P}$ relative to $\mathcal{U}$ is largest (e.g. the pure PU learning setting). This parameter implicitly balances empirical certainty on $\mathcal{P}$ and $\mathcal{U}$ and is an important degree of freedom in RESVM. In bagging SVM, this parameter is implicitly fixed to $1$ via Equation~\eqref{eq:bagpenalties} \citep{MORDELET-2010-523336}. Note that $w_{pos}$ need not be larger than 1 (which would place extra emphasisis on the known labels after accounting for class imbalance). In highly imbalanced settings where $n_{unl} \gg n_{pos}$, the optimal value of $w_{pos}$ may well be less than 1.
+The optimal value of the misclassification penalty for positive training instances relative to unlabeled instances, $w_{pos}$, changes between learning settings (see Equation~\eqref{eq:resvmpenalties}). It exhibits expected behaviour: the maximum value is obtained when the certainty on $\positive$ relative to $\unlabeled$ is largest (e.g. the pure PU learning setting). This parameter implicitly balances empirical certainty on $\positive$ and $\unlabeled$ and is an important degree of freedom in RESVM. In bagging SVM, this parameter is implicitly fixed to $1$ via Equation~\eqref{eq:bagpenalties} \citep{MORDELET-2010-523336}. Note that $w_{pos}$ need not be larger than 1 (which would place extra emphasisis on the known labels after accounting for class imbalance). In highly imbalanced settings where $n_{unl} \gg n_{pos}$, the optimal value of $w_{pos}$ may well be less than 1.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Conclusion}
-We have introduced a new approach for learning from positive and unlabeled data, called the robust ensemble of SVMs (RESVM). RESVM constructs an ensemble model using a bagging strategy in which the positive and unlabeled sets are resampled to obtain base model training sets. By resampling both $\mathcal{P}$ and $\mathcal{U}$, our approach is more robust against false positives than others.
+We have introduced a new approach for learning from positive and unlabeled data, called the robust ensemble of SVMs (RESVM). RESVM constructs an ensemble model using a bagging strategy in which the positive and unlabeled sets are resampled to obtain base model training sets. By resampling both $\positive$ and $\unlabeled$, our approach is more robust against false positives than others.
 
-The robustness of our approach to potential contamination in both $\mathcal{P}$ and $\mathcal{U}$ can be attributed to the synergy between our resampling scheme and voting aggregation. The resampling itself strongly resembles a typical bootstrap approach. RESVM uses class-weighted SVM base models though the resampling scheme is likely to work well with other types of base models.
+The robustness of our approach to potential contamination in both $\positive$ and $\unlabeled$ can be attributed to the synergy between our resampling scheme and voting aggregation. The resampling itself strongly resembles a typical bootstrap approach. RESVM uses class-weighted SVM base models though the resampling scheme is likely to work well with other types of base models.
 
 RESVM was compared with class-weighted SVM and bagging SVM on several data sets under different label noise conditions. The trends across data sets show that bagging SVM and RESVM outperform class-weighted SVM in PU learning. In a pure PU learning setting the average improvement over existing methods is modest though RESVM classifiers exhibit lower variance in performance making it more reliable.
 
-In the semi-supervised setting, label noise was introduced in $\mathcal{P}$ to highlight the improved robustness of RESVM compared to the other methods. Our experimental results show that RESVM remains very strong in the semi-supervised setting while both other approaches degrade dramatically. Statistical analysis showed that RESVM is significantly better than both other approaches across all data sets.
+In the semi-supervised setting, label noise was introduced in $\positive$ to highlight the improved robustness of RESVM compared to the other methods. Our experimental results show that RESVM remains very strong in the semi-supervised setting while both other approaches degrade dramatically. Statistical analysis showed that RESVM is significantly better than both other approaches across all data sets.
 
 %The robust ensemble of SVMs works well in all settings we have analyzed. RESVM promotes base model variability more than existing approaches due to an improved resampling scheme. In a pure PU learning setting the average improvement over existing methods is marginal though RESVM classifiers exhibit lower variance in performance making it more reliable. We pose that this improvement is due to an improvement in bagging efficiency when the variability between base models is increased.
 
@@ -624,7 +621,7 @@ In the semi-supervised setting, label noise was introduced in $\mathcal{P}$ to h
 
 Visual inspection of the PR curves shows that in the majority of experiments the curve for RESVM not only has higher AUC but completely dominates the other curves. As such RESVM models are a good approach regardless of design priorities (high recall versus high precision).
 
-A weakness of RESVM is its amount of hyperparameters ($5$ plus potential kernel parameters), though RESVM models are less sensitive to accurate tuning of these parameters than standard SVM. Our experiments indicated that although RESVM has more hyperparameters, good models can be obtained at the same search effort than the other approaches (e.g. testing the same number of hyperparameter tuples). An interesting question is whether prior knowledge regarding contamination of $\mathcal{P}$ and $\mathcal{U}$ can help in limiting the search scope for some of the hyperparameters ($n_{pos}$, $n_{unl}$ and $w_{pos}$ specifically).
+A weakness of RESVM is its amount of hyperparameters ($5$ plus potential kernel parameters), though RESVM models are less sensitive to accurate tuning of these parameters than standard SVM. Our experiments indicated that although RESVM has more hyperparameters, good models can be obtained at the same search effort than the other approaches (e.g. testing the same number of hyperparameter tuples). An interesting question is whether prior knowledge regarding contamination of $\positive$ and $\unlabeled$ can help in limiting the search scope for some of the hyperparameters ($n_{pos}$, $n_{unl}$ and $w_{pos}$ specifically).
 
 
 

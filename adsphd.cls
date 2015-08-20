@@ -460,6 +460,7 @@
 
 % Default filename for custom cover page
 \newcommand{\@customcoverpage}{mycoverpage.tex}
+%\newcommand{\@customcoverpage}{customcoverpage.tex}
 
 % Set default spine width
 \newlength{\adsphdspinewidth}
@@ -1505,8 +1506,9 @@ De appendices kunnen desgevallend worden gebundeld in een apart boekdeel.
       \ifthenelse{\equal{\affiliation}{}}{}{%
         \\\rule{0.25cm}{0pt}(\affiliation)
       }}
+      \\ \ \\Co-supervisor:
       \DTLforeach{cosupervisor}{\name=name,\affiliation=affiliation}{%
-      \\\name, co-supervisor
+      \\\name
       \ifthenelse{\equal{\affiliation}{}}{}{%
         \\\rule{0.25cm}{0pt}(\affiliation)
       }}

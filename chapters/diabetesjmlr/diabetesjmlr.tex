@@ -25,9 +25,9 @@ In this work, we present an alternative approach for risk profiling which only r
 \section{Existing Type 2 Diabetes Risk Profiling Approaches} \label{sec:stateoftheart}
 The Cambridge Risk Score (CRS) was developed to assess the probability of undiagnosed T2D based on data that is routinely available in primary care records, including age, sex, medication use, family history of diabetes, BMI and smoking status \citep{griffin2000diabetes}, The CRS has been shown to be useful on multiple occasions \citep{griffin2000diabetes, park2002performance, spijkerman2004performance}, though its AUC seems to depend heavily on the population in which it is used, ranging between $67\%$ \citep{spijkerman2004performance} and $80\%$ \citep{griffin2000diabetes}. The information used in the CRS is comparable to another approach which obtained AUCs ranging between $70\%$ and $78\%$ \citep{baan1999performance}.
 
-The FINDRISC score is based on a 10-year follow-up using age, BMI, waist circumference, history of antihypertensive drugs and high blood glucose, physical activity and diet with reported AUCs of $85\%$ and $87\%$ in predicting drug-treated diabetes \citep{lindstrom2003diabetes}. The strongest reported predictors in this study were BMI, waist circumference, history of high blood glucose and physical activity. \citet{glumer2004danish} developed a risk score based on age, sex, BMI, known hypertension, physical activity and family history of diabetes with AUC ranging from $72\%$ to $87.6\%$. The German diabetes risk score reached AUCs ranging from $75\%$ to $83\%$ on validation data and is based on age, waist circumference, height, history of hypertension, physical activity, smoking, and diet \citep{schulze2007accurate}.
+The FINDRISC score is based on a 10-year follow-up using age, BMI, waist circumference, history of antihypertensive drugs and high blood glucose, physical activity and diet with reported AUCs of $85\%$ and $87\%$ in predicting drug-treated diabetes \citep{lindstrom2003diabetes}. The strongest reported predictors in this study were BMI, waist circumference, history of high blood glucose and physical activity. Gl{\"u}mer et al. \citep{glumer2004danish} developed a risk score based on age, sex, BMI, known hypertension, physical activity and family history of diabetes with AUC ranging from $72\%$ to $87.6\%$. The German diabetes risk score reached AUCs ranging from $75\%$ to $83\%$ on validation data and is based on age, waist circumference, height, history of hypertension, physical activity, smoking, and diet \citep{schulze2007accurate}.
 
-\citet{heikes2008diabetes} developed a decision tree for risk prediction achieving $82\%$ AUC in a cross-validation setting, based on weight, age, family history and various clinical parameters. Various other approaches based on routine clinical information have demonstrated similarly accurate predictions of type 2 diabetes \citep{stern2002identification, mcneely2003comparison}.
+Heikes et al. \citep{heikes2008diabetes} developed a decision tree for risk prediction achieving $82\%$ AUC in a cross-validation setting, based on weight, age, family history and various clinical parameters. Various other approaches based on routine clinical information have demonstrated similarly accurate predictions of type 2 diabetes \citep{stern2002identification, mcneely2003comparison}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,7 +48,7 @@ These expenditure records hold all financial reimbursements of drugs, procedures
 In addition to resource-use data, some biographical information is available about each patient including age, gender, place of residence and social parameters. In the remainder of this Section we will elaborate on expenditure records related to drugs and provisions as used in our models. Subsequently we will briefly summarize the main strengths and limitations of using health expenditure data for predictive modeling.
 
 \subsection{Records Related to Drug Purchases}
-Expenditure records concerning drug purchases contain information about the active substances in the drug and the purchased volume. We mapped all active substances onto the anatomical therapeutic chemical (ATC) classification system maintained by the \citet{world1996guidelines}. The ATC classification system divides active substances into different groups based on the organ or system on which they act and their therapeutic, pharmacological and chemical properties. Each drug is classified in groups at 5 levels in the ATC hierarchy: fourteen main groups (1st level), pharmacological/therapeutic subgroups (2nd level), chemical subgroups (3rd and 4th level) and the chemical substance (5th level).
+Expenditure records concerning drug purchases contain information about the active substances in the drug and the purchased volume. We mapped all active substances onto the anatomical therapeutic chemical (ATC) classification system maintained by the WHO \citep{world1996guidelines}. The ATC classification system divides active substances into different groups based on the organ or system on which they act and their therapeutic, pharmacological and chemical properties. Each drug is classified in groups at 5 levels in the ATC hierarchy: fourteen main groups (1st level), pharmacological/therapeutic subgroups (2nd level), chemical subgroups (3rd and 4th level) and the chemical substance (5th level).
 
 After mapping records onto the ATC classification system, a patient's medication history consists of specific ATC codes (5th level) along with the associated number of defined daily doses (DDD). In the period of interest, purchases of 4,580 distinct active substances were recorded in the NACM database. Table~\ref{table:atc-example} shows an example of the classification of active substance on all levels in the ATC system.
 
@@ -144,7 +144,7 @@ We used Optunity's particle swarm optimizer to identify suitable hyperparameters
 We consistently used the \emph{lower} bounds for hyperparameter search. All our performance reports contain lower and upper bounds, based on $\hat{\beta}_{lo}$ and $\hat{\beta}_{up}$, respectively.
 
 \paragraph{Diagnosing overfitting} 
-In addition to measuring performance, we diagnosed overfitting via the concept of rank distributions as defined by \citet{claesen2015icml}. The rank distribution of a subset of test instances is defined as the distribution of the positions of these test instances in a ranking of the full test set based on a model's predicted decision values. We diagnose overfitting based on the rank distributions of known positive training instances ($\mathcal{P}_{train}$) and known positives in the independent test fold ($\mathcal{P}_{test}$) after predicting the full data set. If the model overfits, the rank distribution of $\mathcal{P}_{train}$ is inconsistent with the rank distribution of $\mathcal{P}_{test}$. Specifically, ranks in $\mathcal{P}_{test}$ are worse than those in $\mathcal{P}_{train}$ when the model overfits. This can be quantified via the Mann-Whitney U test \citep{mann1947test} based on ranks of $\mathcal{P}_{train}$ and $\mathcal{P}_{test}$ after predicting the full data set (that is all outer folds). The Mann-Whitney U test is expected to yield a non-significant result when the rank distributions of $\mathcal{P}_{train}$ and $\mathcal{P}_{test}$ are comparable. We report the average $p$-values of the test across outer cross-validation folds for each model (low $p$-values indicate overfitting).
+In addition to measuring performance, we diagnosed overfitting via the concept of rank distributions as defined by Claesen et al. \citep{claesen2015icml}. The rank distribution of a subset of test instances is defined as the distribution of the positions of these test instances in a ranking of the full test set based on a model's predicted decision values. We diagnose overfitting based on the rank distributions of known positive training instances ($\mathcal{P}_{train}$) and known positives in the independent test fold ($\mathcal{P}_{test}$) after predicting the full data set. If the model overfits, the rank distribution of $\mathcal{P}_{train}$ is inconsistent with the rank distribution of $\mathcal{P}_{test}$. Specifically, ranks in $\mathcal{P}_{test}$ are worse than those in $\mathcal{P}_{train}$ when the model overfits. This can be quantified via the Mann-Whitney U test \citep{mann1947test} based on ranks of $\mathcal{P}_{train}$ and $\mathcal{P}_{test}$ after predicting the full data set (that is all outer folds). The Mann-Whitney U test is expected to yield a non-significant result when the rank distributions of $\mathcal{P}_{train}$ and $\mathcal{P}_{test}$ are comparable. We report the average $p$-values of the test across outer cross-validation folds for each model (low $p$-values indicate overfitting).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	VECTORIZATION
@@ -177,6 +177,7 @@ Figure~\ref{fig:medication-vectorization} illustrates this vector representation
 
 \begin{table}[!h]
 \centering
+\resizebox{\textwidth}{!}{
 \begin{tabular}{llr}
 \toprule
 vectorization	 & description	 & $\dmeds$ \\
@@ -186,6 +187,7 @@ vectorization	 & description	 & $\dmeds$ \\
 \textsc{atc 1--5}	 & counts of DDDs per medication class in ATC levels 1--5 	& 5,837 \\
 \bottomrule
 \end{tabular}
+}
 \caption{Summary of vectorization schemes used for records of drug purchases.}
 \label{table:meds-vects}
 \end{table}
@@ -232,6 +234,7 @@ $\mathbf{P}_{struct}$ approximately captures which provisions occur in a patient
 \paragraph{Summary} All vectorizations related to medical provisions are described in Table~\ref{table:prov-vects}.
 \begin{table}[!h]
 \centering
+\resizebox{\textwidth}{!}{
 \begin{tabular}{lllr}
 \toprule
 vectorization	 & symbol & description	 & $\dprovs$ \\
@@ -241,6 +244,7 @@ vectorization	 & symbol & description	 & $\dprovs$ \\
 \textsc{provs both}	 & $\mathbf{P}_{flat}\ |\ \mathbf{P}_{struct}$ & concatenation of flat \& structured  			& $11,598$ \\
 \bottomrule
 \end{tabular}
+}
 \caption{Summary of vectorization schemes used for records of medical provisions.}
 \label{table:prov-vects}
 \end{table}
@@ -255,7 +259,7 @@ Having only positive and unlabeled data (PU learning) presents additional challe
 We have tested three approaches from the latter category in this work, namely class-weighted SVM \citep{Liu:2003:BTC:951949.952139}, bagging SVM \citep{MORDELET-2010-523336} and the robust ensemble of SVM models \citep{Claesen2015resvm}. All of these approaches are based on support vector machines. We used the linear kernel on vector representations of patients as described in Section~\ref{data}.\footnote{Though it must be noted that the ensemble methods are always implicitly nonlinear.} We will briefly introduce each method in the following subsections.
 
 \subsubsection{Class-weighted SVM} \label{bsvm}
-Class-weighted SVM (CWSVM) uses a misclassification penalty per class. CWSVM was first applied in a PU learning context by \citet{Liu:2003:BTC:951949.952139}, by considering the unlabeled set to be negative with noise on its labels. A CWSVM is trained to distinguish positives ($\mathcal{P}$) from unlabeled instances ($\mathcal{U}$), leading to the following optimization problem:
+Class-weighted SVM (CWSVM) uses a misclassification penalty per class. CWSVM was first applied in a PU learning context by Liu et al. \citep{Liu:2003:BTC:951949.952139}, by considering the unlabeled set to be negative with noise on its labels. A CWSVM is trained to distinguish positives ($\mathcal{P}$) from unlabeled instances ($\mathcal{U}$), leading to the following optimization problem:
 \begin{align}
 \min_{\alpha,\xi,b}\ & \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N \alpha_i\alpha_j y_i y_j \kappa(\mathbf{x}_i,\mathbf{x}_j)+C_{\mathcal{P}}\sum_{i \in\mathcal{P}} \xi_i + C_{\mathcal{U}}\sum_{i\in\mathcal{U}} \xi_i, \label{eq:bsvm} \\
 \text{s.t. } &y_i(\sum_{j=1}^N \alpha_j y_j \kappa(\mathbf{x}_i,\mathbf{x}_j)+b)\geq 1-\xi_i, &i=1,\ldots,N, \nonumber \\
@@ -273,7 +277,7 @@ C_{\mathcal{P}} = \frac{n_{\mathcal{U}} \times C_{\mathcal{U}}}{|\mathcal{P}|}, 
 where $|\mathcal{P}|$ denotes the number of known positives. The heuristic rule in Equation~\ref{eq:bagpenalties} is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. We implemented bagging SVM using the EnsembleSVM library \citep{JMLR:v15:claesen14a}.
 
 \subsubsection{Robust Ensemble of SVM models}
-The robust ensemble of SVM models (RESVM) is a modified version of bagging SVM in which both the positive and unlabeled sets are resampled when constructing base model training sets \citep{Claesen2015resvm}. The extra resampling induces additional variability between base models which improves performance when combined with a majority vote aggregation scheme. \citet{Claesen2015resvm} demonstrated that resampling the positive set provides robustness against false positives, which makes RESVM appealing for our application since our data set is known to contain a small fraction of false positives (as explained in Section~\ref{data}).
+The robust ensemble of SVM models (RESVM) is a modified version of bagging SVM in which both the positive and unlabeled sets are resampled when constructing base model training sets \citep{Claesen2015resvm}. The extra resampling induces additional variability between base models which improves performance when combined with a majority vote aggregation scheme. Claesen et al. \citep{Claesen2015resvm} demonstrated that resampling the positive set provides robustness against false positives, which makes RESVM appealing for our application since our data set is known to contain a small fraction of false positives (as explained in Section~\ref{data}).
 
 When using linear base models, the RESVM approach has four hyperparameters that must be tuned, namely resample sizes and misclassification penalties per class. This approach was implemented based on EnsembleSVM \citep{JMLR:v15:claesen14a}.
 
@@ -292,6 +296,7 @@ Table~\ref{table:results} summarizes the performance of each learning configurat
 
 \begin{table}[!h]
 \centering
+\resizebox{\textwidth}{!}{
 \begin{tabular}{lcccccccc}
 \toprule
  		 & \multicolumn{2}{c}{RESVM} 	 & & \multicolumn{2}{c}{bagging SVM} 	& & \multicolumn{2}{c}{class-weighted SVM} \\ \cline{2-3} \cline{5-6} \cline{8-9}
@@ -308,6 +313,7 @@ features	 & AUROC ($\%$)	 & $p$ 		 & & AUROC ($\%$) & $p$			& & AUROC ($\%$) & $
 
 \bottomrule
 \end{tabular}
+}
 \caption{Average bounds on area under the ROC curve and $p$-value of the Mann-Whitney U test over all folds for different feature sets per learning approach in a long-term prediction setup. The lower and upper bounds on AUC were computed with $\hat{\beta}_{lo}=0.05$ and $\hat{\beta}_{up}=0.10$, respectively. The \mbox{\textsc{atc $|$ provs}} feature set is the concatenation of the best performing sets per aspect, namely \textsc{atc 1--5} and \textsc{provs both}. Stars ($*$) denote $p$-values below $0.005$.
 }
 \label{table:results}
@@ -324,13 +330,13 @@ Finally, RESVM appears most resistant to overfitting in the hyperparameter optim
 \subsubsection{Comparison to State-of-the-art} \label{stateoftheart}
 Our best approach obtained cross-validated AUC between $74.89\%$ and $76.82\%$ (exact numbers are unknown due to the lack of known negatives). This is comparable to many competing approaches, based on questionnaires and some clinical information such as the Cambridge Risk Score (AUC 67\%--80\%, \citep{spijkerman2004performance, griffin2000diabetes}), the Danish risk score (AUC $72\%$--$87.6\%$, \citep{glumer2004danish}), the German diabetes risk score (AUC $75\%$--$83\%$, \citep{schulze2007accurate}) and a Dutch approach (AUC 74\%, \citep{baan1999performance}). Approaches using detailed clinical information generally perform better, but are more expensive to maintain \citep{stern2002identification, mcneely2003comparison, lindstrom2003diabetes, heikes2008diabetes}. The key advantage of our approach is the fact it is easy to implement on a population wide scale at virtually no operational cost.
 
-The target class we used in this work is stricter than in the risk prediction methods mentioned in Section~\ref{sec:stateoftheart}, namely patients that require GLAs for glycemic control versus patients with impaired glycemic control, respectively (except for \citet{lindstrom2003diabetes}, which also predicted drug-treated T2D). It is reasonable to assume that our models generally rank patients with impaired glycemic control but without a need for GLAs higher than patients without impaired glycemic control. In our performance assessment both of these patient groups are essentially treated as negatives, in contrast to the screening programmes mentioned previously which treat patients with impaired glycemic control as positives. Hence, we believe the performance of our models would appear higher when evaluated against a target class comprising all patients with impaired glycemic control, as is done in the evaluation of other screening approaches. Unfortunately, we are unable to accurately identify patients with impaired glycemic control but without need for GLAs.
+The target class we used in this work is stricter than in the risk prediction methods mentioned in Section~\ref{sec:stateoftheart}, namely patients that require GLAs for glycemic control versus patients with impaired glycemic control, respectively (except for Lindstr{\"o}m and Tuomilehto \citep{lindstrom2003diabetes}, which also predicted drug-treated T2D). It is reasonable to assume that our models generally rank patients with impaired glycemic control but without a need for GLAs higher than patients without impaired glycemic control. In our performance assessment both of these patient groups are essentially treated as negatives, in contrast to the screening programmes mentioned previously which treat patients with impaired glycemic control as positives. Hence, we believe the performance of our models would appear higher when evaluated against a target class comprising all patients with impaired glycemic control, as is done in the evaluation of other screening approaches. Unfortunately, we are unable to accurately identify patients with impaired glycemic control but without need for GLAs.
 
 All competing methods use either clinical information or direct knowledge of risk factors that is unavailable to us. Furthermore, some of the characteristics that are lacking in our data have been reported to be the most informative to assess risk for T2D \citep{lindstrom2003diabetes,stern2002identification, mcneely2003comparison}. We obtained generalization performances that are comparable to existing approaches, despite these missing predictors. Finally, our approach is the only one that is based exclusively on existing data that is always available, without requiring additional patient contacts or clinical tests.
 
 
 \subsection{Performance Curves for RESVM} \label{resvmroc}
-The RESVM model based on \textsc{atc $|$ provs} vectorization had the best overall performance. Figure~\ref{fig:diabetes-performance-curves} shows bounds on the ROC and PR curves for this model. These bounds were computed using the technique described by \citet{claesen2015icml}. The true curve is unknown because we do not dispose of negative labels.
+The RESVM model based on \textsc{atc $|$ provs} vectorization had the best overall performance. Figure~\ref{fig:diabetes-performance-curves} shows bounds on the ROC and PR curves for this model. These bounds were computed using the technique described by Claesen et al. \citep{claesen2015icml}. The true curve is unknown because we do not dispose of negative labels.
 
 ROC curves enable us to determine a cutoff to use in practice, based on a suitable balance between true and false positive rate (sensitivity and 1-specificity, respectively). Determining a suitable balance requires a tradeoff between the relative importance of identifying undiagnosed patients (true positives) vis-\`a-vis increased amounts of screening tests on patients that are in fact healthy (false positives).
 

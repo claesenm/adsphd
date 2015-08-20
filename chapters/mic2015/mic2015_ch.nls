@@ -1,8 +1,0 @@
-\begin{thenomenclature} 
-
- \nomgroup{A}
-
-  \item [{$\Theta$}]\begingroup A nice symbol\nomeqref {1.0}
-		\nompageref{3}
-
-\end{thenomenclature}

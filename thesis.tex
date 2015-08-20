@@ -1,4 +1,10 @@
-\documentclass[pagebackref,showinstructions,showlabels,coverfontpercent=100]{adsphd}
+%\documentclass[pagebackref,showinstructions,showlabels,coverfontpercent=100]{adsphd}
+%\documentclass[pagebackref,coverfontpercent=100]{adsphd}
+
+%%% final
+\documentclass[pagebackref,coverfontpercent=100,final]{adsphd}
+%\def\showtikzplots
+
 %\documentclass[pagebackref,showinstructions,showlabels,biblatex,biber,biblatexstyle=authoryear]{adsphd}
 %\documentclass[croppedpdf,pagebackref,showinstructions]{adsphd}
 %\documentclass[online]{adsphd}
@@ -17,8 +23,115 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage[vlined,ruled,commentsnumbered]{algorithm2e}
-%\usepackage{subfigure}
+\usepackage{graphicx} % more modern
+%\usepackage{subfigure} 
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{ifpdf}
+%\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{mathtools}
+\usepackage{fancyref}
+\usepackage{tabularx}
 
+\usepackage{stmaryrd}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage{capt-of}% or use the larger `caption` package
+
+
+% http://tex.stackexchange.com/a/120723
+\usepackage{chngcntr}
+\usepackage{appendix}
+\AtBeginEnvironment{subappendices}{%
+\chapter*{Appendix}
+\addcontentsline{toc}{chapter}{Appendices}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+}
+
+
+%\usepackage{subfigure}
+\usetikzlibrary{patterns,mindmap,backgrounds,trees,arrows.meta}
+
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{bggray}{rgb}{0.95,0.95,0.95}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstdefinestyle{Py}{
+    language={Python}, 
+    moredelim=**[is][\slshape\bfseries]{`}{`},
+    moredelim=**[is][\color{mygreen}]{!}{!},
+}
+\lstset{ %
+%  backgroundcolor=\color{bggray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize\ttfamily, %\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygray},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{black},       % keyword style
+  language=Python,                 % the language of the code
+  morekeywords={svm\_acc, make\_solver, maximize},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{mygray},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+  belowskip=0em,
+  belowcaptionskip=-2em,
+  columns=fullflexible,
+  keepspaces=true
+}
+\renewcommand{\lstlistingname}{Snippet}
+
+
+\makeatletter
+\newcommand{\fixed@sra}{$\vrule height 2\fontdimen22\textfont2 width 0pt\shortrightarrow$}
+\newcommand{\shortarrow}[1]{%
+  \mathrel{\text{\rotatebox[origin=c]{\numexpr#1*45}{\fixed@sra}}}
+}
+\makeatother
+
+\DeclareMathOperator{\supremum}{supremum}
+\DeclareMathOperator{\probability}{Pr}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\mean}{mean}
+\DeclareMathOperator{\quantile}{quantile}
+\DeclareMathOperator{\AUC}{AUC}
+\DeclareMathOperator{\AUROC}{AUROC}
+\DeclareMathOperator{\CDF}{F}
+\DeclareMathOperator{\quant}{Q}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\TPR}{TPR}
+\DeclareMathOperator{\FPR}{FPR}
+\DeclareMathOperator{\PREC}{PRE}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\TP}{TP}
+\DeclareMathOperator{\FN}{FN}
+\DeclareMathOperator{\TN}{TN}
+\DeclareMathOperator{\quantilelb}{\rho}
+\DeclareMathOperator{\quantileub}{r_{UB}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\subjectto}{subject\,to}
+\DeclareMathOperator*{\topfun}{head}
+\DeclareMathOperator*{\bottomfun}{tail}
 
 \usepackage{nomencl}   % For nomenclature
 \usepackage[style=long,number=none]{glossary} % For list of abbreviations
@@ -31,18 +144,22 @@
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 %%% COVER: Settings %%%
-\title{The Title of Your PhD Dissertation}
-%\subtitle{Multiscale computing for Dummies}
+\title{Machine Learning on Belgian Health Expenditure Data}
+\subtitle{Data-driven screening for type 2 diabetes
+%{\hfill \includegraphics[width=0.7\textwidth]{phd-wordcloud-final.png} \hfill}
+}
 
 \author{Marc}{Claesen}
 
 \supervisor{Prof.~dr.~ir.~Bart~De~Moor}{}
-\cosupervisor{Prof.~dr.~ir.~Frank~De~Smet}{}
+\cosupervisor{Prof.~dr.~ir.~dr.~Frank~De~Smet}{}
 \president{Prof.~dr.~ir.~The~Chairman}
-\jury{Prof.~dr.~ir.~The~One\\
-      Prof.~dr.~ir.~The~Other
+\jury{Prof.~dr.~ir.~Johan~Suykens\\
+      Prof.~dr.~Chantal~Mathieu\\
+      Prof.~dr.~ir.~Hendrik~Blockeel \\
+      Prof.~dr.~ir.~Jesse~Davis
 }
-\externaljurymember{Prof.~dr.~External~Jurymember}{Far Away}
+\externaljurymember{Prof.~dr.~Marco~Loog}{TU Delft}
 
 \phddegree{Engineering Science} % "Doctor of ..."
 \faculty{Faculty of Engineering Science}
@@ -55,7 +172,7 @@
 \email{marc.claesen@esat.kuleuven.be} % Leave empty to hide
 
 \address{Kasteelpark Arenberg 10, bus 2446}
-% \addresscity{B-3001 Leuven} % This is the default value. Note
+%\addresscity{B-3001 Leuven} % This is the default value. Note
                               % that 'B-3001 Heverlee' is _incorrect_!!
                               % /[https://www.kuleuven.be/communicatie/marketing/intranet/huisstijl/taalgebruik.html]
 
@@ -75,7 +192,7 @@
 %\setlength{\defaultrbleed}{7mm}
 
 % Set custom cover page
-% \setcustomcoverpage{mycoverpage.tex} % mycoverpage.tex is the default
+\setcustomcoverpage{mycoverpage.tex} % mycoverpage.tex is the default
 
 %%% COVER: End settings %%%
 
@@ -144,6 +261,7 @@
 %    \makeglossary
 %    \glossary{name=MD,description=molecular dynamics}
 %    \printglossary
+\input{glossary}
 \printglossary
 
 % To create a list of symbols, there are 2 options
@@ -154,7 +272,9 @@
 %    \makenomenclature
 %    \nomenclature[cB]{$c_B(\vec{x})$}{Characteristic function of $B$}
 %    \printnomenclature[3cm]
+\input{symbols}
 \printnomenclature[1.5cm]
+
 
 \tableofcontents
 \listoffigures
@@ -174,9 +294,12 @@
 \includechapter{introduction}
 %\includechapter{manual} % Remove this chapter
 
-\includechapter{resvm}
+\includechapter{survival}
 \includechapter{ensemblesvm}
+\includechapter{resvm}
 \includechapter{mic2015}
+\includechapter{optunity}
+\includechapter{evaluation}
 \includechapter{diabetesjmlr}
 % Insert here your own chapters
 % Chapters are expected to be in a tex-file with the given name dot

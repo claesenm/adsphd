@@ -4,10 +4,10 @@
 \newcommand{\cpp}{\texttt{C++}\ }
 \newcommand{\pipeline}{\texttt{Pipeline}}
 
-\chapter{\esvm: A Library for Ensemble Learning Using Support Vector Machines}\label{ch:ensemblesvm}
+\chapter{EnsembleSVM: A Library for Ensemble Learning Using Support Vector Machines}\label{ch:ensemblesvm}
 
 \chapterfrontpage{
-Claesen, M., De Smet, F., Suykens, J. A., \& De Moor, B. (2014). \textbf{EnsembleSVM: A library for ensemble learning using support vector machines}. \emph{Journal of Machine Learning Research}, 15(1), 141--145.
+Claesen, M., De Smet, F., Suykens, J. A. K., \& De Moor, B. (2014). \textbf{EnsembleSVM: A library for ensemble learning using support vector machines}. \emph{Journal of Machine Learning Research}, 15(1), 141--145.
 }{
 \esvm\ is a free software package containing efficient routines to perform ensemble learning with support vector machine (SVM) base models. It currently
 offers ensemble methods based on binary SVM models. Our implementation
@@ -16,6 +16,7 @@ ensemble approaches can drastically reduce training complexity while maintaining
 high predictive accuracy. The \esvm\ software package is freely available online
 at \texttt{\url{http://esat.kuleuven.be/sista/ensemblesvm}}.
 }
+\clearpage
 
 
 \section{Introduction}
@@ -24,7 +25,7 @@ Data sets are becoming increasingly large. Machine learning practitioners are co
 problems where the main computational constraint is the amount of time available. Problems become particularly challenging when
 the training sets no longer fit into memory. Accurately solving the dual problem
 for SVM training with nonlinear kernels requires a run time which is at least
-quadratic in the size of the training set $n$, thus training complexity is $\Omega(n^2)$
+quadratic in the size of the training set $n$, thus training complexity is $\bigomega(n^2)$
 \citep{bottou07svm,NL09a}.
 
 \esvm\ employs a divide-and-conquer strategy by aggregating many SVM models,
@@ -32,7 +33,7 @@ trained on small subsamples of the training set.
 Through subdivision, total training time decreases significantly, even though
 more models need to be trained. For example, training $p$
 classifiers on subsamples of size $n/p$, results in an approximate complexity
-of $\Omega(n^2/p)$. This reduction in complexity helps in dealing
+of $\bigomega(n^2/p)$. This reduction in complexity helps in dealing
 with large data sets and nonlinear kernels.
 
 
@@ -61,10 +62,10 @@ misclassification penalties per training instance $C_i,\ i=1,\ldots,n$ and
 encompasses popular approaches such as C-SVC and class-weighted SVM
 \citep{Cortes:1995:SN:218919.218929, osuna1997}.
 \begin{align}
-\mathbf{\min_{\mathbf{w},\mathbf{\xi},\rho} } \ &
-\frac{1}{2}\mathbf{w}^T\mathbf{w}+\sum_{i=1}^n C_i \xi_i,
+\mathbf{\min_{\hyperplane,\mathbf{\xi},\svmbias} } \ &
+\frac{1}{2}\hyperplane^T\hyperplane+\sum_{i=1}^n C_i \xi_i,
 \label{weightedsvm} \\
-\text{subject\ to }  &y_i(\mathbf{w}^T\phi(\mathbf{x}_i)+\rho)\geq 1-\xi_i,
+\text{subject\ to }  &y_i(\hyperplane^T\embeddingfun(\mathbf{x}_i)+\svmbias)\geq 1-\xi_i,
 &i=1,\ldots,n \nonumber \\
 &\xi_i \geq 0, &i=1,\ldots,n \nonumber  
 \end{align}
@@ -109,7 +110,7 @@ We used two binary classification problems, namely the {\tt covtype} and {\tt ij
 at: \url{http://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}
 and UCI.} Both data sets are balanced. Features were always scaled to $[0,1]$. We have
 used C-SVC as SVM and base models ($\forall\ i: C_i=C$). Reported numbers are averages of $5$ test runs to ensure reproducibility. We used the RBF kernel, defined by the kernel function
-$\kappa(\mathbf{x}_i,\mathbf{x}_j)=e^{-\gamma ||\mathbf{x}_i-\mathbf{x}_j||^2}$.
+$\kernelfun(\mathbf{x}_i,\mathbf{x}_j)=e^{-\rbfparam ||\mathbf{x}_i-\mathbf{x}_j||^2}$.
 Optimal parameter selection was done through cross-validation.
 
 The \texttt{covtype} data set is a common classification benchmark featuring
@@ -145,7 +146,7 @@ Ensembles can end up with more support vectors than a single SVM. Due to our par
 
 The ensembles in these experiments are competitive with a traditional SVM even though we used simple majority voting. For \texttt{covtype}, ensemble accuracy is $3\%$ lower than a single SVM and for \texttt{ijcnn1} the ensemble is marginally better ($0.2\%$). Linear SVM falls far short in terms of accuracy for both experiments, but is trained much faster ($< 2$ seconds).
 
-We obtained good results with very basic aggregation. \citet{Collobert02} illustrated that more sophisticated aggregation methods can improve the predictive performance of ensembles. Others have reported performance improvements over standard SVM for
+We obtained good results with very basic aggregation. Collobert et al. \citep{Collobert02} illustrated that more sophisticated aggregation methods can improve the predictive performance of ensembles. Others have reported performance improvements over standard SVM for
 ensembles using majority voting \citep{Valentini03lowbias,Wang20096466}.
  
 \section{Conclusions}
