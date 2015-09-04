@@ -1,0 +1,55 @@
+\chapter{Conclusion}\label{ch:conclusion}
+
+In this Section we will summarize the main insights and implications of the project, along with interesting avenues for future research. We will discuss machine learning-specific aspects in Section~\ref{conclusion:ml} and the screening application in Section~\ref{conclusion:screening}
+
+%An extensive conclusion, including a global discussion of the research results, a discussion of the implications of the PhD research and future perspectives in regards to follow-up research.
+
+\section{Machine learning contributions} \label{conclusion:ml}
+The machine learning research in this project focused on learning from positive and unlabeled data and the construction of high-quality, reusable tools that allow easy reproduction of our results, fast prototyping of novel ideas and the partial automation of machine learning pipelines.
+
+One of the main hurdles we had to overcome was learning classifiers from positive and unlabeled data, where the set of labeled positives is known to be contaminated with some false positives (Chapter~\ref{ch:resvm}). Existing approaches were sensitive to false positives, often to such an extent that they became unreliable. Our approach addresses this weakness by resampling known positives within a bagging framework, which was a natural extension to the already-existing bagging SVM that used the same idea on the unlabeled set \citep{mordelet2014bagging}.
+
+The major issue we tackled in semi-supervised learning was evaluating binary classifiers without known negatives (Chapter~\ref{ch:evaluation}). Prior to our work, a lack of negatives prohibited the quantification of classifier performance in terms of traditional metrics, which in turn prohibited the use of (potentially very good) models for many applications (e.g., the performance of models used for screening or diagnosis must be quantified before their use is even considered). Additionally, we have shown that existing model selection approaches are prone to errors in some practical cases. 
+
+The software packages we developed (described in Chapters~\ref{ch:ensemblesvm} and~\ref{ch:optunity}) provide easy access to our methods to other researchers and enables them to extend our work, rather than having to reinvent the wheel. With these packages we answer the call of several prominent journals about the need and value of open-source software in scientific research \citep{sonnenburg2007need,prlic2012ten}. Optunity particularly tackles a common element of practical machine learning (Chapter~\ref{ch:optunity}), as most methods feature hyperparameters that must be optimized somehow. Optunity's usefulness is evidenced by its popularity, with hundreds of monthly downloads through the Python Package Index at the time of writing.\footnote{Statistics can be found at \url{https://pypi.python.org/pypi/Optunity}.}
+
+\section{Screening for type 2 diabetes} \label{conclusion:screening}
+We set out to investigate the extent to which health expenditure data enables clinical applications like screening for T2D, and more importantly, whether the use of health expenditure data could somehow improve healthcare. During this research we have successfully developed a novel screening method for type 2 diabetes, based exclusively on readily-available health expenditure data collected by the largest Belgian mutual health insurer. This approach enables cost-effective population-wide screening and thereby strengthens secondary prevention of type 2 diabetes.
+
+\subsection{Future work} 
+
+Our research has shown that health expenditure data can effectively be used as a basis for T2D screening programmes with state-of-the-art performance, despite the fact it lacks information on known risk factors for diabetes which are heavily used by other screening approaches (e.g., lifestyle, BMI, genetic predisposition, \ldots). This suggests a lot of potential in screening methods that combine both of these types of information, that is health expenditure data \emph{and} lifestyle, BMI and various clinical parameters. 
+
+Health expenditure data unites information across caregivers and provides a fairly complete long-term overview, while other data sources include crucial parameters about lifestyle, genetics and clinical measurements. As such, it is reasonable to assume that these types of data are complementary, and hence their union may allow for screening approaches that far outperform existing approaches. A lot of this information could simply be obtained via patient questionnaires (e.g. BMI, lifestyle, family history, \ldots), though more detailed clinical parameters are harder to procure. Overall, this is a very promising direction for future research, though coupling health expenditure data with other types of information is a sensitive subject from a privacy point of view.
+
+\subsection{Health expenditure data}
+The screening method itself is a proof-of-concept which showcases the potential clinical value of administrative databases such as claims databases maintained by mutual health insurers. The results of the project yield a few conclusions regarding the use of health expenditure data for clinical applications:
+
+\begin{itemize}
+\item It is a valuable source of information to build screening programmes for type 2 diabetes. Its key strengths are that it integrates healthcare information across all caregivers and provides a reliable longitudinal overview of a patient's medical resource-use history. However, resource-use histories are not as detailed as clinical databases maintained by caregivers.
+\item It is difficult to find or replicate these strengths elsewhere. Particularly, Belgium does not have EHRs that record information from all medical stakeholders, and implementing this would be complex for technological, legal and political reasons, though initiatives like Vitalink\footnote{More info about Vitalink is available at http://www.vitalink.be/.} and the shared pharmaceutical file\footnote{In Dutch: gedeeld farmaceutisch dossier (GFD).} envision related functionality. For now, claims records remain the sole source of complete information across medical stakeholders.
+\end{itemize}
+
+Health expenditure data is already widely used for epidemiology \citep{pladevall2004clinical,lee2006medication,garg2010acute} and, more recently, to assess quality of care \citep{kcequality}. Our work shows that claims data can additionally be used pro-actively to improve healthcare, rather than only in retrospective, descriptive studies. The wealth of information in these databases can likely improve healthcare in many aspects.
+
+
+\subsection{The elephant in the room}
+Our work demonstrated the technological possibility of screening for T2D based on health expenditure data. However, we have not touched upon the ethical and legal perspectives of such approaches. Implementing this form of screening in practice raises a number of important questions, including:
+
+\begin{itemize}
+\item Should screening be performed on the whole population followed by notifications to patients at high risk (i.e., a push model) or should risk calculations be performed only upon explicit request of each individual patient (i.e., a pull model)?
+\item What about privacy? Do patients at high risk have the right not to know?
+\item Should an opt-in or opt-out model be used for the use of patient records?
+\item Is it ethical to let the privacy of individual patients prohibit the development of screening methods based on their health expenditure data, knowing that such screening methods can effectively save lives?
+\item Should these types of applications be implemented by individual health insurers, the intermutualistic agency (IMA) or yet another stakeholder?
+\end{itemize}
+
+It is up to policymakers to strike a tradeoff between patient privacy vis-\`a-vis potential healthcare improvements through applications based on the use of medical data, which is a subject of much debate in both Belgium and Europe. In this project, we exclusively used data that is available within NACM which, though far less complex than applications that combine data from different silos, still requires a delicate balance between patient privacy and quality of care.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Keep the following \cleardoublepage at the end of this file, 
+% otherwise \includeonly includes empty pages.
+\cleardoublepage
+
+% vim: tw=70 nocindent expandtab foldmethod=marker foldmarker={{{}{,}{}}}

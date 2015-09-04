@@ -2,7 +2,9 @@
 
 In this work we explored the ability of screening for (type 2) diabetes mellitus based on Belgian health insurance data from a machine learning perspective. The thesis is organized as a collection of papers concerning various aspects related to this application. This chapter provides some context of the project, both in terms of the medical situation and the challenges in terms of data analysis. 
 
-We will first briefly introduce diabetes mellitus and describe the main characteristics of the disease in Section~\ref{intro:diabetes}. Then, we will summarize existing methods of screening for diabetes that are actively used in practice, and how our approach relates to existing methods in Section~\ref{intro:screening}. The Belgian health insurance landscape is described in Section~\ref{intro:health-insurance}. Subsequently, Section~\ref{intro:machine-learning} contains a discussion of the main challenges of this project from a machine learning perspective to explain the necessity of each aspect of our research. Finally, Section~\ref{intro:structure} summarizes the structure of the text and indicates how all chapters (papers) are related to each other.
+This work aligns with the overall trend towards eHealth and the rising use of all sorts of data for evidence-based medicine. However, relevant policies are still in flux, specifically those related to the use of patient records vis-\`a-vis privacy. The key novelty of this work -- the effective use of health expenditure data for clinical applications -- adds another dimension to this important ongoing debate.
+
+We will first briefly introduce diabetes mellitus and describe the main characteristics of the disease, its treatment and existing screening approaches in Section~\ref{intro:diabetes}. The Belgian health insurance landscape is described in Section~\ref{intro:health-insurance}. Subsequently, Section~\ref{intro:machine-learning} contains a discussion of the main challenges of this project from a machine learning perspective to explain the necessity of each aspect of our research. Finally, Section~\ref{intro:structure} summarizes the structure of the text and indicates how all chapters (papers) are related to each other.
 
 %\instructionsintroduction
 
@@ -11,13 +13,22 @@ We will first briefly introduce diabetes mellitus and describe the main characte
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Diabetes mellitus} \label{intro:diabetes}
-Diabetes mellitus is a metabolic disorder characterized by chronic hyperglycemia, which is primarily caused by insufficient insulin secretion and/or insulin resistance \citep{alberti1998definition}. 
+Diabetes mellitus is a metabolic disorder characterized by chronic hyperglycemia, which is primarily caused by insufficient insulin secretion and/or insulin resistance \citep{alberti1998definition}. The worldwide incidence of diabetes has increased dramatically over the last century due to changes in human behaviour and lifestyle \citep{zimmet2001global, chen2012worldwide}. Diabetes is one of the main threats to human health world wide \citep{king1998global, zimmet2001global, zimmet2000globalization} and is projected to be the 7th leading cause of death by 2030 \citep{mathers2006projections}. Some key facts related to diabetes mellitus are summarized in the diabetes atlas made by the International Diabetes Federation (IDF) (Figure~\ref{intro:diabetes-infogram}).
 
-In the remainder of this Section we provide a brief overview of various aspects of the disease: the underlying biological problem, common complications and comorbidities, classification of diabetes based on etiology, treatment approaches and finally a simple mathematical model to describe blood glucose regulation.
 
-Type 2 diabetes is considered an epidemic \citep{nathan2007impaired}.
+In the remainder of this Section we provide a brief overview of various aspects of the disease: the underlying biological problem, common complications and comorbidities, a classification of diabetes based on etiology, the prevalence and burden of the disorder and finally treatment approaches.
 
-todo: epidemiology
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth]{infogram-cropped.pdf}
+  \caption{Diabetes atlas released by the International Diabetes Federation (IDF). Reuse of this material was granted by the IDF. The original is available at \url{http://www.idf.org/worlddiabetesday/toolkit/gp/facts-figures}.} 
+  \label{intro:diabetes-infogram}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      REGULATION OF BLOOD GLUCOSE LEVEL       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Regulation of blood glucose levels}
 To allow a better understanding of the underlying problems inherent to diabetes mellitus, we will briefly describe the critical role of insulin in the regulation of blood glucose levels.
@@ -26,32 +37,87 @@ Insulin is a peptide hormone which regulates the metabolism of fats and carbohyd
 
 Hyperglycemia occurs when the regulation of the blood glucose level fails and hence toxic concentrations of glucose remain in the bloodstream. Such failures are typically caused by excessive glucose intake, insufficient insulin secretion and/or insulin resistance. 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         COMPLICATIONS AND COMORBIDITIES      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Complications and comorbidities}
-Exposure to chronic hyperglycemia can cause serious damage to many of the body's systems, including dysfunction and failure of various organs, and in severe cases may induce ketoacidosis\footnote{This means the body's cells use ketones (toxic acids) as energy source, rather than glucose.} or the development of a non-ketotic hyperosmolar state\footnote{When blood sugar levels rise, the body attempts to excrete excess glucose via urine.} which can lead to stupor, coma or even death \citep{alberti1998definition}. On the long-term, diabetes mellitus may lead to the progressive development of retinopathy (which potentially results in blindless), neuropathy (which can induce problems like foot ulcers) and nephropathy (which can lead to renal failure). Finally, patients with diabetes mellitus are at increased risk for cardiovascular, peripheral vascular and cerebrovascular disease.
+Exposure to chronic hyperglycemia can cause serious damage to many of the body's systems, including dysfunction and failure of various organs, and in severe cases may induce ketoacidosis\footnote{This means the body's cells use ketones (toxic acids) as energy source, rather than glucose.} or the development of a non-ketotic hyperosmolar state\footnote{When blood sugar levels rise, the body attempts to excrete excess glucose via urine.} which can lead to stupor, coma or even death \citep{alberti1998definition}. 
 
-todo: comorbidities
+The leading complication of type 2 diabetes is cardiovascular disease, with about half of type 2 diabetes patient deaths attributable to a cardiovascular cause \citep{beulens2010global}. Microvascular complications also contribute considerably to the morbidity of the disease, specifically diabetes mellitus may lead to the progressive development of retinopathy (which potentially results in blindless), neuropathy (which can induce problems like foot ulcers), nephropathy (which can lead to renal failure) \citep{atkins2010diabetic} and small vessel vasculopathy causing lower extremity amputation \citep{beulens2010global}. Finally, patients with diabetes mellitus are at increased risk for peripheral vascular and cerebrovascular disease. 
 
+
+% The global burden of diabetes and its complications: an emerging pandemic
+% Cardiovascular disease (CVD) is the leading complication of type 2 diabetes and approximately one half of patients with type 2 diabetes will die of a cardiovascular cause. Angina, myocardial infarction, stroke, peripheral artery disease, and congestive heart failure are all common among patients with type 2 diabetes. IFG or IGT and the risks are further compounded by smoking, abnormal blood lipids, high blood pressure, and the other determinants of vascular risk established in nondiabetic populations [1,18].
+
+
+% http://www.who.int/mediacentre/factsheets/fs312/en/
+% What are common consequences of diabetes?
+% Over time, diabetes can damage the heart, blood vessels, eyes, kidneys, and nerves.
+% Diabetes increases the risk of heart disease and stroke. In a multinational study, 50% of people with diabetes die of cardiovascular disease (primarily heart disease and stroke) (6). Combined with reduced blood flow, neuropathy (nerve damage) in the feet increases the chance of foot ulcers, infection and eventual need for limb amputation. Diabetic retinopathy is an important cause of blindness, and occurs as a result of long-term accumulated damage to the small blood vessels in the retina. One percent of global blindness can be attributed to diabetes (7). Diabetes is among the leading causes of kidney failure (4). The overall risk of dying among people with diabetes is at least double the risk of their peers without diabetes (8).
+% (2) World Health Organization. Global Health Estimates: Deaths by Cause, Age, Sex and Country, 2000-2012. Geneva, WHO, 2014. 
+% (3) Mathers CD, Loncar D. Projections of global mortality and burden of disease from 2002 to 2030. PLoS Med, 2006, 3(11):e442.
+% (4) Global status report on noncommunicable diseases 2010. Geneva, World Health Organization, 2011. 
+% (5) Definition, diagnosis and classification of diabetes mellitus and its complications. Part 1: Diagnosis and classification of diabetes mellitus. Geneva, World Health Organization, 1999 (WHO/NCD/NCS/99.2). 
+% (6) Morrish NJ, Wang SL, Stevens LK, Fuller JH, Keen H. Mortality and causes of death in the WHO Multinational Study of Vascular Disease in Diabetes. Diabetologia 2001, 44 Suppl 2:S14–S21.
+% (7) Global data on visual impairments 2010. Geneva, World Health Organization, 2012.
+% (8) Roglic G, Unwin N, Bennett PH, Mathers C, Tuomilehto J, Nag S et al. The burden of mortality attributable to diabetes: realistic estimates for the year 2000. Diabetes Care, 2005, 28(9):2130–2135.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         CLASSIFICATION OF DIABETES            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Classification of diabetes mellitus}
 
 Diabetes mellitus is a disorder of multiple etiologies and is subdivided into several more specific classes. The primary distinction between subclasses is essentially whether or not external insulin is necessary for survival. The first widely accepted classification was made by the World Health Organization (WHO) in 1980 \citep{WHO1980}, proposing two main classes of diabetes mellitus:
 \begin{itemize}
-\item \textbf{Insulin-dependent diabetes mellitus (IDDM)}, also known as \textbf{type 1} diabetes (T1D), refers to a condition characterized by insufficient insulin secretion caused by the autoimmune destruction of pancreatic $\beta$-cells. T1D patients require insulin for survival. T1D can start at an early age and has a strong genetic component.
-\item \textbf{Noninsulin-dependent diabetes mellitus (NIDDM)}, also known as \textbf{type 2} diabetes (T2D), results from defect(s) in insulin secretion, almost always paired with insulin resistance. T2D includes patients that require insulin for metabolic control (but not survival) and those that don't require insulin at all. The onset of T2D typically occurs during adulthood and is often a result of chronic obesity.
+\item \textbf{Type 1 diabetes (T1D)}, also known as \textbf{insulin-dependent diabetes mellitus (IDDM)}, refers to a condition characterized by insufficient insulin secretion caused by the autoimmune-mediated destruction of pancreatic $\beta$-cells. T1D patients require insulin for survival. T1D can start at an early age and has a strong genetic component.
+\item \textbf{Type 2 diabetes (T2D)}, also known as \textbf{noninsulin-dependent diabetes mellitus (NIDDM)}, results from defect(s) in insulin secretion, almost always paired with insulin resistance. T2D includes patients that require insulin for metabolic control and those that don't require insulin at all. The often asymptomatic onset of T2D typically occurs after 50 years of age and is often a result of genetic susceptibility combined with chronic obesity, a sedentary lifestyle and overly rich nutrition \citep{zimmet2001global, smyth2006diabetes}. Since obesity is such a common comorbidity of T2D \citep{smyth2006diabetes}, the terms \emph{diabesity} and \emph{obesity dependent diabetes mellitus} have been suggested \citep{shafrir1996development, astrup2000redefining}.
 \end{itemize}
-The WHO deprecates the terms IDDM and NIDDM, as their use has frequently led to patients being classified based on treatment, rather than pathogenesis \citep{WHO1980}. Hence, contemporary terminology uses type 1 and type 2 diabetes to denote the main classes of diabetes mellitus. Though our work focuses on type 1 and particularly type 2 diabetes mellitus, it must be noted that more forms exist, such as gestational diabetes mellitus which may occur during pregnancy and then disappear.
+Since then, WHO has deprecated the terms IDDM and NIDDM, as their use has frequently led to patients being classified based on treatment, rather than pathogenesis \citep{WHO1980}. Hence, contemporary terminology uses type 1 and type 2 diabetes to denote the main classes of diabetes mellitus. Though our work focuses on type 1 and particularly type 2 diabetes mellitus, it must be noted that more forms exist, such as gestational diabetes mellitus which may occur during pregnancy and then disappear or progress into T2D.
+
+T2D accounts for over $90\%$ of diabetes patients and has long been considered an epidemic that affects both developing and developed nations \citep{zimmet1999diabetes,zimmet2001global,rocchini2002childhood,nathan2007impaired,chen2012worldwide, lam2012worldwide} effectively rendering it a pandemic \citep{beulens2010global}. T2D is often a manifestation of a much broader underlying disorder \citep{reaven1988role, zimmet1999diabetes}, including the \emph{metabolic syndrome} which is a cluster of cardiovascular disease risk factors that includes hyperinsulinemia, dislipidemia, hypertension, visceral obesity, hypercoagulability and microalbuminuria \citep{alberti2005metabolic, zimmet2001global, federation2010idf}. 
 
 Type 2 diabetes is typically preceded by the following metabolic abnormalities:
 \begin{itemize}
 \item \emph{Impaired fasting glucose (IFG)}, also known as prediabetes, is a condition in which fasting blood glucose levels are consistently higher than normal, but not high enough to warrant a diabetes diagnosis. Some patients with IFG can also be diagnosed with impaired glucose tolerance.
-\item \emph{Impaired glucose tolerance (IGT)} is a prediabetic state of hyperglycemia which may precede T2D by many years. Patients with IGT exhibit raised glucose levels after 2 hours compared to healthy people, but not high enough to qualify for T2D. Patients with IGT present a higher risk for diabetes than patients with IFG.
+\item \emph{Impaired glucose tolerance (IGT)} is a prediabetic state of hyperglycemia which may precede T2D by many years. Patients with IGT exhibit raised glucose levels after 2 hours compared to healthy people, but not high enough to qualify for T2D. Patients with IGT present a higher risk for diabetes than patients with IFG. Approximately $40\%$ of subjects with IGT progress to diabetes over the next decade \citep{zimmet2001global}. Additionally, subjects with IGT have heightened risk of macrovascular disease compared to subjects with IFG \citep{tominaga1999impaired, unwin2002impaired}.
 \end{itemize}
-Both IFG and IGT are associated with insulin resistance and increased risk of diabetes and cardiovascular pathologies, with IGT being more strongly associated with cardiovascular outcomes \citep{unwin2002impaired}. Although the transition of IFG and/or IGT to diabetes may take many years, the majority of individuals with these pre-diabetic states eventually develop diabetes \cite{tuomilehto2001prevention,diabetes2002reduction,nathan2007impaired}.
+Both IFG and IGT are associated with insulin resistance and increased risk of diabetes and cardiovascular pathologies, with IGT being more strongly associated with cardiovascular outcomes \citep{unwin2002impaired}. Although the transition of IFG and/or IGT to diabetes may take many years, the majority of individuals with these pre-diabetic states eventually develop diabetes \cite{tuomilehto2001prevention,diabetes2002reduction,nathan2007impaired}. Additionally, the risk of complications is known to commence many years before the onset of clinical diabetes \cite{haffner1990cardiovascular,zimmet2001global}.
 
-Finally, the \emph{metabolic syndrome} encompasses the most dangerous heart attack risk factors, which include diabetes, IFG/IGT, abdominal obesity, high cholesterol and high blood pressure \citep{alberti2005metabolic, federation2010idf}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%         PREVALENCE AND BURDEN            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Treatment of diabetes mellitus}
+\subsection{Prevalence and burden of diabetes}
+The number of diabetes patients, particularly type 2 diabetes, is increasing rapidly. In developed countries, this increase is driven by population aging, lifestyle changes (particularly rising levels of obesity and inactivity) but also by greater longevity among diabetes patients \citep{stovring2003rising,beulens2010global}. The majority of social and economic burden of type 2 diabetes patients is attributable to vascular complications \citep{beulens2010global}, with pharmacy costs generating the majority of diabetes-related health expenditure \citep{nichols2002impact, gandra2006total}.
 
+\paragraph{Prevalence} In 1995 an estimated 135 million people worldwide had diabetes. In 2010 this estimate has increased to 285 million patients worldwide \citep{shaw2010global, chen2012worldwide}, which the WHO predicts will increase to at least 366 million by 2030 \citep{smyth2006diabetes}. WHO estimated the global prevalence of diabetes to be $9\%$ among adults over 18 years of age \citep{alwan2011global}. A recent study estimated the prevalence of diabetes in adults aged 20--79 in Belgium and Europe to be $8\%$ and $6.9\%$, respectively \citep{shaw2010global}. Typically, the prevalence of prediabetes is estimated even higher \citep{cowie2009full,yang2010prevalence,chen2012worldwide}.
+
+\paragraph{Mortality} 
+The premature mortality attributable to diabetes is widely underestimated because only a minority of persons with diabetes die from a cause that is uniquely attributable to diabetes \citep{beulens2010global}. A study reported about 2.9 million deaths worldwide attributable to diabetes \citep{roglic2005burden}. The same study indicates that this excess mortality accounts for over $8\%$ of deaths in developed countries. More recently, the global excess mortality in adults directly related to diabetes has been estimated to 3.8 million deaths \citep{beulens2010global}. The main causes of premature deaths in type 2 diabetes patients are due to cardiovascular and renal problems \citep{morrish2001mortality, beulens2010global}.
+
+
+\paragraph{Cost} Managing diabetes and its complications is expensive, both to the affected individuals and healthcare systems around the world.  The International Diabetes Federation (IDF), estimates that diabetes already accounts for one ninth of the total healthcare budget in many countries in 2014 \citep{IDFfacts}. The IDF further reports an average cost per diabetes patient of 5,679 USD in Belgium \citep{IDFatlas}. Other sources report comparable numbers: the CoDiM study estimated that in Germany in 2001, annual direct mean costs per diabetic patient are $5,262$ EUR with an additional $5,019$ EUR indirect costs, compared to $2,755$ EUR and $3,691$ EUR for non-diabetics \citep{koster2006cost}. K\"oster et al. \citep{koster2006cost} also note that the direct costs of diabetic patients account for $14.2\%$ of total healthcare costs. Patients of type 2 diabetes with macrovascular complications generate costs that are three times higher than type 2 diabetes patients without macrovascular complications and seven times higher than people with neither type 2 diabetes nor macrovascular diseases \citep{beulens2010global}. Overall, the primary origin of diabetes-related healthcare expenditure are pharmacy costs \citep{nichols2002impact, gandra2006total}. The complications of diabetes constitute a large portion of the burden of the disease, with diabetes being a leading cause of blindness, lower limb amputation and kidney failure \citep{beulens2010global}. 
+
+
+% http://europepmc.org/abstract/med/18350480
+% http://download.springer.com/static/pdf/651/art%253A10.1007%252Fs00125-002-0860-3.pdf?originUrl=http%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2Fs00125-002-0860-3&token2=exp=1440768601~acl=%2Fstatic%2Fpdf%2F651%2Fart%25253A10.1007%25252Fs00125-002-0860-3.pdf%3ForiginUrl%3Dhttp%253A%252F%252Flink.springer.com%252Farticle%252F10.1007%252Fs00125-002-0860-3*~hmac=7111eff228db17edf0730fb32261e2f1d4a0400afbf88526eaa03e1bf6fe3f23
+% http://informahealthcare.com/doi/abs/10.1185/030079905x65349
+% http://cpr.sagepub.com/content/17/1_suppl/s3.full
+
+
+
+\subsection{Treatment of diabetes mellitus} \label{intro:treatment}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%v TODO   %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\todo{TODO prevention of complications http://www.nature.com/nature/journal/v414/n6865/full/414782a.html}
 The fact chronic hyperglycemia may manifest in various ways is reflected in a wide variety of treatments for diabetes mellitus. Treatment of type 1 diabetes patients revolves around timely administration of external insulin, which they need for survival. In contrast, a wide range of treatment options exist for patients with type 2 diabetes.
 
 Management of type 2 diabetes includes several lifestyle interventions: healthy eating (specifically high-fiber, low-fat foods like fruits and vegetables), regular exercise, smoking cessation and blood sugar monitoring and management. Pharmacotherapy via glucose lowering agents (GLAs) is used when lifestyle changes alone are insufficient for adequate glycemic control or when diabetes is already in a progressed stage at the time of clinical diagnosis. 
@@ -59,29 +125,22 @@ Management of type 2 diabetes includes several lifestyle interventions: healthy 
 We will elaborate on pharmacological treatment of type 2 diabetes, as this has played a crucial role in our work. Pharmacological therapies for (type 2) diabetes may be based on various biological mechanisms:
 \begin{itemize}
 \item \textbf{External insulin} is administered when insufficient insulin is secreted by the pancreas. External insulin is always necessary to treat type 1 diabetes but may also be required to treat insulin deficiency in type 2 diabetes. Insulin cannot be taken as a pill because it would be broken down during digestion just like protein in food. Instead, it must be injected or inhaled. \\
-        Insulins are classified via ATC code \texttt{A10A}.
 \item \textbf{Sensitizers} reduce the insulin resistance that is central in type 2 diabetes.
 \begin{itemize}
         \item Biguanides suppress hepatic glucose output and increase uptake of glucose by the periphery. The most common agent in this class is \emph{metformin} (brand names include \emph{Glucophage}, \emph{Glucovance}) \citep{kirpichnikov2002metformin}. \\ % https://en.wikipedia.org/wiki/Metformin#Mechanism_of_action
-        Biguanides are classified via ATC code \texttt{A10BA}.
         % https://en.wikipedia.org/wiki/Biguanide
         \item Thiazolidinediones (TZDs) enhance the effects of insulin by increasing insulin-dependent glucose disposal and reducing hepatic glucose output (as a result of increased hepatic insulin sensitivity) \citep{saltiel1996thiazolidinediones, yki2004thiazolidinediones}. 
         An example of TZDs is \emph{pioglitazone} (brand name \emph{Actos}). \\
-        Thiazolidinediones are classified via ATC code \texttt{A10BG}.
 \end{itemize}
 \item \textbf{Secretagogues} increase insulin output from the pancreas. The main type of secretagogues -- sulfonylurea (SU) -- stimulate endogenous insulin secretion from pancreatic $\beta$-cells \citep{proks2002sulfonylurea}. Hypoglycemia is a major concern when using sulfonylureas \citep{bodmer2008metformin}.
         The most common SU are \emph{glimepiride} (brand name \emph{Amaryl}), \emph{glibenclamide} (\emph{Euglucon} and \emph{Daonil}), \emph{gliclazide} (\emph{Diamicron}), \emph{glipizide} (\emph{Glucotrol}) and \emph{gliquidone} (\emph{Glurenorm}). \\
-        These agents are classified via ATC code \texttt{A10BB}.
         % https://en.wikipedia.org/wiki/Sulfonylurea
 \item \textbf{Alpha-glucosidase inhibitors} slow down digestion of starch in the small intestine, thereby reducing the rate at which the resulting glucose enters the bloodstream. These agents do not have a direct effect on insulin secretion or sensitivity, but can (i) be sufficiently efficient in early stages of impaired glucose tolerance or (ii) be used in combination with other antidiabetic agents. 
 A common alpha-glucosidase inhibitor is \emph{acarbose} (brand name \emph{glucobay}). \\
-These agents are classified via ATC code \texttt{A10BF}.
 \item \textbf{Incretin-based therapies} use the antidiabetic properties of the incretin hormone glucagon-like peptide 1 (GLP-1), namely that GLP-1 augments glucose-induced insulin secretion in a highly glucose-dependent manner \citep{nauck2009incretin,lovshin2009incretin}. As this form of insulin secretion occurs in a glucose-dependent manner, incretin-based therapies are less prone to cause hypoglycemia.
 \begin{itemize}
         \item GLP-1 receptor agonists activate GLP-1 receptors, resulting in increased insulin synthesis and release \citep{drucker1987glucagon}. Common GLP-1 receptor agonists include \emph{exenatide} (brand name \emph{Byetta}) and \emph{lixisenatide} (brand name \emph{Lyxumia}). \\
-These agents are classified via ATC code \texttt{A10BX}.
         \item Dipeptidyl peptidase-4 (DPP-4) inhibitors increase the blood concentration of GLP-1 by inhibiting its degradation caused by the enzyme DPP-4. Common DPP-4 inhibitors include \emph{sitagliptin} (brand name \emph{Januvia}), \emph{vildagliptin} (brand name \emph{Galvus}).  \\
-        These agents are classified via ATC code \texttt{A10BH}.
 \end{itemize}
 \end{itemize} 
 
@@ -91,6 +150,9 @@ These agents are classified via ATC code \texttt{A10BX}.
 % http://www.hindawi.com/journals/ijvm/2012/918267/fig1/
 % http://www.hindawi.com/journals/ijvm/2012/918267/
 
+% http://www.nature.com/nm/journal/v12/n1/full/nm0106-75.html
+
+\ifx
 \subsection{Glucose level regulation as a state-space system}
 With significant simplifications, we can summarize the glucose level regulatory mechanism as a dynamical system that is controlled via a basic feedback loop. This coarse approximation allows us to understand the main mechanisms of diabetes mellitus treatments on a mathematical level.
 
@@ -150,163 +212,24 @@ Both of these effects imply a real control action that is smaller than optimal, 
 \end{itemize}
 
 The approximated state-space system also indicates that for type 1 diabetes -- in which $\mathcal{S}_{insulin}(t)$ has a low saturation level -- treatments that attempt to increase insulin secretion or decrease insulin resistance are ineffective. Hence, treatment of type 1 diabetes requires insulin injections which explains its alias of insulin-dependent diabetes mellitus (IDDM).
+\fi
 
+\input{chapters/introduction/screening.tex}
 
-\section{Screening for diabetes} \label{intro:screening}
-Diabetes mellitus may remain asymptomatic for extended periods of time.
+\input{chapters/introduction/cm.tex}
 
-Type 2 diabetes is frequently not diagnosed until complications appear \citep{american2014standards} \todo{more refs}. The ADA estimates that one-fourth of the US population may have undiagnosed diabetes \citep{american2014standards}.
-
-
-\begin{table}[!h]
-%\begin{tabular}{p{\textwidth}}
-%\toprule
-\colorbox{gray!20!white}{\parbox{\textwidth}{
-\begin{enumerate}
-\item Testing should be considered in all adults who are overweight (BMI $\geq25$ kg/m$^{2*}$) and have additional risk factors:
-\begin{itemize}
-\item physical inactivity,
-\item first-degree relative with diabetes,
-\item high-risk race/ethnicity (e.g., African American, Latino, Native American, Asian American, Pacific Islander),
-\item women who delivered a baby weighing $>9$ lb or were diagnosed with GDM,
-\item hypertension ($\geq140/90$ mmHg or on therapy for hypertension),
-\item HDL cholesterol level $<35$ mg/dL (0.90 mmol/L) and/or a triglyceride level $>250$ mg/dL (2.82 mmol/L),
-\item women with polycystic ovarian syndrome,
-\item A1C $\geq5.7\%$, IGT, or IFG on previous testing,
-\item other clinical conditions associated with insulin resistance (e.g., severe obesity, acanthosis nigricans)
-\item history of CVD.
-\end{itemize}
-\item In the absence of the above criteria, testing for diabetes should begin at age 45 years.
-\item If results are normal, testing should be repeated at least at 3-year intervals, with consideration of more frequent testing depending on initial results (e.g., those with prediabetes should be tested yearly) and risk status.
-\item[*] At-risk BMI may be lower in some ethnic groups.
-\end{enumerate}
-%\bottomrule
-%\end{tabular}
-}}
-\caption{ADA criteria for testing for diabetes in asymptomatic adult individuals, taken from \citep{american2014standards}.}
-\label{table:ada-criteria}
-\end{table}
-
-
-uit \citep{american2014standards}:
-Mass screening of asymptomatic individuals has not effectively identified those with prediabetes or diabetes, and rigorous clinical trials to provide such proof are unlikely to occur. In a large randomized controlled trial (RCT) in Europe, general practice patients between the ages of 40–69 years were screened for diabetes, then randomized by practice to routine diabetes care or intensive treatment of multiple risk factors. After 5.3 years of follow-up, CVD risk factors were modestly but significantly improved with intensive treatment. Incidence of first CVD event and mortality rates were not significantly different between groups \citep{griffin2011effect}. This study would seem to add support for early treatment of screen-detected diabetes, as risk factor control was excellent even in the routine treatment arm and both groups had lower event rates than predicted. The absence of a control unscreened arm limits the ability to definitely prove that screening impacts outcomes. Mathematical modeling studies suggest that screening, independent of risk factors, beginning at age 30 or 45 years is highly cost-effective \$11,000 per quality-adjusted life-year gained) \citep{kahn2010age}.
-
-\subsubsection{Symptoms}
-
-\subsection{Using Belgian health expenditure data}
-
-\subsubsection{Strengths and advantages}
-
-\subsubsection{Weaknesses and limitations}
-
-\section{Belgian mutual health insurance} \label{intro:health-insurance}
-This project was done in close collaboration with the National Alliance of Christian Mutualities (NACM)\footnote{Landsbond der Christelijke Mutualiteiten (LCM).}. NACM  is the largest Belgian mutual health insurer with over 60\% and 40\% market share in Flanders and Belgium, respectively.
-
-The Belgian health care insurance is a broad solidarity-based form of social insurance. Mutual health insurers are the legally-appointed bodies for managing and providing the Belgian compulsory health care and disability insurance. Joining one of several mutual health insurers or, alternatively, the relief fund for sickness and disability insurance \footnote{Hulpkas voor Ziekte -en Invaliditeitsuitkering (HZIV).} is obliged for anyone who (i) starts working, (ii) is still studying at the age of 25 years or (iii) receives unemployment benefits. Among other things, mutual health insurers are responsible for refunding medical interventions, drug purchases and payments related to disability and pregnancy leave.
-
-\subsection{Health expenditure records}
-Our screening system was developed to be based exclusively on basic personal information (e.g. age, gender) and readily-available health expenditure records owned by NACM, without requiring any external input. 
-
-
-\subsection{A note on privacy}
-
-
-
-
-\todo{heritage health prize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %               MACHINE LEARNING
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Machine learning challenges and contributions} \label{intro:machine-learning}
-This Section highlights the main machine learning contributions made during this project. We will briefly describe every research question that was tackled, outline the approach and clarify how it fits into the overarching theme.
-
-\subsection{Learning from positive and unlabeled data}
-
-\subsection{Automated hyperparameter optimization}
-
-\subsection{Open-source software}
+\input{chapters/introduction/machine-learning.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %               OUTLINE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Structure of the thesis} \label{intro:structure}
-This Section summarizes the content of all subsequent chapters  and reiterates how every aspect is relevant to diabetes screening based on Belgian health expenditure records.
-
-\newcommand{\chapteritem}[2]{\item \emph{Chapter~\ref{ch:#1}} #2}
-\begin{itemize}
-
-\chapteritem{ensemblesvm}{introduces the EnsembleSVM software package, which provides efficient routines for ensemble learning using SVM base models.}
-
-\chapteritem{resvm}{describes a novel algorithm to learn robust binary classifiers from positive and unlabeled data. The key design criterion is robustness to false positives, which was lacking in existing approaches. The implementation is based on EnsembleSVM (see Chapter~\ref{ch:ensemblesvm}).}
-
-\chapteritem{mic2015}{discusses the main optimization challenges posed by automated hyperparameter search and summarizes the current state-of-the-art.}
-
-\chapteritem{optunity}{describes the Optunity software package, which provides metaheuristic optimization routines for automated hyperparameter optimization. Optunity is available on most commonly used machine learning platforms and tackles the challenges outlined in Chapter~\ref{ch:mic2015}.}
-
-\chapteritem{evaluation}{presents a method to evaluate the performance of binary classifiers without negative labels. This method enables estimating most commonly used performance metrics in a semi-supervised setting, which was uncharted territory.}
-
-\chapteritem{diabetesjmlr}{integrates all machine learning aspects into a workflow to predict which patients are likely to start glucose-lowering pharmacotherapy, based exclusively on readily available, individual health expenditure records. This chapter combines all techniques described in previous chapters.}
-
-
-\begin{figure}[!h]
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}[mindmap,
-  every node/.style={font=\large},
-  every concept/.style={minimum size=3cm, text width=3cm, fill=none, very thick},
-  level 1 concept/.append style={level distance=150,sibling angle=120}]
-
-  \begin{scope}[mindmap, text=black, minimum size=3cm]
-    \node [concept, minimum size=4cm, color=black, text=black] at (0, 0) (diabetesjmlr) {\Large{\textbf{Diabetes Screening Chapter \ref{ch:diabetesjmlr}}}}
-	[clockwise from=90, level distance=130] 
-	child[concept color=green!50!black] {node [concept, text=black, fill=green!50!black, fill opacity=0.2, text opacity=1] at (-0.5, -0.2) (pulearning) {\Large{\textbf{Semi-supervised Learning}}}
-		[clockwise from=0, sibling angle=180]
-		child {node [concept] at (1.7, -0.4) (resvm) {Robust PU learning with SVM models \\ Chapter \ref{ch:resvm}}}
-		child {node [concept] at (-5.6, 0.7) (evaluation) {Evaluating models without known negatives \\ Chapter \ref{ch:evaluation}}}
-	      }
-	child[concept color=cyan!80!black] {node [concept, text=black, fill=cyan!80!black, fill opacity=0.2, text opacity=1] at (0.8, -0.2) (software) {\Large{\textbf{Open-Source \\ Software}}}
-		[clockwise from=200, level distance=200, sibling angle=90]
-		child {node [concept] at (-1.2, -1.5) (optunity) {Optunity \\ Chapter \ref{ch:optunity}}}
-		child {node [concept] at (3.2, 2.4) (esvm) {EnsembleSVM \\ Chapter \ref{ch:ensemblesvm}}}
-	      }
-	child[concept color=red!80!black]{node [concept, text=black, fill=red!80!black, fill opacity=0.2, text opacity=1] at (-1.1, 1.3) (tuning) {\Large{\textbf{Hyper-parameter Search}}}
-		[clockwise from=270, level distance=200, sibling angle=90]
-		child {node [concept] at (2.4, -1.1) (mic) {Optimization challenges \\ Chapter \ref{ch:mic2015}}}
-	      };
-  \end{scope}
-
-%\path (resvm) to[circle connection bar switch color=from (cyan!80!black) to (red!80!black)] (esvm) ;
-\path (tuning) to[circle connection bar switch color=from (red!80!black) to (cyan!80!black)] (optunity) ;
-%\path (mic) to[circle connection bar switch color=from (red!80!black) to (cyan!80!black)] (optunity) ;
-\path (tuning) to[circle connection bar switch color=from (red!80!black) to (green!50!black)] (evaluation) ;
-
-\tikzset{>={Latex[width=3mm,length=3mm]}}
-
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (evaluation) to[bend right=11] (optunity) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (optunity) to[bend right=5] (resvm) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (esvm) to[bend left=30] (resvm) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (mic) to[bend left=10] (optunity) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (optunity) to[bend left=10] (mic) ;
-
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (resvm) -> (diabetesjmlr) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (evaluation) -> (diabetesjmlr) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (optunity) -> (diabetesjmlr) ;
-\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (esvm) -> (diabetesjmlr) ;
-
-\end{tikzpicture}
-}
-\caption{Dependencies of the key contributions made to machine learning research during this project. To enable diabetes screening based on Belgian health expenditure data (Chapter~\ref{ch:diabetesjmlr}), we made contributions to semi-supervised learning (Chapters \ref{ch:resvm} and \ref{ch:evaluation}), automated hyperparameter search (Chapters \ref{ch:mic2015} and \ref{ch:optunity}) and open-source machine learning software (Chapters \ref{ch:ensemblesvm} and \ref{ch:optunity}).} \label{fig:ml-structure}
-\end{figure}
-
-\end{itemize}
-
-blah
-blah 
-blah
-
+\input{chapters/introduction/structure.tex}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

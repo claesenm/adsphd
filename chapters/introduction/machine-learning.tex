@@ -1,0 +1,91 @@
+\section{Machine learning challenges and contributions} \label{intro:machine-learning}
+This Section highlights the main machine learning contributions made during this project. We will briefly describe the fundamental problems that were tackled, outline the approach and clarify how it fits into the overarching theme of identifying patients at risk for diabetes based on health expenditure data. Chapters~\ref{ch:ensemblesvm}~to~\ref{ch:diabetesjmlr} describe the solutions and methodologies we developed in detail.
+
+We approached the screening task as a binary classification problem. Binary classifiers are models which yield some level of confidence that an instance belongs to the positive class, based on the features of that instance. In our application, every patient represents an instance. Each patient is either diabetic (positive) or non-diabetic (negative). The biographic information and resource-use history of each patient represent the associated features.
+
+The relationships between all aspects of this project's machine learning research are depicted in Figure~\ref{fig:ml-structure}. Our contributions revolved around three focal points: learning from positive and unlabeled data, automated hyperparameter optimization and the development of reusable open-source software to facilitate reproducibility. Sections~\ref{intro:pulearning}~to~\ref{intro:software} describe each focal point in more detail.
+
+\begin{figure}[!h]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[mindmap,
+  every node/.style={font=\large},
+  every concept/.style={minimum size=3cm, text width=3cm, fill=none, very thick},
+  level 1 concept/.append style={level distance=150,sibling angle=120}]
+
+  \begin{scope}[mindmap, text=black, minimum size=3cm]
+    \node [concept, minimum size=4cm, color=black, text=black] at (0, 0) (diabetesjmlr) {\Large{\textbf{Diabetes Screening Chapter \ref{ch:diabetesjmlr}}}}
+	[clockwise from=90, level distance=130] 
+	child[concept color=green!50!black] {node [concept, text=black, fill=green!50!black, fill opacity=0.2, text opacity=1] at (-0.5, -0.2) (pulearning) {\Large{\textbf{Semi-supervised Learning}}}
+		[clockwise from=0, sibling angle=180]
+		child {node [concept] at (1.7, -0.4) (resvm) {Robust PU learning with SVM models \\ Chapter \ref{ch:resvm}}}
+		child {node [concept] at (-5.6, 0.7) (evaluation) {Evaluating models without known negatives \\ Chapter \ref{ch:evaluation}}}
+	      }
+	child[concept color=cyan!80!black] {node [concept, text=black, fill=cyan!80!black, fill opacity=0.2, text opacity=1] at (0.8, -0.2) (software) {\Large{\textbf{Open-Source \\ Software}}}
+		[clockwise from=200, level distance=200, sibling angle=90]
+		child {node [concept] at (-1.2, -1.5) (optunity) {Optunity \\ Chapter \ref{ch:optunity}}}
+		child {node [concept] at (3.2, 2.4) (esvm) {EnsembleSVM \\ Chapter \ref{ch:ensemblesvm}}}
+	      }
+	child[concept color=red!80!black]{node [concept, text=black, fill=red!80!black, fill opacity=0.2, text opacity=1] at (-1.1, 1.3) (tuning) {\Large{\textbf{Hyper-parameter Search}}}
+		[clockwise from=270, level distance=200, sibling angle=90]
+		child {node [concept] at (2.4, -1.1) (mic) {Optimization challenges \\ Chapter \ref{ch:mic2015}}}
+	      };
+  \end{scope}
+
+%\path (resvm) to[circle connection bar switch color=from (cyan!80!black) to (red!80!black)] (esvm) ;
+\path (tuning) to[circle connection bar switch color=from (red!80!black) to (cyan!80!black)] (optunity) ;
+%\path (mic) to[circle connection bar switch color=from (red!80!black) to (cyan!80!black)] (optunity) ;
+\path (tuning) to[circle connection bar switch color=from (red!80!black) to (green!50!black)] (evaluation) ;
+
+\tikzset{>={Latex[width=3mm,length=3mm]}}
+
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (evaluation) to[bend right=11] (optunity) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (optunity) to[bend right=5] (resvm) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (esvm) to[bend left=30] (resvm) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (mic) to[bend left=10] (optunity) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (optunity) to[bend left=10] (mic) ;
+
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (resvm) -> (diabetesjmlr) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (evaluation) -> (diabetesjmlr) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (optunity) -> (diabetesjmlr) ;
+\draw[dotted, ->, ultra thick, color=gray, shorten >= 1mm, shorten <= 1mm] (esvm) -> (diabetesjmlr) ;
+
+\end{tikzpicture}
+}
+\caption{Dependencies of the key contributions made to machine learning research during this project. To enable diabetes screening based on Belgian health expenditure data (Chapter~\ref{ch:diabetesjmlr}), we made contributions to semi-supervised learning (Chapters \ref{ch:resvm} and \ref{ch:evaluation}), automated hyperparameter search (Chapters \ref{ch:mic2015} and \ref{ch:optunity}) and open-source machine learning software (Chapters \ref{ch:ensemblesvm} and \ref{ch:optunity}).} \label{fig:ml-structure}
+\end{figure}
+
+\subsection{Learning from positive and unlabeled data} \label{intro:pulearning}
+A critical challenge inherent to our application is an infeasibility to ascertain which patients are non-diabetic based only on health expenditure records. This problem originates from several sources, most notably because a significant fraction of diabetic patients is undiagnosed (as discussed in Section~\ref{intro:screening}) and additionally because initial diabetes therapies may exclusively consist of lifestyle changes (cfr. Section~\ref{intro:treatment}) which are not recorded in health expenditure data. 
+
+Fortunately, we were able to identify a reasonable set of known diabetics (positives) based on health expenditure data. Positives were identified via the use of GLA therapy over extended periods of time. The thus identified set of positives mainly consists of patients with progressed diabetes (since the treatment involves pharmacotherapy) and omits patients with (potentially diagnosed) prediabetes. It must be noted that this labeling induces some false positives, mainly due to the use of GLA medication for alternative reasons (e.g. use of metformin for weight loss).
+
+Given these labeling issues, we had to learn binary classifiers from positive and unlabeled data to enable screening based exclusively on health expenditure data. This learning scenario is receiving increasing amounts of research attention and is commonly dubbed PU learning. During this project, we improved an existing PU learning method and additionally developed a method to evaluate classifiers without known negatives. The latter aspect is particularly important because it has significant practical implications and was previously uncharted territory.
+
+\subsubsection{Building classifiers with only positive and unlabeled data} 
+This is a common topic within semi-supervised learning, presenting additional complexity compared to fully supervised binary classification.\footnote{In this context, fully supervised means all class labels are known.} Various methods have been devised to cope with the increased uncertainty, based on one of two fundamental approaches:
+(i) first attempt to infer a set of likely negatives from the unlabeled data and then train a fully supervised model to distinguish known positives from inferred negatives \citep{liu02partially,Yu:2005:SCM:1108759.1108762,Li03learningto} vis-\`a-vis (ii) treat unlabeled instances as negatives with noisy class labels and deal with this directly \citep{Elkan:2008:LCO:1401890.1401920,Lee03learningwith,Liu:2003:BTC:951949.952139,MORDELET-2010-523336,Liu:2005:PSC:2138033.2138052}.
+
+The method we developed fits into the latter category and is described in detail in Chapter~\ref{ch:resvm}. Our technique achieves state-of-the-art performance in PU learning and is additionally designed for robustness against false positives, which are known to exist in our application. False positives significantly deteriorate the performance of other existing methods, limiting their usability in our project.
+
+\subsubsection{Evaluating classifiers with only positive and unlabeled data} 
+Assessing the performance of binary classifiers without known negatives was an open problem at the start of the project. Prior to our work, a few methods have been devised for model selection in PU learning which allow basic pairwise comparisons between classifiers \citep{lee2003learning}. During our work, some additional related methods were developed by others \citep{sechidis2014statistical, hajizadeh2014evaluating}. However, none of these quantify the performance of a given classifier in terms of commonly used metrics like sensitivity, specificity and area under the ROC curve.
+
+The performance of models for screening must be quantified before their use can even be considered, however no convincing method to quantify performance without known negatives existed. To circumvent this problem we initially considered manually obtaining negative labels by directly asking patients whether or not they had diabetes. Clearly, this is a very sensitive matter and would additionally have been labour intensive to acquire a sufficient amount of negative labels. 
+
+Instead of manual labeling, we developed a method to reliably estimate performance of binary classifiers without known negatives (cfr. Chapter~\ref{ch:evaluation}). This method is the first of its kind and relies only on the reasonable assumption that known positives are sampled completely at random from all positives, which implies that the distributions of known and latent positives are comparable. Our work effectively reduces estimating performance without negatives to estimating the fraction of positives in the unlabeled set, which is often feasible.
+
+\subsection{Automated hyperparameter optimization} \label{intro:tuning}
+Most machine learning algorithms are parameterized, for example to allow the user to determine an optimal model complexity for a given problem. The coefficients of a trained model are commonly called parameters, and hence the parameters used to describe the training problem itself are referred to as \emph{hyper}parameters. Current research focuses on automatically determining suitable values for these hyperparameters \citep{hutter2009paramils, bergstra2011algorithms, snoek2012practical, bergstra2012random, bergstra2013hyperopt, eggensperger2013towards, thornton2013auto}, which essentially boils down to the development of suitable (heuristic) optimizers.
+
+Some of the key challenges in hyperparameter optimization are described in Chapter~\ref{ch:mic2015}. Several libraries have been developed to automate this process and have proven to be far more efficient than manual tuning or grid search \citep{hutter2009paramils, bergstra2012random, snoek2012practical, bergstra2013hyperopt}. However, most of these libraries are challenging to install (even for seasoned programmers!) and feature a lot of complex configurations, hence effectively limiting their potential userbase to experts. To fill this apparant gap of user-friendly tuning software, we have developed a cross-platform open-source Python library that provides a variety of suitable optimizers to automate hyperparameter search via a simple, lightweight API. This library is described in Chapter~\ref{ch:optunity}.
+
+
+\subsection{Open-source software} \label{intro:software}
+Machine learning research requires high-quality, tested and documented software to advance rapidly. Fortunately, several authoraties in the machine learning field are appreciative of open-source software \citep{sonnenburg2007need}. Overall, the field is blessed with a wealth of open-source packages covering all aspects of the learning process and we strongly feel that cultivating this ecosystem is in the best interest of the entire academic community, for reasons such as efficiency, reliability and reproducibility. It is worth noting that every analysis in this project was done using freely available software.
+
+As we recognize the value and importance of a solid open-source ecosystem, we decided to pay it forward by developing two open-source libraries of our own: \emph{EnsembleSVM} and \emph{Optunity}.
+
+\paragraph{EnsembleSVM} is a C++ package for ensemble learning with support vector machine (SVM) base models. This software enables efficiently computing nonlinear models on large-scale data sets, which would otherwise be infeasible without significant computational resources. The PU learning method we developed (cfr. Chapter~\ref{ch:resvm}) is a use-case of EnsembleSVM and was implemented entirely using the API offered by the library. EnsembleSVM is described in Chapter~\ref{ch:ensemblesvm}.
+
+\paragraph{Optunity} is a Python library for automated hyperparameter optimization, with interfaces to R, MATLAB, Octave and Java. An overview of Optunity is given in Chapter~\ref{ch:optunity}. At the time of writing, Optunity receives roughly 1,000 downloads monthly via the Python Package Index (PyPI). Optunity was used to optimize the hyperparameters of the learning approaches we used to construct models for diabetes screening.

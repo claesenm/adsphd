@@ -1,0 +1,21 @@
+\section{Structure of the thesis} \label{intro:structure}
+This Section summarizes the content of all subsequent chapters  and reiterates how every aspect is relevant to diabetes screening based on Belgian health expenditure records.
+
+\newcommand{\chapteritem}[2]{\item \emph{Chapter~\ref{ch:#1}} #2}
+\begin{itemize}
+
+\chapteritem{survival} describes a study we performed to quantify the survival of Belgian patients after starting various glucose-lowering pharmacotherapies. Unlike other studies, our study does not focus on relative efficacy of different GLA therapies. Instead, it is the only one that provides an expected survival rate for patients starting a specific therapy, accounting for all possible future therapies commonly seen in the Belgian population.
+
+\chapteritem{ensemblesvm}{introduces the EnsembleSVM software package, which provides efficient routines for ensemble learning using SVM base models.}
+
+\chapteritem{resvm}{describes a novel algorithm to learn robust binary classifiers from positive and unlabeled data. The key design criterion is robustness to false positives, which was lacking in existing approaches. The implementation is based on EnsembleSVM (see Chapter~\ref{ch:ensemblesvm}).}
+
+\chapteritem{mic2015}{discusses the main optimization challenges posed by automated hyperparameter search and summarizes the current state-of-the-art.}
+
+\chapteritem{optunity}{describes the Optunity software package, which provides metaheuristic optimization routines for automated hyperparameter optimization. Optunity is available on most commonly used machine learning platforms and tackles the challenges outlined in Chapter~\ref{ch:mic2015}.}
+
+\chapteritem{evaluation}{presents a method to evaluate the performance of binary classifiers without negative labels. This method enables estimating most commonly used performance metrics in a semi-supervised setting, which was uncharted territory.}
+
+\chapteritem{diabetesjmlr}{integrates all machine learning aspects into a workflow to predict which patients are likely to start glucose-lowering pharmacotherapy, based exclusively on readily available, individual health expenditure records. This chapter combines all techniques described in previous chapters.}
+
+\end{itemize}

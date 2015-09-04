@@ -2,7 +2,8 @@
 %\documentclass[pagebackref,coverfontpercent=100]{adsphd}
 
 %%% final
-\documentclass[pagebackref,coverfontpercent=100,final]{adsphd}
+%\documentclass[pagebackref,coverfontpercent=100,final]{adsphd}
+\documentclass[pagebackref,coverfontpercent=100]{adsphd}
 %\def\showtikzplots
 
 %\documentclass[pagebackref,showinstructions,showlabels,biblatex,biber,biblatexstyle=authoryear]{adsphd}
@@ -20,6 +21,8 @@
 
 \usepackage[english,dutch]{babel}
 \usepackage{natbib, bibentry}
+\nobibliography*
+
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage[vlined,ruled,commentsnumbered]{algorithm2e}
@@ -41,6 +44,8 @@
 \usepackage{pdflscape}
 \usepackage{afterpage}
 \usepackage{capt-of}% or use the larger `caption` package
+
+\usepackage{dirtree}
 
 
 % http://tex.stackexchange.com/a/120723
@@ -310,9 +315,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\appendix
-
-\includeappendix{myappendix}
+%\appendix
+%\includeappendix{myappendix}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \backmatter

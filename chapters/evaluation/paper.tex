@@ -1,0 +1,151 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{nips15submit_e,times}
+\usepackage{hyperref}
+\hypersetup{pdfborder=0 0 0,
+	colorlinks,
+	citecolor=blue,
+	linkcolor=blue,
+	urlcolor=blue,
+	}
+
+%\pdfinfo{
+%  /Creator ()
+%  /Producer ()
+%  /Author ()
+%}
+
+%\usepackage{url}
+
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+
+\usepackage{graphicx} % more modern
+\usepackage{subfigure} 
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{ifpdf}
+\usepackage{multirow}
+\usepackage{booktabs}
+%\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage{mathtools}
+\usepackage{fancyref}
+\usepackage{tabularx}
+
+%\usetikzlibrary{intersections}
+\usetikzlibrary{patterns}
+%\usetikzlibrary{decorations.text}
+%\usetikzlibrary{decorations.markings}
+
+
+%\usepackage{sidecap}
+%\sidecaptionvpos{figure}{c}
+%\usepackage{wrapfig}
+%\usepackage{floatrow}
+
+% http://tex.stackexchange.com/a/443
+\makeatletter
+\newtheorem*{rep@theorem}{\rep@title}
+\newcommand{\newreptheorem}[2]{%
+\newenvironment{rep#1}[1]{%
+ \def\rep@title{#2 \ref*{##1}\label{#1-rep}}%
+ \begin{rep@theorem}}%
+ {\end{rep@theorem}}}
+\makeatother
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+
+\newreptheorem{lemma}{Lemma}
+\newreptheorem{corollary}{Corollary}
+%\newreptheorem{lemma}{Lemma}
+
+\newcommand{\mailto}[1]{\href{mailto:#1}{#1}}
+
+%\documentstyle[nips14submit_09,times,art10]{article} % For LaTeX 2.09
+
+\input{definitions.tex}
+
+
+\title{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}
+
+\author{
+Marc Claesen \\
+Dept. of Electrical Engineering, STADIUS \\
+KU Leuven \& iMinds Medical IT\\
+\mailto{marc.claesen@esat.kuleuven.be} 
+\And
+Jesse Davis \\
+Dept. of Computer Science, DTAI \\
+KU Leuven \\
+\mailto{jesse.davis@cs.kuleuven.be} 
+\And
+Frank De Smet \\
+Dept. of Public Health and Primary Care \\
+KU Leuven \\
+%\mailto{frank.desmet@cm.be} 
+\And
+Bart De Moor \\
+Dept. of Electrical Engineering, STADIUS \\
+KU Leuven \& iMinds Medical IT \\
+%\mailto{bart.demoor@esat.kuleuven.be}
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\nipsfinalcopy % Uncomment for camera-ready version
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+%Assessing the performance of a learned model is a crucial part of machine learning, though most evaluation metrics can only be computed with labeled data. Unfortunately, in many domains we have many more unlabeled than labeled examples. Furthermore, in some domains only positive and unlabeled examples are available, in which case most standard metrics cannot be computed at all. In this paper, we propose an approach that is able to estimate several widely used metrics including ROC and PR curves using only positive and unlabeled data. We provide theoretical bounds on the quality of our estimates. Empirically, we demonstrate that even given only a small number of positive examples and unlabeled data, we are able to reliable estimate both ROC and PR curves. 
+Assessing the performance of a learned model is a crucial part of machine learning. However, in some domains only positive and unlabeled examples are available, which prohibits the use of most standard evaluation metrics. We propose an approach to estimate any metric based on contingency tables, including ROC and PR curves, using only positive and unlabeled data. Estimating these performance metrics is essentially reduced to estimating the fraction of (latent) positives in the unlabeled set, assuming known positives are a random sample of all positives. We provide theoretical bounds on the quality of our estimates, illustrate the importance of estimating the fraction of positives in the unlabeled set and demonstrate empirically that we are able to reliably estimate ROC and PR curves on real data. %even given only a small number of positive examples and unlabeled data,
+\end{abstract}
+
+%\floatsetup[figure]{capposition=beside,capbesideposition={center,right}}
+\input{introduction.tex}
+\input{notation.tex}
+%\floatsetup[figure]{capposition=bottom}
+\input{relationships.tex}
+\input{practical.tex}
+\input{roc-pr.tex}
+\input{discuss.tex}
+%\input{properties.tex}
+%\input{results-conclusion.tex}
+
+% Acknowledgements should only appear in the accepted version. 
+\section*{Acknowledgments} 
+Will be inserted after review.
+%STADIUS members are supported by Flemish Government: FWO: projects:  G.0871.12N (Neural circuits), IWT: TBM-Logic Insulin(100793), TBM Rectal Cancer(100783), TBM IETA(130256); PhD grant \#111065, Industrial Research fund (IOF): IOF Fellowship 13-0260; iMinds Medical Information Technologies SBO 2015, ICON projects (MSIpad, MyHealthData)
+%VLK Stichting E. van der Schueren: rectal cancer; Federal Government: FOD: Cancer Plan 2012-2015 KPC-29-023 (prostate); COST: Action: BM1104: Mass Spectrometry Imaging. Jesse Davis is partially supported by the Research Fund KU Leuven (OT/11/051), EU FP7 Marie Curie Career Integration Grant (\#294068) and FWO-Vlaanderen (G.0356.12).
+\newpage
+\bibliography{bibliography}
+\bibliographystyle{unsrt}
+
+\newpage
+\section*{Supplementary material for ``\emph{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}"}
+\appendix
+\input{appendix.tex}
+
+%\section{Proofs}
+
+
+\end{document}

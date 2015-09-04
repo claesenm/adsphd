@@ -29,7 +29,7 @@
    \colorbox{MyGray}{\usebox{\@tempboxa}}
 }\makeatother
 
-\newcommand{\chapterfrontpage}[2]{
+\newcommand{\chapterfrontpage}[3]{
 	\begin{graybox}
 	This chapter has been previously published as: \\
 %	\ \newline
@@ -39,11 +39,13 @@
 %	\fullcite{#1}
 	\end{graybox}
 	\vfill
-	\section*{Abstract}
+	\paragraph{Contributions}
 	#2
+	\section*{Abstract}
+	#3
 }
 
-\newcommand{\chapterfrontpagesubmitted}[2]{
+\newcommand{\chapterfrontpagesubmitted}[3]{
 	\begin{graybox}
 	This chapter has been submitted to: \\
 %	\ \newline
@@ -53,6 +55,8 @@
 %	\fullcite{#1}
 	\end{graybox}
 	\vfill
-	\section*{Abstract}
+	\paragraph{Contributions}
 	#2
+	\section*{Abstract}
+	#3
 }

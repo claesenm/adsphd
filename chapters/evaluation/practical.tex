@@ -1,0 +1,194 @@
+\section{Efficiently computing the bounds} \label{practical}
+
+
+%Theorem~\ref{main-theorem} and Lemma~\ref{lemma-glb} provide a constructive approach to compute contingency tables based on partially labeled data, corresponding to a greatest lower bound and least upper bound on $\FPR(\bothpos,\ranksymb)$. In Section~\ref{rank-roc} we assumed to have bounds on $\TPR(\latentpos,\ranksymb)$ and a known fraction of latent positives in $\unlabeled$.
+
+%We now describe the practical details for using Theorem~\ref{main-theorem} and Lemma~\ref{lemma-glb} to compute the contingency tables corresponding to the greatest lower bound and least upper bound on $\FPR(\bothpos,\ranksymb)$ from a finite sample. First, we propose an efficient method to compute contingency tables via Theorem~\ref{main-theorem}. Second, we describe how to obtain bounds on $\mathcal{T}_{lb}(\ranksymb)$ and $\mathcal{T}_{ub}(\ranksymb)$ that are needed for building the contingency table.  
+
+We now describe how to use Theorem~\ref{main-theorem} and Lemma~\ref*{lemma-glb} to compute the contingency tables corresponding to the greatest lower and least upper bound on $\FPR(\bothpos,\ranksymb)$ from a finite sample. First, we explain how to compute contingency tables efficiently via Theorem~\ref{main-theorem}. Second, we propose how to obtain the bounds on rank CDF ($\mathcal{T}_{lb}(\ranksymb)$ and $\mathcal{T}_{ub}(\ranksymb)$) that are needed to build the contingency table.  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%		CONTINGENCY TABLES
+%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Computing the contingency table with greatest-lower bound on FPR at given rank $r$} \label{contingency}
+Given $\pfrac$, $\overall$ and the sets $\knownpos$, $\knownneg$, and $\unlabeled$, Theorem~\ref{main-theorem} enables computing contingency tables corresponding to the least upper and greatest lower bound on FPR at a given cutoff rank $r$. We focus on building the contingency table corresponding to the lower bound on the FPR, the other is analogous. %Estimating the contingency table for an upper bound on the FPR is analogous. 
+
+%First, 
+
+
+
+%The proof of Theorem~\ref{main-theorem} involves identifying a set of surrogate positives $\surrpos$ in the unlabeled data. 
+%Because the full rank distribution of $\surrpos$ is not necessary to compute the contingency table at rank $\ranksymb$, it is not needed to explicitly construct the set of surrogate positives. The only requirement is that the ranks in $\surrpos$ are distributed such that $\TPR(\surrpos,\ranksymb) \geq \mathcal{T}_{ub}(\ranksymb)$ where $\mathcal{T}_{ub}(\ranksymb)$ is an upper bound on $\TPR(\latentpos,\ranksymb)$ (Section~\ref{quantile-bounds} describes a method to compute $\mathcal{T}_{ub}(\ranksymb)$).
+%
+
+%To construct a contingency table at a given cutoff rank $r$, we decompose the computation to consider the labeled and unlabeled instances separately: 
+%\begin{equation*}
+%\left[\begin{matrix}
+%\TP_{\Omega}^r & \FP_{\Omega}^r\\
+%\FN_{\Omega}^r & \TN_{\Omega}^r
+%\end{matrix}\right] = 
+%\left[\begin{matrix}
+%\TP_{L}^r & \FP_{L}^r\\
+%\FN_{L}^r & \TN_{L}^r
+%\end{matrix}\right]
+%+
+%\left[\begin{matrix}
+%\TP_{U}^r & \FP_{U}^r\\
+%\FN_{U}^r & \TN_{U}^r
+%\end{matrix}\right].
+%\end{equation*}
+
+We decompose the computation to consider the labeled and unlabeled instances separately: 
+\begin{equation*}
+\resizebox{\textwidth}{!}{$
+\begin{bmatrix}
+\TP_{\Omega}^r & \FP_{\Omega}^r \\
+\FN_{\Omega}^r & \TN_{\Omega}^r
+\end{bmatrix} = 
+\begin{bmatrix*}[l]
+\TP_{L}^r = |\topfun(\knownpos, r)| & \FP_{L}^r = |\topfun(\knownneg, r)|\\
+\FN_{L}^r = |\bottomfun(\knownpos, r)| & \TN_{L}^r = |\bottomfun(\knownneg, r)|
+\end{bmatrix*}
++
+\begin{bmatrix}
+\TP_{U}^r & \FP_{U}^r\\
+\FN_{U}^r & \TN_{U}^r
+\end{bmatrix}$.}
+\end{equation*}
+Given that at rank $r$ we can directly compute partial contingency tables for the labeled data based on $\overall$, $\knownpos$ and $\knownneg$, we focus on computing the contingency table for the unlabeled instances. 
+
+%where 
+Given $\mathcal{T}_{ub}(r)$, we can use Theorem~\ref{main-theorem} to determine the values in the contingency table for the unlabeled instances for the greatest lower bound on FPR. Doing so requires inferring a set of surrogate positives $\surrpos$ from the unlabeled data, which must be a solution to Equation~\eqref{eq:surrpos-def}. This requires $\theta$ surrogate positives in $\topfun(\surrpos,\ranksymb)$ and the rest in $\bottomfun(\surrpos,\ranksymb)$, where $\theta$ is defined as:
+\begin{equation}
+\theta = \ceil{\mathcal{T}_{ub}(r) \cdot |\surrpos|} = \ceil{\mathcal{T}_{ub}(r) \cdot \pfrac \cdot |\unlabeled|}, \label{theta}
+\end{equation}
+By rounding up in Equation~\eqref{theta}, we ensure that $\TPR(\surrpos, r) \geq \mathcal{T}_{ub}(r)$ as required by Theorem~\ref{main-theorem}. 
+
+In practice, two corner cases must be considered. One is if $|\topfun(\unlabeled,\ranksymb)| < \theta$, then it is impossible to assign $\theta$ surrogates below rank $\ranksymb$ in $\unlabeled$. In this case, all of $\topfun(\unlabeled,\ranksymb)$ is assigned as surrogate positives and the remaining surrogates are in $\bottomfun(\unlabeled,\ranksymb)$ (as discussed in Theorem~\ref{main-theorem}). 
+Two is if $|\bottomfun(\unlabeled, r)| < |\surrpos| - \theta$, in which case all of $\bottomfun(\unlabeled, r)$ is labeled positive and the remaining surrogate positives inevitably end up in $\topfun(\unlabeled, r)$. Hence, any set of surrogate positives $\surrpos$ that meets the following criteria solves Equation~\eqref{eq:surrpos-def} and thus yields a valid bound:
+\begin{align}
+|\surrpos| &= \pfrac \cdot |\unlabeled|, \nonumber \\
+|\topfun(\surrpos,r)| &= 
+\left\{\begin{matrix*}[l] 
+\min\big(|\topfun(\unlabeled, r)|,\ \theta\big) &\text{if } |\surrpos|-\theta \leq |\bottomfun(\unlabeled, r)|, \\
+|\surrpos| - |\bottomfun(\unlabeled, r)| &\text{if } |\surrpos|-\theta > |\bottomfun(\unlabeled, r)|.
+\end{matrix*}\right. \label{eq:surrpos-conditions}
+\end{align}
+
+Given a set of surrogate positives $\surrpos$, the partial contingency table of interest becomes:
+\begin{equation}
+\begin{bmatrix}
+\TP_{U}^r & \FP_{U}^r\\
+\FN_{U}^r & \TN_{U}^r
+\end{bmatrix} = 
+\begin{bmatrix*}[l]
+|\topfun(\surrpos,\ranksymb)| 		& |\topfun(\unlabeled-\surrpos,\ranksymb)|\\
+|\bottomfun(\surrpos,\ranksymb)| 	& |\bottomfun(\unlabeled-\surrpos,\ranksymb)|
+\end{bmatrix*}, \label{eq:partial-ct-unlabeled}
+\end{equation}
+where $\unlabeled-\surrpos$ is the set of surrogate negatives and $|\surrpos|$ and $|\topfun(\surrpos,r)|$ are known via Eq.~\ref{eq:surrpos-conditions}. 
+
+%Note that we only need set sizes to compute this partial contingency table. Furthermore, the required sizes of $|\surrpos|$ and $|\topfun(\surrpos, r)|$ are known based on the conditions in Equation~\eqref{eq:surrpos-conditions}. Hence, computing this partial contingency table can be done very efficiently without even explicitly identifiying the set of surrogate positives $\surrpos$.
+
+Note that computing the partial contingency table for the unlabeled data can be done very efficiently since it only requires set sizes as shown in Equation~\ref{eq:partial-ct-unlabeled}, without explicitly partitioning the unlabeled set $\unlabeled$. That is, we do not need to know which examples are in $\topfun(\surrpos,r)$, $\bottomfun(\surrpos,r)$, $\topfun(\unlabeled-\surrpos,r)$ and $\bottomfun(\unlabeled-\surrpos,r)$, we just need to know the number of examples each set contains.
+
+
+%Note that computing the partial contingency table for the unlabeled data can be done very efficiently as it only requires set sizes: the number of true positives (i.e., $|\topfun(\surrpos,\ranksymb)|$), the number false negatives (i.e., $|\bottomfun(\surrpos,\ranksymb)|$), and the total number of unlabeled examples. That is, we do not need to know which examples are in $\topfun(\surrpos,r)$, just the number of examples it contains.
+
+%To obtain the greatest lower bound on FPR via Theorem~\ref{main-theorem} we must compute a contingency table based on surrogate positives $\surrpos$, where $\surrpos$ is obtained via Equation~\eqref{eq:surrpos-def}. This translates into requiring $\theta$ surrogate positives in $\topfun(\surrpos,\ranksymb)$ and the rest in $\bottomfun(\surrpos,\ranksymb)$, where:
+%\begin{equation}
+%\theta = \ceil{\mathcal{T}_{ub}(r) \cdot |\surrpos|} = \ceil{\pfrac\mathcal{T}_{ub}(r) \cdot |\unlabeled|}, \label{theta}
+%\end{equation}
+%By rounding up in Equation~\eqref{theta}, we ensure that $\TPR(\surrpos, r) \geq \mathcal{T}_{ub}(r)$ as required by Theorem~\ref{main-theorem}. 
+
+%However, it is not necessary to explicitly construct sets of surrogate positives because the full rank distribution of $\surrpos$ is not needed to compute the contingency table at rank $\ranksymb$. The only requirement is that the ranks in $\surrpos$ are distributed such that $\TPR(\surrpos,\ranksymb) \geq \mathcal{T}_{ub}(\ranksymb)$ where $\mathcal{T}_{ub}(\ranksymb)$ is an upper bound on $\TPR(\latentpos,\ranksymb)$ (Section~\ref{quantile-bounds} describes computing $\mathcal{T}_{ub}(\ranksymb)$).
+
+
+
+
+
+ 
+
+
+%\paragraph{Partial contingency table based on labeled instances} \ \newline
+%We can directly compute partial contingency tables based on $\overall$, $\knownpos$ and $\knownneg$ at given rank $r$:
+
+%\begin{minipage}[c]{0.9\textwidth}
+%\centering
+%\begin{minipage}[c]{0.6\textwidth}
+%\begin{align*}
+%\knownpos \rightarrow \TP_{L}^r &= |\topfun(\knownpos, r)|, \\
+%	\FN_{L}^r &= |\bottomfun(\knownpos, r)|, 
+%\end{align*}
+%\end{minipage}
+%\begin{minipage}[c]{0.3\textwidth}
+%\begin{align*}
+%\knownneg \rightarrow \FP_{L}^r &= |\topfun(\knownneg, r)|, \\
+%	\TN_{L}^r &= |\bottomfun(\knownneg, r)|.
+%\end{align*}
+%\end{minipage}
+%\end{minipage}
+
+%\paragraph{Partial contingency table based on unlabeled instances} \ \newline
+%The partial contingency table from $\unlabeled$ can be determined based on $\TPR(\knownpos, r)$, $\unlabeled$ and $\pfrac$. To obtain an upper bound in ROC space (i.e. a lower bound on FPR for a given TPR) via Theorem~\ref{main-theorem}, we must compute a contingency table corresponding to surrogate positive labels $\surrpos \subset \unlabeled$, such that $|\surrpos| = \pfrac\cdot |\unlabeled|$ and $\mathcal{R}_\tprsymb(\surrpos) \leq \mathcal{R}_\tprsymb(\knownpos)$ where $\tprsymb = \TPR(\knownpos, r)$. This can be done as follows:
+%\begin{equation}
+%\theta = \ceil{\TPR(\knownpos, r) \cdot |\surrpos|}, \label{theta}
+%\end{equation}
+%where $\theta$ represents the desired number of surrogate positives ranked higher than $r$ (i.e. within $\topfun(\surrpos, r)$). By rounding up in Equation~\eqref{theta}, we ensure that $\TPR(\surrpos, r) \geq \TPR(\knownpos, r)$ which implies $\mathcal{R}_\tprsymb(\surrpos) \leq \mathcal{R}_\tprsymb(\knownpos)$ at $\tprsymb=\TPR(\knownpos, r)$.
+
+%The proof of Theorem~\ref{main-theorem} requires creating sets of surrogate positives $\surrpos$ from the unlabeled data. However, it is not necessary to explicitly construct sets of surrogate positives because the full rank distribution of $\surrpos$ is not needed to compute the contingency table at rank $\ranksymb$. The only requirement is that the ranks in $\surrpos$ are distributed such that $\TPR(\surrpos,\ranksymb) \geq \mathcal{T}_{ub}(\ranksymb)$ where $\mathcal{T}_{ub}(\ranksymb)$ is an upper bound on $\TPR(\latentpos,\ranksymb)$ (Section~\ref{quantile-bounds} describes computing $\mathcal{T}_{ub}(\ranksymb)$).
+
+
+
+%The partial contingency table from $\unlabeled$ for a given rank $\ranksymb$ can be determined based on $\mathcal{T}_{lb}(\ranksymb)$, $\mathcal{T}_{ub}(\ranksymb)$, $\knownpos$, $\unlabeled$ and $\pfrac$. To obtain a lower bound on $\FPR(\bothpos,\ranksymb)$ via Theorem~\ref{main-theorem}, we must compute a contingency table corresponding to surrogate positives $\surrpos \subset \unlabeled$, such that $|\surrpos| = \pfrac\cdot |\unlabeled|$ and $\TPR(\surrpos,\ranksymb)\geq \mathcal{T}_{ub}(\ranksymb) \geq \TPR(\latentpos,\ranksymb)$. 
+
+%To obtain the greatest lower bound on FPR via Theorem~\ref{main-theorem} we must compute a contingency table based on surrogate positives $\surrpos$, where $\surrpos$ is obtained via Equation~\eqref{eq:surrpos-def}. This translates into requiring $\theta$ surrogate positives in $\topfun(\surrpos,\ranksymb)$ and the rest in $\bottomfun(\surrpos,\ranksymb)$, where:
+%\begin{equation}
+%\theta = \ceil{\mathcal{T}_{ub}(r) \cdot |\surrpos|} = \ceil{\pfrac\mathcal{T}_{ub}(r) \cdot |\unlabeled|}, \label{theta}
+%\end{equation}
+%By rounding up in Equation~\eqref{theta}, we ensure that $\TPR(\surrpos, r) \geq \mathcal{T}_{ub}(r)$ as required by Theorem~\ref{main-theorem}. 
+
+
+%Note that it is possible that $\TP_U^r < \theta$ in Equation~\eqref{tp-u}. This occurs when it is impossible to assign enough surrogate positives within the top ranking, i.e. if $|\topfun(\unlabeled,r)|$ is too small. If this happens, it evidently also applies to the (unknown) true latent positives $\latentpos \subset\ \unlabeled$. Therefore, our estimate is still valid.
+
+%The contingency table of $\unlabeled$ outlined here induces the least upper bound in ROC space (i.e. it corresponds to a set of surrogate positives $\surrpos$ as defined in Equation~\eqref{infimum}).
+
+The contingency table with least upper bound on $\FPR(\latentpos,\ranksymb)$ is obtained by replacing Eq.~\eqref{theta} by:
+\begin{equation}
+\theta = \floor{\mathcal{T}_{lb}(r) \cdot |\surrpos|} = \floor{\mathcal{T}_{lb}(r) \cdot \pfrac \cdot |\unlabeled|}. \label{theta-alt}
+\end{equation}
+
+
+
+\subsection{Bounds on the rank distribution of $\latentpos$} \label{quantile-bounds}
+Applying Theorem~\ref{main-theorem} to build a contingency table at rank $\ranksymb$ requires a bound $\mathcal{T}_{ub}(\ranksymb) \geq \TPR(\latentpos, \ranksymb)$ for estimating a lower bound on the FPR and a bound $\mathcal{T}_{lb}(\ranksymb) \leq \TPR(\latentpos, \ranksymb)$  for estimating an upper bound on the FPR. To compute these bounds, we assume known and latent positives have similar rank distributions. This holds when known positives $\knownpos$ are selected completely at random from all positives $\bothpos$, but is violated if the process of selecting examples for labeling is biased \citep{chawla2005learning}. %, which may occur in certain applications \cite{doyle2010drug, sifrim2013extasy}.
+
+%we assumed a bound $\mathcal{T}_{ub}(\ranksymb) \geq \TPR(\latentpos, \ranksymb)$ at rank $\ranksymb$ is available. To estimate a lower bound on FPR at rank $r$, an upper bound on TPR is needed and vice versa, i.e. we need bounds $\mathcal{T}_{lb}(\ranksymb) \leq \TPR(\latentpos,\ranksymb) \leq \mathcal{T}_{ub}(\ranksymb),\ \forall r$.  To obtain these bounds we assume known and latent positives have similar rank distributions (Eqs.~\eqref{rankcdf} and \eqref{cdf-is-tpr}):
+%\begin{equation}
+%\TPR(\knownpos, r) = \TPR(\latentpos, r) \pm \epsilon(\ranksymb),\ \forall\ r, \label{car_pos}
+%\end{equation}
+%with small deviations $\epsilon(\ranksymb)$. This holds if the probability of the label being known is independent of the data vector, $\mathbf{x} \sim \inputspace_L^+ : \mathbf{x} \in \knownpos$ and $\mathbf{x} \sim \inputspace_U^+ : \mathbf{x} \in \latentpos$, with $\inputspace_L^+=\inputspace_U^+$, that is when known positives are selected completely at random from $\bothpos$. The transformation of input space distribution to rank distribution is fixed for a given a classifier $\mathcal{C}$, so if the underlying input distributions are equal ($\inputspace^+_L = \mathcal{X}^+_U$), then $\knownpos \sim \mathcal{C}(\inputspace^+_L)$ and $\latentpos \sim \mathcal{C}(\inputspace^+_L)$, satisfying Equation~\eqref{car_pos}. The assumption in Equation~\eqref{car_pos} is violated if the labeling process is biased \citep{chawla2005learning}. %, which may occur in certain applications \cite{doyle2010drug, sifrim2013extasy}. 
+
+%$\TPR(\knownpos,\ranksymb)$ is estimated via the empirical CDF of $\knownpos$. As the empirical CDF is only an estimate of the true CDF, we use confidence intervals (CIs). The assumption in Eq.~\eqref{car_pos} implies that a CI of the CDF based on $\knownpos$ is also a CI of the CDF of $\latentpos$. A CI boundary is treated as a function mapping rank $r$ to the estimated bound on the CDF: $\mathcal{T}(r) : \mathbb{N} \mapsto [0, 1]$. $\mathcal{T}_{lb}$ and $\mathcal{T}_{ub}$ denote CI bounds:
+%\begin{equation}
+%\mathcal{T}_{lb}(r) \leq \TPR(\latentpos,\ranksymb) \leq \mathcal{T}_{ub}(r) \leq 1,\ \forall\ r. \label{eq:ci}
+%\end{equation}
+%We formalize the bounds of the CI of the CDF as functions of rank because an underlying set with that rank distribution does not necessarily exist in the overall ranking $\overall$.
+
+$\TPR(\bothpos,\ranksymb)$ is estimated via the empirical CDF of $\knownpos$, which only approximates the true CDF. To acccount for uncertainty, we construct confidence intervals (CIs) for the rank CDF. Our assumption implies that a CI of the CDF based on $\knownpos$ is also a CI of the CDF of $\latentpos$. A CI boundary is treated as a function mapping rank $r$ to the estimated bound on the CDF. $\mathcal{T}_{lb}$ and $\mathcal{T}_{ub}$ denote these bounds:
+\begin{equation}
+0 \leq \mathcal{T}_{lb}(r) \leq \TPR(\knownpos, \ranksymb), \TPR(\latentpos,\ranksymb), \TPR(\bothpos, \ranksymb) \leq \mathcal{T}_{ub}(r) \leq 1,\ \forall\ r. \label{eq:ci}
+\end{equation}
+We formalize the bounds of the CI of the CDF as functions of rank because an underlying set with that rank distribution does not necessarily exist in the overall ranking $\overall$.
+
+The confidence band on rank CDF can be computed based on the known positives in several ways. We use a standard bootstrap approach \citep{efron1994introduction} in our experiments. %, such as methods based on the Dvoretzky-Kiefer-Wolfowitz band \citep{dvoretzky1956asymptotic}. 
+Having many known positives yields a tight confidence band on rank CDF, which then translates to tight bounds on performance metrics. 
+
+
+%After obtaining a confidence interval on the empirical CDF of $\knownpos$, we use it to bound ranks to obtain a given TPR $\tprsymb$. Since $[F_{lb}(r), F_{ub}(r)]$ is a $(1-\alpha)$-confidence interval on the rank CDF of $\knownpos$ -- and by assumption of $\bothpos$ -- and the monotonicity of the mapping to ROC space, its image in ROC space is a confidence interval on FPR of $\bothpos$. % at a confidence level above $(1-\alpha)$. %: $[\FPR(\pos_{ci}^{lb}, \mathcal{R}_\tprsymb(\pos_{ci}^{lb})),\ \FPR(\pos_{ci}^{ub}, \mathcal{R}_\tprsymb(\pos_{ci}^{ub}))]$.
+
+%Since we use confidence intervals on the empirical CDF, the resulting bounds in ROC space are not guaranteed to be strict as opposed to the setting in Theorem~\ref{main-theorem}. The true ROC curve is outside the estimated bounds if the true rank CDF of positives $\bothpos$ is outside the confidence interval that was estimated based on the empirical CDF of $\knownpos$, which depends on $|\knownpos|$ (influences quality of empirical CDF) and the assumption in Eq.~\eqref{car_pos}. Even though the bounds are not strict, the examples in Section~\ref{curves} demonstrate that the estimated bounds on ROC curves are very accurate.

@@ -1,0 +1,159 @@
+
+% Flowcharting techniques for easy maintenance
+% Author: Brent Longborough
+\documentclass[x11names]{article}
+%\documentclass{standalone}
+
+
+\usepackage{xcolor}
+
+\usepackage{geometry}
+\geometry{
+paperwidth=11.7cm,
+paperheight=20cm,
+margin=0cm
+}
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,chains}
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5mm}%
+%%%>
+\begin{comment}
+:Title: Easy-maintenance flowchart
+:Tags: flowcharts
+:Author: Brent Longborough
+:Slug: flexible-flow-chart
+
+  This TikZ example illustrates a number of techniques for making TikZ
+  flowcharts easier to maintain:
+    * Use of <on chain> and <on grid> to simplify positioning
+    * Use of global <node distance> options to eliminate the need to 
+      specify individual inter-node distances
+    * Use of <join> to reduce the need for references to node names
+    * Use of <join by> styles to tailor specific connectors
+    * Use of <coordinate> nodes to provide consistent layout for
+      parallel flow lines
+    * A method for consistent annotation of decision box exits
+    * A technique for marking coordinate nodes (for layout debugging)
+
+    I encourage you to tinker at this file - add intermediate boxes,
+    alter the global distance settings, and so on, to see how well (or
+    ill!) it adapts.
+\end{comment}
+\begin{document}\sloppy
+% =================================================
+% Set up a few colours
+% -------------------------------------------------
+% Set up a new layer for the debugging marks, and make sure it is on
+% top
+\pgfdeclarelayer{marx}
+\pgfsetlayers{main,marx}
+% A macro for marking coordinates (specific to the coordinate naming
+% scheme used here). Swap the following 2 definitions to deactivate
+% marks.
+\providecommand{\cmark}[2][]{%
+  \begin{pgfonlayer}{marx}
+    \node [nmark] at (c#2#1) {#2};
+  \end{pgfonlayer}{marx}
+  } 
+\providecommand{\cmark}[2][]{\relax} 
+% -------------------------------------------------
+% Start the picture
+\begin{tikzpicture}[%
+%    >=triangle 60,              % Nice arrows; your taste may be different
+    >=angle 60,
+    start chain=going below,    % General flow is top-to-bottom
+    node distance=7mm and 68mm, % Global setup of box spacing
+    every join/.style={norm},   % Default linetype for connecting boxes
+    shorten <= 1mm, shorten >= 1mm,
+    ]
+% ------------------------------------------------- 
+% A few box styles 
+% <on chain> *and* <on grid> reduce the need for manual relative
+% positioning of nodes
+\tikzset{
+  base/.style={draw, on chain, on grid, align=center, minimum height=4ex},
+  proc/.style={base, rectangle, align=center, text width=16em},
+  test/.style={base, diamond, aspect=2, text width=5em},
+  term/.style={proc, rounded corners, it, densely dotted},
+  % coord node style is used for placing corners of connecting lines
+  coord/.style={coordinate, on chain, on grid, node distance=6mm and 25mm},
+  % nmark node style is used for coordinate debugging marks
+  nmark/.style={draw, cyan, circle, font={\sffamily\bfseries}},
+  % -------------------------------------------------
+  % Connector line styles for different parts of the diagram
+  norm/.style={->, draw},
+  it/.style={font={\small\itshape}}
+}
+% -------------------------------------------------
+% Start by placing the nodes
+\node [proc] (p0) {NACM member population\\ on January 1, 2003 \\ ($n=4,567,172$)};
+
+\node [term, join] (q_history) {patient was member before 2000?};
+\node [proc, join] (p_history) {patients with known recent history \\ ($n=4,266,401$)};
+\path (q_history) to node [xshift=1.5em] {$yes$} (p_history);
+
+\node [term, join] (q_therapy_ever) {records of any antidiabetes therapy\\ up to and including 2013?};
+\node [proc, join] (p_therapy_ever) {patients with known history\\ of antidiabetes therapy\\ ($n=490,052$)};
+\path (q_therapy_ever) to node [xshift=1.5em] {$yes$} (p_therapy_ever);
+
+%\node [term, join] (q_therapy_incl) {new or modified antidiabetes therapy\\ in selection period 2003--2007?};
+%\node [proc, join] (p_therapy_incl) {patients that may be included\\ into one or more study groups\\ ($n=TODO$)};
+%\path (q_therapy_incl) to node [xshift=1.5em] {$yes$} (p_therapy_incl);
+
+
+\node [term, join] (q_additional) {does the patient satisfy\\ all final inclusion criteria?};
+\node [proc, join] (p_additional) {patients eligible for\\assignment to study groups\\ ($n=115,896$)};
+\path (q_additional) to node [xshift=1.5em] {$yes$} (p_additional);
+
+\node [term, join] (q_priors) {records of antidiabetes therapy\\ prior to inclusion event?};
+\node [proc, join] (p_priors) {patient can enter appropriate\\ \textbf{combination study group}\\ ($n=28,708$)};
+\path (q_priors) to node [xshift=1.5em] {$yes$} (p_priors);
+
+\node [proc, right=of q_history] (p_nohistory) {patients with insufficient \\historical records are \textbf{excluded} because we may be unaware of recent cardiovascular events and/or antidiabetes therapy};
+\path (q_history) to node [yshift=1em] {$no$} (p_nohistory);
+    \draw [->] (q_history) -- (p_nohistory);
+
+\node [proc, right=of q_therapy_ever] (p_notherapy) {patient enters reference population\\ from which \textbf{controls} are sampled\\ ($n=3,776,349$)};
+\path (q_therapy_ever) to node [yshift=1em] {$no$} (p_notherapy);
+    \draw [->] (q_therapy_ever) -- (p_notherapy);
+    
+%\node [proc, right=of q_therapy_incl] (p_noincl) {ineligible for inclusion in any\\ study or control group\\ ($n=TODO$)};
+%\path (q_therapy_incl) to node [yshift=1em] {$no$} (p_noincl);
+%    \draw [->] (q_therapy_incl) -- (p_noincl);
+
+\node [term, right=of q_additional, align=left] (q_additional_full) {final inclusion criteria:
+\begin{itemize}
+\item therapy must start/change in 2003--2007
+\item patient must survive $\geq$ 30 days% after inclusion
+\item same therapy for $\geq$ 90 days
+\item age at inclusion must be $\geq$ 18
+\end{itemize}
+    };
+    \draw [densely dotted, shorten <= 0mm, shorten >= 0mm] (q_additional) -- (q_additional_full);
+
+\node [proc, right=of q_priors] (p_nopriors) {patient can enter appropriate\\ \textbf{mono} -or \textbf{combination\\ therapy study group} \\ ($n=87,188$)};
+\path (q_priors) to node [yshift=1em] {$no$} (p_nopriors);
+    \draw [->] (q_priors) -- (p_nopriors);
+
+%\node [right=of p_priors] (tag_node) {};
+\coordinate [right=of p_priors, below=9.5mm of p_nopriors] (tag_node);
+\draw [dashed, thick, shorten <= 1mm, shorten >= 0mm]
+  (p_nopriors.south) -- (tag_node.north);
+\draw [dashed, thick, shorten <= 1mm, shorten >= 0mm]
+  (p_priors.east) -- (tag_node.west);
+
+\draw [->,dashed, thick, shorten >=1mm, shorten <= 0mm]
+  (tag_node) -- ++(33mm,0) 
+  |- node [near end, yshift=0.75em, it]
+    {(Patient may enter additional study groups)} (p_therapy_ever);
+
+% -------------------------------------------------
+\end{tikzpicture}
+% =================================================
+\end{document}
