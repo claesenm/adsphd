@@ -6,7 +6,8 @@ Claesen, M.$^\star$, Gillard, P.$^\star$, De Smet, F., Callens, M., De Moor, B. 
 \emph{Journal of Clinical Endocrinology and Metabolism}.\\
 $^\star$: these authors have contributed equally to the manuscript.
 }{
-Marc Claesen contributed to the study design and performed all data extractions and statistical analyses. He took the lead in writing the paper.
+Marc Claesen contributed to the study design and performed all data extractions and statistical analyses.
+\newpage
 }{
 \paragraph{Context} Several observational studies and meta-analyses have reported increased mortality of patients taking sulfonylurea and insulin. The impact of patient profiles and concomitant therapies often remains unclear. 
 
@@ -32,7 +33,9 @@ Patients: 115,896 patients starting metformin, sulfonylurea or insulin (alone or
 \cleardoublepage
 
 \section{Introduction}
-Glucose lowering therapy in type 2 diabetes is challenging, due to the progressive nature of the disease by the underlying failure of the insulin-secreting beta-cells \citep{s1}. Algorithms and guidelines are proposed by international bodies, guiding clinicians through the maze of possibilities of glucose-lowering agents, but guidance is mostly based on evidence from the original UKPDS study, reported in the middle of the 1990's \citep{s2}. Evidence on the impact of glucose-lowering agents on the hardest endpoint, survival, is limited. In particular, sulfonylurea and insulin have been associated with higher mortality risks in cross-sectional studies or population studies \citep{s3,s4,s5,s6,s7,s8} with criticisms arising that comparing the mortality risk in these individuals to the global population is unfair as the profile of this population may be different, predisposing them to a higher mortality risk. On the other hand, many studies report a lower mortality risk in type 2 diabetes patients treated with metformin \citep{s3,s4,s5,s6,s7,s8,s9} but again, the profile of these people may be different by itself, thus influencing risk. Finally, in the high cardiovascular risk disease that is type 2 diabetes, use of statins has been debated frequently, with doubts being cast over the usefulness of these drugs in this population, in particular in the young or very old age groups. 
+Glucose lowering therapy in type 2 diabetes is challenging, due to the progressive nature of the disease by the underlying failure of the insulin-secreting beta-cells \citep{s1}. Algorithms and guidelines are proposed by international bodies, guiding clinicians through the maze of possibilities of glucose-lowering agents, but guidance is mostly based on evidence from the original UKPDS study, reported in the middle of the 1990's \citep{s2}. Evidence on the impact of glucose-lowering agents on the hardest endpoint, survival, is limited. In particular, sulfonylurea and insulin have been associated with higher mortality risks in cross-sectional studies or population studies \citep{s3,s4,s5,s6,s7,s8} with criticisms arising that comparing the mortality risk in these individuals to the global population is unfair as the profile of this population may be different, predisposing them to a higher mortality risk. 
+
+On the other hand, many studies report a lower mortality risk in type 2 diabetes patients treated with metformin \citep{s3,s4,s5,s6,s7,s8,s9} but again, the profile of these people may be different by itself, thus influencing risk. Finally, in the high cardiovascular risk disease that is type 2 diabetes, use of statins has been debated frequently, with doubts being cast over the usefulness of these drugs in this population, in particular in the young or very old age groups. 
 
 This study investigated the survival of patients starting therapies involving various glucose-lowering agents (GLAs) compared to fully matched control subjects. We particularly analyzed the effect of age and concomitant use of statins.
 
@@ -205,21 +208,21 @@ Compared to their associated matched controls, patients on metformin monotherapy
 
 Comparable differences were seen in survival of patients without a history of cardiovascular (CV) events, with the lowest survival rates in therapies involving both insulin and SU (up to 29\% difference after 5 years) (Table~\ref{table:survival-results}). Patients with a history of CV events consistently exhibited lower survival than patients without a CV history, but excess mortality compared to matched controls was comparable for both subgroups. Of note, the survival of patients with a CV history on metformin monotherapy was not significantly different from the survival of the associated controls.  The observed survival benefit of metformin monotherapy disappeared in combination therapy cohorts (Table~\ref{table:survival-results}).
 
-\begin{table}[!h]
+% TODO FIX ME
+\todo{fix table}
+%\ifx
+\begin{table}[!p]
 \begin{tabular}{lcccl}
 \toprule
 			 & \multicolumn{4}{c}{no history of cardiovasular disease}		 \\\cline{2-5} 
 			 & \multicolumn{2}{c}{5-year survival ($\%$)} 		& & \multicolumn{1}{c}{hazard ratio} \\\cline{2-3} \cline{5-5}
 study cohort	& study cohort 				& control 	&	& \multicolumn{1}{c}{$\frac{study}{control}$} \\
 \midrule
-%\multicolumn{5}{l}{\textbf{overview categories}}	\\
-%any OAD	or insulin 		& $85.9\ [85.6$--$86.1]$ & $90.9\ [90.8$--$91.0]$ & $p<0.001$ &  & $73.2\ [72.2$--$74.2]$ & $80.7\ [80.3$--$81.1]$ & $p<0.001$ \\
-%any OAD					& $89.6\ [89.3$--$89.8]$ & $91.5\ [91.4$--$91.6]$ & $p<0.001$ &  & $80.8\ [79.7$--$81.8]$ & $81.9\ [81.5$--$82.4]$ & $p=0.024$ \\
 
 %\multicolumn{5}{l}{\textbf{mono therapy}}	\\
-metformin 				 & $92.6\ [92.3$--$92.9]$ & $92.9\ [92.8$--$93.0]$ & & $1.07$ $[1.02$--$1.11]$ \\
+metformin 		        & $92.6\ [92.3$--$92.9]$ & $92.9\ [92.8$--$93.0]$ & & $1.07$ $[1.02$--$1.11]$ \\
 sulfonylurea 			& $82.5\ [81.9$--$83.1]$ & $86.5\ [86.3$--$86.8]$ & & $1.45$ $[1.40$--$1.52]$ $\bullet$ \\
-insulin					& $63.9\ [62.9$--$64.9]$ & $88.1\ [87.8$--$88.3]$ & & $4.32$ $[4.14$--$4.51]$ $\bullet$ \\
+insulin				& $63.9\ [62.9$--$64.9]$ & $88.1\ [87.8$--$88.3]$ & & $4.32$ $[4.14$--$4.51]$ $\bullet$ \\
 
 %\multicolumn{5}{l}{\textbf{combination therapy}}	\\
 metf+sulf				& $87.0\ [86.5$--$87.4]$ & $90.3\ [90.1$--$90.5]$ & & $1.40$ $[1.35$--$1.46]$ \\
@@ -229,7 +232,7 @@ metf+sulf+insulin		& $71.5\ [70.5$--$72.5]$ & $87.5\ [87.2$--$87.8]$ & & $2.71$ 
 & \\
 			 & \multicolumn{4}{c}{history of cardiovasular disease}		 \\\cline{2-5} 
 			 & \multicolumn{2}{c}{5-year survival ($\%$)} 		& & \multicolumn{1}{c}{hazard ratio} \\\cline{2-3} \cline{5-5}
-study cohort	& study cohort 				& control 	&	& \multicolumn{1}{c}{$\frac{study}{control}$} \\
+study cohort	         & study cohort 				& control 	&	& \multicolumn{1}{c}{$\frac{study}{control}$} \\
 \midrule
 metformin 				 & $86.7\ [85.4$--$87.8]$ & $85.2\ [84.6$--$85.7]$ & & $0.92$ $[0.83$--$1.02]$ \\ % 0.0134941156118035 0.914200065217855
 sulfonylurea 			        & $72.5\ [70.2$--$74.6]$ & $77.2\ [76.4$--$78.1]$ & & $1.35$ $[1.22$--$1.50]$ \\ % 2.36504826833794e-08 0.0480318297463539
@@ -237,14 +240,13 @@ insulin					& $56.1\ [53.9$--$58.3]$ & $78.6\ [77.9$--$79.3]$ & & $2.69$ $[2.49$
 
 %\multicolumn{5}{l}{\textbf{combination therapy}}	\\
 metf+sulf				& $79.1\ [77.4$--$80.7]$ & $81.8\ [81.1$--$82.5]$ & & $1.18$ $[1.07$--$1.30]$ $\bullet$ \\ % 0.1447394553308 0.00538876797400345
-metf+insulin			& $69.2\ [66.9$--$71.4]$ & $82.7\ [81.8$--$83.5]$ & & $2.07$ $[1.87$--$2.30]$ \\ % 0.000117768936021667 0.938594402031259
-sulf+insulin			& $48.8\ [46.2$--$51.3]$ & $74.3\ [73.3$--$75.2]$ & & $2.66$ $[2.44$--$2.89]$ \\ % 3.54578223642488e-05 0.0215754942151928
-metf+sulf+insulin		& $67.4\ [65.5$--$69.3]$ & $81.5\ [80.8$--$82.2]$ & & $2.05$ $[1.89$--$2.23]$ \\ % 0.123550131268869 0.491309681508373
+metf+insulin		        	& $69.2\ [66.9$--$71.4]$ & $82.7\ [81.8$--$83.5]$ & & $2.07$ $[1.87$--$2.30]$ \\ % 0.000117768936021667 0.938594402031259
+sulf+insulin			        & $48.8\ [46.2$--$51.3]$ & $74.3\ [73.3$--$75.2]$ & & $2.66$ $[2.44$--$2.89]$ \\ % 3.54578223642488e-05 0.0215754942151928
+metf+sulf+insulin		        & $67.4\ [65.5$--$69.3]$ & $81.5\ [80.8$--$82.2]$ & & $2.05$ $[1.89$--$2.23]$ \\ % 0.123550131268869 0.491309681508373
 \bottomrule
 \end{tabular}
 \caption{Overview of survival for the study cohorts compared to a fully matched control cohort, stratified by cv history. The control group is sampled from the general population and matched for age, gender and use of statins, antihypertensives and antiplatelet drugs. For every patient in the study cohorts, 5 patients with completely matching profiles were used in control. $\bullet$ indicates that the proportional hazards assumption was rejected for the associated hazards ratio ($p<0.01$).} \label{table:survival-results}
 \end{table}
-
 
 \subsection{Age-dependent 5-year survival of individuals on different glucose lowering agents}
 Figure~\ref{fig:survival-by-age} illustrates the 5-year survival of patients as a function of age at the start of follow-up. Compared to the general population, 5-year survival was lower at any age in all cohorts on glucose lowering monotherapy except the metformin monotherapy cohort, which exhibits comparable survival to the general population. At any certain age, survival was highest in patients on metformin, worse in patients on sulfonylurea, and worst in patients on insulin. In patients starting on combination therapy, survival was also lower at any age than associated controls. Again, if the regimen contains insulin, survival is worse at any age category, with or without sulfonylurea on board. 

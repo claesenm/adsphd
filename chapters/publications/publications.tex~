@@ -1,6 +1,6 @@
 \chapter{List of publications}
 
-\section*{International journal papers (accepted/published)}
+\section*{International journal papers (published)}
 
 \begin{itemize}
 \item Claesen, M., De Smet, F., Suykens, J. A. K., \& De Moor, B. (2014). ``\emph{EnsembleSVM: A library for ensemble learning using support vector machines}''. Journal of Machine Learning Research, 15(1), 141--145.
@@ -16,11 +16,12 @@ Neurocomputing, 160, 73-84.
         Submitted to Journal of Clinical Endocrinology and Metabolism.
 \item Claesen, M., Simm, J., Popovic, D., Moreau, Y., \& De Moor, B. (2015). ``\emph{Easy hyperparameter search using Optunity}''. \\
         Submitted to Journal of Machine Learning Research.
+\item Claesen, M., Davis, J., De Smet, F., \& De Moor, B. (2015). ``\emph{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}'', \\
+        Submitted to Journal of Machine Learning Research.
 \end{itemize}
 
-\section*{International conference papers (accepted/published)}
+\section*{International conference papers (published)}
 \begin{itemize}
-\item Claesen, M., Davis, J., De Smet, F., \& De Moor, B. (2015). ``\emph{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}'', Neural Information Processing Systems (NIPS). Montreal, Canada.
 \item Claesen, M., \& De Moor, B. (2015). ``\emph{Hyperparameter Search in Machine Learning}''. In Proceedings of the 11th Metaheuristics International Conference (MIC), Agadir, Morocco. \\ Manuscript available at \url{http://arxiv.org/abs/1502.02127}.
 \end{itemize}
 
