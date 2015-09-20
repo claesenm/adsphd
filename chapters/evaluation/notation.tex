@@ -76,8 +76,8 @@ The area under an ROC curve (AUROC) is a commonly used summary statistic, typica
 %The area under an ROC curve (AUROC) is a commonly used summary statistic which typically ranges between $0.5$ (random model) and $1$ (perfect model). AUROC is equal to the probability that a random positive is ranked higher than a random negative, which is equivalent to the Wilcoxon test of ranks \citep{hanley1982meaning}. It is a popular criterion to optimize during hyperparameter search \citep{lessmann2008benchmarking, DBLP:journals/corr/ClaesenSPMM14}.
 
 
-Precision-Recall (PR) curves  \citep{davis2006relationship} are an alternative to ROC curves that show how a model's precision (y-axis) varies as a function of recall (x-axis). Recall is equivalent to TPR and precision is the fraction of examples classified as
-positive that are truly positive ($\TP / (\TP+\FP)$). PR curves are widely used when there is a skew in the class distributions~\cite{davis-icml09,claesen2014robust}.
+Precision-Recall (PR) curves  \citep{Davis:2006:RPR:1143844.1143874} are an alternative to ROC curves that show how a model's precision (y-axis) varies as a function of recall (x-axis). Recall is equivalent to TPR and precision is the fraction of examples classified as
+positive that are truly positive ($\TP / (\TP+\FP)$). PR curves are widely used when there is a skew in the class distributions~\cite{davis-icml09,Claesen2015resvm}.
 
 
 

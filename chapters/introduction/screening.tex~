@@ -24,9 +24,11 @@ In the remainder of this Section we will discuss current diagnostic tests, exist
 
 
 \subsubsection{Diagnosis of diabetes} 
-The gold standard to diagnose hyperglycemia is the oral glucose-tolerance test (OGTT), which determines how quickly glucose is cleared from the blood \citep{alberti1998definition, world2006definition}. In this test, patients are administered glucose after fasting for 12 hours and afterwards the patient's blood glucose levels are measured, sometimes at multiple intervals, but typically after 2 hours \citep{diabetesliga}. The diagnostic criteria recommended by the WHO are listed in Table~\ref{intro:who-diagnosis}.
+The gold standard to diagnose hyperglycemia is the oral glucose-tolerance test (OGTT), which determines how quickly glucose is cleared from the blood \citep{alberti1998definition, world2006definition}. In this test, patients are administered glucose after fasting for 12 hours and afterwards the patient's blood glucose levels are measured, sometimes at multiple intervals, but typically after 2 hours \citep{diabetesliga}.
 
-The OGTT as diagnostic test was widely agreed upon, though in 2003 the American Diabetes Association (ADA) modified its recommendations in favor of using fasting plasma glucose to diagnose asymptomatic diabetes \citep{world2006definition}. More recently, the use of the A1C assays for diagnosis was considered, though current point-of-care A1C assays were considered insufficiently accurate \citep{international2009international}.
+Type 1 diabetes has a sufficiently noticeable clinical onset characterized by acute, extreme elevations in glucose concentrations combined with symptoms which make its diagnosis fairly undubious and typically timely \citep{international2009international}. Type 2 diabetes, however, has a more gradual onset making its diagnosis less straightforward and causing the diagnostic criteria to be debated regularly \citep{world2006definition, international2009international}.  The diagnostic criteria as currently recommended by the WHO are listed in Table~\ref{intro:who-diagnosis}.
+
+The OGTT as diagnostic test was widely agreed upon, though in 2003 the American Diabetes Association (ADA) modified its recommendations in favor of using fasting plasma glucose to diagnose asymptomatic T2D \citep{world2006definition}. More recently, the use of the A1C assays for diagnosis was considered, though current point-of-care A1C assays were considered insufficiently accurate \citep{international2009international}.
 
 \begin{table}[!h]
 \colorbox{gray!20!white}{\parbox{\textwidth}{
@@ -47,10 +49,13 @@ The OGTT as diagnostic test was widely agreed upon, though in 2003 the American 
 \item 2-hour plasma glucose $< 7.8$ mmol/l (if measured).
 \end{itemize}
 \end{itemize}
-\caption{Diagnostic criteria as recommended by the WHO \citep{world2006definition}.} \label{intro:who-diagnosis}
+}}
+\caption{Diagnostic criteria for T2D as recommended by the WHO \citep{world2006definition}.} \label{intro:who-diagnosis}
 \end{table}
 
 \subsubsection{Existing screening approaches} \label{intro:screening-existing}
+The clinical inertia in diagnosing type 2 diabetes is being tackled by a wide variety of screening approaches, which commonly rely on information that is already available or relatively easy to obtain. The main method to implement such screening methods is via questionnaires, possibly paired with clinical information such as parameters recorded in patients' electronic health records or by general practioners.
+
 The Cambridge Risk Score (CRS) was developed to assess the probability of undiagnosed T2D based on data that is routinely available in primary care records, including age, sex, medication use, family history of diabetes, BMI and smoking status \citep{griffin2000diabetes}, The CRS and comparable scores have been shown to be useful on multiple occasions \citep{baan1999performance,griffin2000diabetes, park2002performance, spijkerman2004performance}. 
 The FINDRISC score is based on a 10-year follow-up using age, BMI, waist circumference, history of antihypertensive drugs and high blood glucose, physical activity and diet and is used to predict drug-treated diabetes \citep{lindstrom2003diabetes}. The strongest reported predictors in this study were BMI, waist circumference, history of high blood glucose and physical activity. Gl{\"u}mer et al. \citep{glumer2004danish} developed a risk score based on age, sex, BMI, known hypertension, physical activity and family history of diabetes. The German diabetes risk score is based on age, waist circumference, height, history of hypertension, physical activity, smoking, and diet \citep{schulze2007accurate}.
 More complex risk scores include various clinical parameters \citep{heikes2008diabetes, stern2002identification, mcneely2003comparison}.

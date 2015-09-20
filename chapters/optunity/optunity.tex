@@ -73,8 +73,8 @@ Collaborative development is organized via GitHub.\footnote{We maintain the foll
 We recommend prospective users to clone the master branch for the most up-to-date stable version of the software. Bug reports and feature requests can be filed via issues on GitHub. Future development efforts will focus on wrappers for Java and C/C++. We additionally plan to incorporate Bayesian optimizers which have no reference implementation in other packages. %Bayesian optimization strategies that are unavailable elsewhere \citep{jones1998efficient}. 
 
 Code is documented using Sphinx and contains many doctests that can serve as both unit tests and examples of the associated functions. 
-Our website contains API documentation, user documentation and a wide range of examples to illustrate all aspects of the software. 
-The examples involve various packages and environments, including \textsc{scikit-learn} \citep{pedregosa2011scikit}, \textsc{OpenCV} and \textsc{Spark}'s \textsc{MLlib} \citep{zaharia2010spark}.
+Our website contains developer and user documentation and a wide range of examples to illustrate all aspects of the software. 
+The examples involve various packages and environments, including \textsc{scikit-learn} \citep{pedregosa2011scikit}, \textsc{OpenCV} \citep{opencv_library} and \textsc{Spark}'s \textsc{MLlib} \citep{zaharia2010spark}.
 %Finally, some practical applications are available, including object recognition using OpenCV \citep{opencv_library} and deep learning with Theano \citep{bergstra2011theano}. % and semisupervised learning \citep{claesen2014robust}.
 
 %\section{Conclusions}
@@ -82,25 +82,107 @@ The examples involve various packages and environments, including \textsc{scikit
 
 \section{Related Work}
 
-A number of software solutions exist for hyperparameter search. \textsc{Hyperopt} offers random search and sequential model-based optimization \citep{bergstra2013hyperopt}. Some packages dedicated to Bayesian approaches include \textsc{Spearmint} \citep{snoek2012practical}, \textsc{DiceKriging} \citep{roustant2012dicekriging}. Finally, \textsc{ParamILS} is a command-line-only tuning framework providing iterated local search \citep{hutter2009paramils}. 
+A number of software solutions exist for hyperparameter search. \textsc{Hyperopt} offers random search and sequential model-based optimization \citep{bergstra2013hyperopt}. Some packages dedicated to Bayesian approaches include \textsc{Spearmint} \citep{snoek2012practical}, \textsc{DiceKriging} \citep{roustant2012dicekriging}, \textsc{SMAC} \citep{hutter2011sequential} and \textsc{BayesOpt} \citep{martinez2014bayesopt}. Finally, \textsc{ParamILS} provides iterated local search \citep{hutter2009paramils}. 
 
 %Existing packages tend to be one-trick ponies, providing a specific class of optimization methods and offering limited support to users in different machine learning environments. 
 \optunity distinguishes itself from other packages by exposing a variety of fundamentally different solvers through a lightweight API. \optunity's client-server model facilitates integration in any language and environment and can even be used to run solvers remotely.
 
-\section{Solver Performance Benchmark}
-\textsc{Optunity}'s particle swarm optimizer (PSO) was compared to \textsc{Hyperopt}'s tree of Parzen estimators (TPE) in minimizing the Rastrigin function $f(x, y) = 20 + x^2 - 10 \cos(2\pi x) + y^2 - 10 \cos(2\pi y)$, which has a known optimum $f(0,0)=0$.
-%\begin{equation}
-%f(x, y) = 20 + x^2 - 10 \cos(2\pi x) + y^2 - 10 \cos(2\pi y), \quad \text{optimum: } f(0, 0) = 0 \label{eq:rastrigin},
-%\end{equation}
-Optimization was done uniformly within box constraints $|x|, |y| < 5.12$. We used the Rastrigin function because it has many local minima, as is common in hyperparameter search \citep{claesen2015hyperparameter}. Figure~\ref{fig:benchmark} shows that both PSO and TPE outperform random search. TPE is marginally better than PSO initially (few evaluations) while PSO converges much faster later on. PSO has also been shown to be competitive to TPE in tuning RBMs by Papa et al. \citep{papa2015model}.
+\section{Solver Benchmark}
+We compared \textsc{Optunity} against \textsc{BayesOpt} \citep{martinez2014bayesopt}, \textsc{Hyperopt} \citep{bergstra2013hyperopt}, \textsc{SMAC} \citep{hutter2011sequential}, and random search \citep{bergstra2012random}. Implementations of the last three solvers were available in HPOlib \citep{eggensperger2013towards}. We optimized 5-fold cross-validated area under the ROC curve for an SVM classifier with an RBF kernel (with continuous hyperparameters $C$ and $\gamma$), given a fixed search space and a budget of 150 evaluations on 19 real-world problems. Each solver was given identical objective functions. Figures~\ref{fig:optunity-benchmark-75} and \ref{fig:optunity-benchmark-150} summarize the results using critical difference (CD) diagrams as introduced by Dem{\v{s}}ar \citep{demvsar2006statistical}. More detailed results are available in Appendix~\ref{optunity-appendix-benchmark}.\footnote{The benchmark implementation is available at \url{https://github.com/claesenm/optunity-benchmark}.}
+
+\textsc{Optunity} and \textsc{BayesOpt} come out on top as they convincingly outperformed random search at 75 evaluations and took a notable lead over other solvers at 150 function evaluations, though the latter was not statistically significant. Overall, the results indicate that all directed optimizers are competitive and generally outperform random search.
+
+%PSO has also been shown to be competitive to TPE in tuning RBMs by \citet{papa2015model}.
 
 \begin{figure}[!h]
   \centering 
-      \includegraphics[width=0.65\textwidth]{benchmark.pdf} \ \ 
-      \includegraphics[width=0.32\textwidth]{rastrigin.pdf}\vfill
-  \caption{Evolution of average error per solver while minimizing the \textsc{Rastrigin} function (contours depicted on the right) based on 1,000 repetitions. The winner line shows the statistically significant best solver per evaluation count, if any ($\alpha=5\%$).}\label{fig:benchmark}
-\vspace{-3em}
+      \includegraphics[width=0.8\textwidth]{cd_75.pdf}
+\caption{Critical difference diagrams for 75 evaluations to tune an SVM with RBF kernel, depicting average rank per optimizer (lower is better). Optimizers with no statistically significant performance difference are linked with a horizontal bar.}\label{fig:optunity-benchmark-75}
 \end{figure}
+
+\begin{figure}[!h]
+  \centering 
+      \includegraphics[width=0.8\textwidth]{cd_150.pdf}
+\caption{Critical difference diagrams for 150 evaluations to tune an SVM with RBF kernel, depicting average rank per optimizer (lower is better). Optimizers with no statistically significant performance difference are linked with a horizontal bar.}\label{fig:optunity-benchmark-150}
+\end{figure}
+
+
+\begin{subappendices}
+
+\section{Complete benchmark results} \label{optunity-appendix-benchmark}
+In this benchmark we have optimized hyperparameters of an SVM classifier with RBF kernel on an exponential grid $10^{-8} < C < 10$ and $10^{-8} < \gamma < 10$. We used 5-fold cross-validation to estimate area under the ROC curve to build the objective function. All optimizers used the exact same objective function and a uniform prior to optimize $\log_{10}(C)$ and $\log_{10}(\gamma)$ within the specified bounds (the exponentiation was done within the objective function).
+
+We simulated 19 real-world problems based on the \textsc{mnist}, \textsc{covtype}, \textsc{diabetes} and \textsc{ionosphere} data sets. Multiclass datasets were used several times in a one-vs-all setting, i.e., \textsc{mnist} and \textsc{covtype} were used to create 10 and 7 optimization problems, respectively. For some problems we added random noise on the data matrix to make the learning problems more challenging. 
+
+Results of each optimization task at 75 and 150 evaluations are shown in Tables~\ref{table:benchmark-results-75} and \ref{table:benchmark-results-150}, respectively. Full code of all experiments is available at \url{https://github.com/claesenm/optunity-benchmark}.
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+dataset & Optunity & Hyperopt & SMAC & BayesOpt & random & $Q_3$ \\
+\midrule
+\texttt{digits-0} & \textbf{96.34} & 96.28 & 96.25 & 96.28 & 96.04 & 94.88 \\
+\texttt{digits-1} & 92.40 & 92.36 & 91.92 & \textbf{92.60} & 91.78 & 87.28 \\
+\texttt{digits-2} & 92.87 & 92.85 & \textbf{93.17} & 92.93 & 92.07 & 91.27 \\
+\texttt{digits-3} & 90.51 & 90.12 & 90.21 & \textbf{90.87} & 90.44 & 89.06 \\
+\texttt{digits-4} & 95.01 & 94.97 & 95.03 & \textbf{95.24} & 94.95 & 94.32 \\
+\texttt{digits-5} & \textbf{94.90} & 94.50 & 94.52 & 94.65 & 94.33 & 93.13 \\
+\texttt{digits-6} & 96.63 & \textbf{96.91} & 96.66 & 96.66 & 96.34 & 95.88 \\
+\texttt{digits-7} & 95.03 & 94.81 & 95.22 & \textbf{95.35} & 94.31 & 93.32 \\
+\texttt{digits-8} & 82.48 & \textbf{82.62} & 81.53 & 82.06 & 82.61 & 76.12 \\
+\texttt{digits-9} & 86.77 & 86.89 & 87.09 & \textbf{87.32} & 86.26 & 84.05 \\
+\texttt{covtype-1} & \textbf{81.62} & 81.07 & 80.74 & 80.74 & 80.80 & 77.02 \\
+\texttt{covtype-2} & \textbf{80.41} & 79.41 & 79.37 & 79.37 & 78.10 & 74.24 \\
+\texttt{covtype-3} & 97.01 & 97.47 & 97.37 & \textbf{97.73} & 97.35 & 94.01 \\
+\texttt{covtype-4} & 99.93 & 99.80 & 99.92 & \textbf{99.94} & 99.91 & 98.54 \\
+\texttt{covtype-5} & 95.99 & 95.50 & 95.74 & \textbf{96.12} & 95.66 & 89.02 \\
+\texttt{covtype-6} & 96.73 & 97.14 & 97.12 & \textbf{97.53} & 97.30 & 92.59 \\
+\texttt{covtype-7} & 98.06 & 97.77 & 97.48 & \textbf{98.28} & 97.90 & 94.03 \\
+\texttt{diabetes} & 83.13 & 83.62 & \textbf{84.44} & 84.15 & 82.90 & 81.91 \\
+\texttt{ionosphere} & 81.87 & \textbf{82.91} & 81.83 & 81.56 & 80.70 & 73.83 \\
+\midrule
+average rank & 2.632 & 3.105 & 3.053 & \textbf{2.000} & 4.211 & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Benchmark results for tuning an SVM classifier with RBF kernel, using 5-fold cross-validation and an optimization budget of 75 evaluations. Results depict each solver's optimum, which is cross-validated area under the ROC curve (in \%). Average rank indicates non-parametric global performance (lower is better). The last column shows the third quantile $Q_3$ of random search results, indicating the difficulty of the optimization problem: low $Q_3$ vis-\`a-vis the optimum indicates the region of strong performance is small within the overall search space.}
+\label{table:benchmark-results-75}
+\end{table}
+
+\begin{table}[!h]
+\centering
+\begin{tabular}{lcccccc}
+\toprule
+dataset & Optunity & Hyperopt & SMAC & BayesOpt & random & $Q_3$ \\
+\midrule
+\texttt{digits-0} & 96.43 & 96.28 & 96.29 & \textbf{96.54} & 96.04 & 94.88 \\
+\texttt{digits-1} & 92.40 & 92.69 & 92.19 & \textbf{93.21} & 92.21 & 87.28 \\
+\texttt{digits-2} & \textbf{93.27} & 92.87 & 93.17 & 93.10 & 92.34 & 91.27 \\
+\texttt{digits-3} & 90.69 & 90.54 & 90.59 & \textbf{90.87} & 90.44 & 89.06 \\
+\texttt{digits-4} & \textbf{95.39} & 95.34 & 95.13 & 95.24 & 94.95 & 94.32 \\
+\texttt{digits-5} & \textbf{94.90} & 94.50 & 94.67 & 94.65 & 94.33 & 93.13 \\
+\texttt{digits-6} & 96.71 & \textbf{96.91} & 96.66 & 96.66 & 96.84 & 95.88 \\
+\texttt{digits-7} & 95.11 & 95.10 & 95.22 & \textbf{95.36} & 94.54 & 93.32 \\
+\texttt{digits-8} & \textbf{83.44} & 82.62 & 82.08 & 82.19 & 82.61 & 76.12 \\
+\texttt{digits-9} & \textbf{87.49} & 87.22 & 87.09 & 87.32 & 86.50 & 84.05 \\
+\texttt{covtype-1} & 82.24 & 81.89 & \textbf{82.43} & \textbf{82.43} & 80.80 & 77.02 \\
+\texttt{covtype-2} & \textbf{81.18} & 80.41 & 80.33 & 80.33 & 78.52 & 74.24 \\
+\texttt{covtype-3} & 97.55 & 97.51 & 97.37 & \textbf{97.76} & 97.35 & 94.01 \\
+\texttt{covtype-4} & 99.93 & 99.91 & 99.92 & \textbf{99.94} & 99.91 & 98.54 \\
+\texttt{covtype-5} & 95.99 & 95.67 & 95.74 & \textbf{96.38} & 95.66 & 89.02 \\
+\texttt{covtype-6} & \textbf{97.59} & 97.52 & 97.39 & \textbf{97.59} & 97.30 & 92.59 \\
+\texttt{covtype-7} & 98.23 & 98.00 & 97.88 & \textbf{98.36} & 97.90 & 94.03 \\
+\texttt{diabetes} & 83.33 & 84.21 & \textbf{84.44} & 84.29 & 83.25 & 81.91 \\
+\texttt{ionosphere} & 81.87 & \textbf{82.91} & 82.42 & 81.99 & 81.16 & 73.83 \\
+\midrule
+average rank & \textbf{2.105} & 3.053 & 3.158 & \textbf{2.105} & 4.579 & N/A \\
+\bottomrule
+\end{tabular}
+\caption{Benchmark results for tuning an SVM classifier with RBF kernel, using 5-fold cross-validation and an optimization budget of 150 evaluations. Results depict each solver's optimum, which is cross-validated area under the ROC curve (in \%). Average rank indicates non-parametric global performance (lower is better). The last column shows the third quantile $Q_3$ of random search results, indicating the difficulty of the optimization problem: low $Q_3$ vis-\`a-vis the optimum indicates the region of strong performance is small within the overall search space.}
+\label{table:benchmark-results-150}
+\end{table}
+
+\end{subappendices}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Keep the following \cleardoublepage at the end of this file, 

@@ -104,7 +104,7 @@ The positive class was defined as patients that require GLAs for long-term glyce
 Learning binary classifiers from positive and unlabeled data (PU learning) is a well-studied branch of semi-supervised learning \citep{Lee03learningwith,Elkan:2008:LCO:1401890.1401920,mordelet2014bagging,Claesen2015resvm}. PU learning is more challenging than fully supervised binary classification, since it requires special learning approaches and quality metrics for hyperparameter optimization that account for the lack of known negatives. We benchmarked three PU learning methods, which are discussed in more detail in Section~\ref{learning-methods}. 
 
 \paragraph{Software}
-The entire data analysis pipeline was implemented using open-source software. For general data transformations and preprocessing we used \emph{SciPy} and \emph{NumPy} \citep{scipy,van2011numpy}. The learning algorithms we used are available in \emph{scikit-learn} and \emph{EnsembleSVM} \citep{pedregosa2011scikit, JMLR:v15:claesen14a} . Finally, we used \emph{Optunity} for automated hyperparameter optimization \citep{claesen2014easy}.
+The entire data analysis pipeline was implemented using open-source software. For general data transformations and preprocessing we used \emph{SciPy} and \emph{NumPy} \citep{scipy,van2011numpy}. The learning algorithms we used are available in \emph{scikit-learn} and \emph{EnsembleSVM} \citep{pedregosa2011scikit, ensemblesvm-jmlr} . Finally, we used \emph{Optunity} for automated hyperparameter optimization \citep{claesen2014easy}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -167,7 +167,7 @@ The simplest way to represent medication purchases during a time interval is by 
 We can directly use the hierarchical structure of the ATC system to define a measure of similarity between drugs. To impose structure between drugs we included input dimensions related to more generic levels of the ATC hierarchy (levels 1 to 4). On more generic levels we summed all DDD counts of active substances per category (level 5). This redundancy allowed us to express similarity between different active substances with a standard inner product. By normalizing every feature to the unit interval, we obtained the desired effect that patients with comparable drug use on ATC level 5 are more similar than patients that only share coefficients on more generic levels.
 Figure~\ref{fig:medication-vectorization} illustrates this vector representation of trees and the effect of normalization.
 
-\begin{figure}[!h]
+\begin{figure}[!p]
   \centering
   \includegraphics[width=\textwidth]{medication-vectorization.pdf}
   \caption{Visualization and vectorization of trees. In the tree representation, the value of internal nodes is the sum of the values of its children. The unnormalized vector representations $\mathcal{V}_A$ and $\mathcal{V}_B$ contain the values per node in the tree representation in some fixed order. Inner products between unnormalized representations $\mathcal{V}_A$ and $\mathcal{V}_B$ are mainly influenced by the top level nodes, since those have the largest value by construction. This undesirable effect can be fixed through feature-wise scaling. The scaling vector $\mathcal{S}$ was constructed using node-wise maxima. The normalized vector representations $\mathcal{V}_A^\star$ and $\mathcal{V}_B^\star$ are obtained by dividing the vector representations ($\mathcal{V}_A$, $\mathcal{V}_B$) element-wise by entries in the scaling vector $\mathcal{S}$. $\mathcal{V}_A^\star$ and $\mathcal{V}_B^\star$ are used as input to classifiers in the remainder of this work. As desired, the inner product of normalized vector representations is increasingly influenced by similarities at higher depths in the tree representations.} 
@@ -197,7 +197,7 @@ vectorization	 & description	 & $\dmeds$ \\
 \subsubsection{Representation of Provision Records} \label{nomenclature}
 When considering a specific time period, we can describe records by a (sparse) three-dimensional tensor containing frequency counts as illustrated in Figure \ref{fig:provisions-tensor}. We filtered all provisions with a description containing \emph{diabetes}, \emph{insulin} and \emph{glucose} and provisions not recorded with a physician identifier. After filtering, 5,799 distinct provision codes remain (denoted by $\# provisions$).
 
-\begin{figure}[!h]
+\begin{figure}[!p]
   \centering
   \includegraphics[width=\textwidth]{provisions-tensor.pdf}
   \caption{Tensor formulation of medical provisions with three components: patients, physicians and provisions. Each entry in the tensor is the frequency of the given tuple. This provision tensor is very sparse. The patient matrix is obtained by summing counts over all physicians (transposed). The physician matrix is obtained by summing counts over all patients. These matrices capture complementary information.} 
@@ -276,12 +276,12 @@ Bagging SVM with linear base models has two hyperparameters, namely the size of 
 \begin{equation}
 C_{\mathcal{P}} = \frac{n_{\mathcal{U}} \times C_{\mathcal{U}}}{|\mathcal{P}|}, \label{eq:bagpenalties}
 \end{equation}
-where $|\mathcal{P}|$ denotes the number of known positives. The heuristic rule in Equation~\ref{eq:bagpenalties} is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. We implemented bagging SVM using the EnsembleSVM library \citep{JMLR:v15:claesen14a}.
+where $|\mathcal{P}|$ denotes the number of known positives. The heuristic rule in Equation~\ref{eq:bagpenalties} is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. We implemented bagging SVM using the EnsembleSVM library \citep{ensemblesvm-jmlr}.
 
 \subsubsection{Robust Ensemble of SVM models}
 The robust ensemble of SVM models (RESVM) is a modified version of bagging SVM in which both the positive and unlabeled sets are resampled when constructing base model training sets \citep{Claesen2015resvm}. The extra resampling induces additional variability between base models which improves performance when combined with a majority vote aggregation scheme. Claesen et al. \citep{Claesen2015resvm} demonstrated that resampling the positive set provides robustness against false positives, which makes RESVM appealing for our application since our data set is known to contain a small fraction of false positives (as explained in Section~\ref{data}).
 
-When using linear base models, the RESVM approach has four hyperparameters that must be tuned, namely resample sizes and misclassification penalties per class. This approach was implemented based on EnsembleSVM \citep{JMLR:v15:claesen14a}.
+When using linear base models, the RESVM approach has four hyperparameters that must be tuned, namely resample sizes and misclassification penalties per class. This approach was implemented based on EnsembleSVM \citep{ensemblesvm-jmlr}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

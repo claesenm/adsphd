@@ -174,7 +174,7 @@ The positive class was defined as patients that require GLAs for long-term glyce
 Learning binary classifiers from positive and unlabeled data (PU learning) is a well-studied branch of semi-supervised learning \citep{Lee03learningwith,Elkan:2008:LCO:1401890.1401920,mordelet2014bagging,Claesen2015resvm}. PU learning is more challenging than fully supervised binary classification, since it requires special learning approaches and quality metrics for hyperparameter optimization that account for the lack of known negatives. We benchmarked three PU learning methods, which are discussed in more detail in Section~\ref{learning-methods}. 
 
 \paragraph{Software}
-The entire data analysis pipeline was implemented using open-source software. For general data transformations and preprocessing we used \emph{SciPy} and \emph{NumPy} \citep{scipy,van2011numpy}. The learning algorithms we used are available in \emph{scikit-learn} and \emph{EnsembleSVM} \citep{pedregosa2011scikit, JMLR:v15:claesen14a} . Finally, we used \emph{Optunity} for automated hyperparameter optimization \citep{claesen2014easy}.
+The entire data analysis pipeline was implemented using open-source software. For general data transformations and preprocessing we used \emph{SciPy} and \emph{NumPy} \citep{scipy,van2011numpy}. The learning algorithms we used are available in \emph{scikit-learn} and \emph{EnsembleSVM} \citep{pedregosa2011scikit, ensemblesvm-jmlr} . Finally, we used \emph{Optunity} for automated hyperparameter optimization \citep{claesen2014easy}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -342,12 +342,12 @@ Bagging SVM with linear base models has two hyperparameters, namely the size of 
 \begin{equation}
 C_{\mathcal{P}} = \frac{n_{\mathcal{U}} \times C_{\mathcal{U}}}{|\mathcal{P}|}, \label{eq:bagpenalties}
 \end{equation}
-where $|\mathcal{P}|$ denotes the number of known positives. The heuristic rule in Equation~\ref{eq:bagpenalties} is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. We implemented bagging SVM using the EnsembleSVM library \citep{JMLR:v15:claesen14a}.
+where $|\mathcal{P}|$ denotes the number of known positives. The heuristic rule in Equation~\ref{eq:bagpenalties} is common in imbalanced settings \citep{cawley2006leave,daemen2009kernel}. We implemented bagging SVM using the EnsembleSVM library \citep{ensemblesvm-jmlr}.
 
 \subsubsection{Robust Ensemble of SVM models}
 The robust ensemble of SVM models (RESVM) is a modified version of bagging SVM in which both the positive and unlabeled sets are resampled when constructing base model training sets \citep{Claesen2015resvm}. The extra resampling induces additional variability between base models which improves performance when combined with a majority vote aggregation scheme. \citet{Claesen2015resvm} demonstrated that resampling the positive set provides robustness against false positives, which makes RESVM appealing for our application since our data set is known to contain a small fraction of false positives (as explained in Section~\ref{data}).
 
-When using linear base models, the RESVM approach has four hyperparameters that must be tuned, namely resample sizes and misclassification penalties per class. This approach was implemented based on EnsembleSVM \citep{JMLR:v15:claesen14a}.
+When using linear base models, the RESVM approach has four hyperparameters that must be tuned, namely resample sizes and misclassification penalties per class. This approach was implemented based on EnsembleSVM \citep{ensemblesvm-jmlr}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

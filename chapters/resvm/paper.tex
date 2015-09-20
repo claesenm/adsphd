@@ -347,7 +347,7 @@ The nonparametric Wilcoxon signed-rank test is recommended for pairwise comparis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \paragraph{Implementation details}
-We used the class-weighted SVM implementation available in LIBLINEAR \citep{fan2008liblinear} and LIBSVM \citep{CC01a} for models using the linear and RBF kernel, respectively. Bagging SVM and \resvm\ were implemented using the EnsembleSVM library \citep{claesen14}.\footnote{Python code for RESVM is available at \url{https://github.com/claesenm/resvm}.} The decision values of bagging SVM used to compute PR curves were defined in the same way as for RESVM (see Section~\ref{ensembledecvals}).
+We used the class-weighted SVM implementation available in LIBLINEAR \citep{Fan:2008:LLL:1390681.1442794} and LIBSVM \citep{CC01a} for models using the linear and RBF kernel, respectively. Bagging SVM and \resvm\ were implemented using the EnsembleSVM library \citep{ensemblesvm-jmlr}.\footnote{Python code for RESVM is available at \url{https://github.com/claesenm/resvm}.} The decision values of bagging SVM used to compute PR curves were defined in the same way as for RESVM (see Section~\ref{ensembledecvals}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
