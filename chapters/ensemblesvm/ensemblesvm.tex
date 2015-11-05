@@ -39,24 +39,25 @@ of $\bigomega(n^2/p)$. This reduction in complexity helps in dealing
 with large data sets and nonlinear kernels.
 
 
-Ensembles of SVM models have been used in various applications
+Ensembles consisting of SVM models have been used in various applications
 \citep{Wang20096466,5646323,mordelet2011prodige}.
 Collobert et al. \citep{Collobert02} use ensembles for large scale learning and employ a neural
 network to aggregate base models.
 Valentini and Dietterich \citep{Valentini03lowbias} provide an implementation which allows base models to use different kernels.
-For efficiency reasons, we require base models to share a single kernel function. 
+We require base models to share a single kernel function for efficiency. 
 
-While other implementations mainly focus on improving predictive performance, our framework
-primarily aims to (i) make nonlinear large-scale learning feasible through complexity reductions and (ii) enable fast prototyping of novel ensemble algorithms.
+While other implementations mainly focus on improving predictive performance, we
+primarily aim to (i) make nonlinear large-scale learning feasible through complexity reductions and (ii) enable prototyping of novel ensemble algorithms.
+
+The default ensemble learning approach we offer is bagging, which is commonly used to improve the
+performance of unstable classifiers \citep{Breiman:1996:BP:231986.231989}. In
+bagging, base models are trained on bootstrap resamples of the training set
+and their predictions are aggregated through majority voting. A critical aspect of bagging is that base models should have low bias but may exhibit high variance \citep{Breiman:1996:BP:231986.231989, bauer1999empirical, biasvariance}, which makes base models like decision trees ideal \citep{breiman2001random}. Typically, SVM classifiers are considered stable \citep{bousquet2002stability} and by implication ill suited for bagging frameworks. However, when using SVM base models in a bagging setup, variance can be promoted while simultaneously reducing bias by using small base model training sets in combination with high misclassification penalties. Effectively, overfitting the base models may positively affect overall performance of the ensemble due to increased efficiency of aggregation. As such, bagging SVM models requires striking a balance between base model performance vis-\`a-vis aggregation benefits for a given learning task. This may appear counterintuitive as this tradeoff is difficult to make based on domain knowledge alone. However, appropriate hyperparameterizations enable finding the right balance automatically, for instance using Optunity (cfr. Chapter~\ref{ch:optunity}).
 
 \section{Software Description}
 The \esvm\ software is freely available online under a
 LGPL license. \esvm\ provides ensembles of
 instance-weighted SVMs, as defined in Equation~\eqref{weightedsvm}.
-The default approach we offer is bagging, which is commonly used to improve the
-performance of unstable classifiers \citep{Breiman:1996:BP:231986.231989}. In
-bagging, base models are trained on bootstrap subsamples of the training set
-and their predictions are aggregated through majority voting.
 
 Base model flexibility is maximized by using instance-weighted binary support
 vector machine classifiers, as defined in Equation~\eqref{weightedsvm}. This formulation lets users define
@@ -86,7 +87,7 @@ The \esvm\ programming framework is designed to facilitate prototyping of ensemb
 We particularly provide extensive support to define novel aggregation schemes, should the available options be insufficient. 
 Key components are extensively documented in the code and on a wiki, which serves as a high-level guideline.\footnote{The \esvm\ development wiki is available at \url{https://github.com/claesenm/EnsembleSVM/wiki}.} Intuitive APIs are provided for convenient features such as thread pools, command line interface and deserialization to enable users to develop new tools efficiently.
 
-\newpage
+%\newpage
 {\noindent}The \esvm\ library was built with extensibility and user
 contributions in mind.
 Major API functions are well documented to lower the threshold
@@ -112,7 +113,7 @@ We used two binary classification problems, namely the {\tt covtype} and {\tt ij
 at: \url{http://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}
 and UCI.} Both data sets are balanced. Features were always scaled to $[0,1]$. We have
 used C-SVC as SVM and base models ($\forall\ i: C_i=C$). Reported numbers are averages of $5$ test runs to ensure reproducibility. We used the RBF kernel, defined by the kernel function
-$\kernelfun(\mathbf{x}_i,\mathbf{x}_j)=e^{-\rbfparam ||\mathbf{x}_i-\mathbf{x}_j||^2}$.
+$\kernelfun(\mathbf{x}_i,\mathbf{x}_j)=\exp\big(-\rbfparam ||\mathbf{x}_i-\mathbf{x}_j||^2\big)$.
 Optimal parameter selection was done through cross-validation.
 
 The \texttt{covtype} data set is a common classification benchmark featuring

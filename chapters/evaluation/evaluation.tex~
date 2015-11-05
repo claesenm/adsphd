@@ -1,13 +1,15 @@
 \chapter{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}\label{ch:evaluation}
 
-\chapterfrontpagesubmitted{
+\chapterfrontpagetosubmit{
 Claesen, M., Davis, J., De Smet, F., \& De Moor, B. (2015). 
 \textbf{Assessing Binary Classifiers Using Only Positive and Unlabeled Data},
-\emph{Neural Information Processing Systems (NIPS)}.
+\emph{22nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining (ACM SIGKDD 2016)}.
 }{
 Marc Claesen has derived the approach and formulated all proofs, implemented a proof-of-concept and made examples. He took the lead in writing the initial draft and revisions,
 }{
 Assessing the performance of a learned model is a crucial part of machine learning. However, in some domains only positive and unlabeled examples are available, which prohibits the use of most standard evaluation metrics. We propose an approach to estimate any metric based on contingency tables, including ROC and PR curves, using only positive and unlabeled data. Estimating these performance metrics is essentially reduced to estimating the fraction of (latent) positives in the unlabeled set, assuming known positives are a random sample of all positives. We provide theoretical bounds on the quality of our estimates, illustrate the importance of estimating the fraction of positives in the unlabeled set and demonstrate empirically that we are able to reliably estimate ROC and PR curves on real data.
+}{
+ACM SIGDKDD 2016
 }
 
 \makeatletter

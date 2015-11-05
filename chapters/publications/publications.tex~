@@ -16,13 +16,17 @@ Neurocomputing, 160, 73-84.
         Submitted to Journal of Clinical Endocrinology and Metabolism.
 \item Claesen, M., Simm, J., Popovic, D., Moreau, Y., \& De Moor, B. (2015). ``\emph{Easy hyperparameter search using Optunity}''. \\
         Submitted to Journal of Machine Learning Research.
-\item Claesen, M., Davis, J., De Smet, F., \& De Moor, B. (2015). ``\emph{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}'', \\
-        Submitted to Journal of Machine Learning Research.
 \end{itemize}
 
 \section*{International conference papers (published)}
 \begin{itemize}
 \item Claesen, M., \& De Moor, B. (2015). ``\emph{Hyperparameter Search in Machine Learning}''. In Proceedings of the 11th Metaheuristics International Conference (MIC), Agadir, Morocco. \\ Manuscript available at \url{http://arxiv.org/abs/1502.02127}.
+\end{itemize}
+
+\section*{International conference papers (to be submitted)}
+\begin{itemize}
+\item Claesen, M., Davis, J., De Smet, F., \& De Moor, B. (2015). ``\emph{Assessing Binary Classifiers Using Only Positive and Unlabeled Data}'', \\
+        Will be submitted to the 22nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining (ACM SIGKDD 2016).
 \end{itemize}
 
 \section*{Conference abstracts}

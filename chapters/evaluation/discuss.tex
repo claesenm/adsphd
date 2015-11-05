@@ -43,16 +43,30 @@ In either case, if $\hat{\pfrac}$ is not exact, the conditions of Lemma~\ref*{le
 % 	LEMMA SIZE -> FPR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{replemma}{lemma-size-fpr}
+\begin{lemma} \label{lemma-size-fpr}
 Given two sets of positive labels $\pos_1$ and $\pos_2$ within an overall ranking $\overall$ and a rank $\ranksymb$, such that $\TPR(\pos_1,\ranksymb) = \TPR(\pos_2,\ranksymb)=t$ and $|\pos_1| > |\pos_2|$, then:
 \begin{align*}
-%\begin{tikzpicture}[baseline=-0.5ex] \node [draw=none, fill=cyan!80!black, fill opacity=0.4, text opacity=0.9, rounded corners] (blah) {$(a)$}; \end{tikzpicture}
-(a)\quad \FPR(\pos_2, r) < \tprsymb &\rightarrow \FPR(\pos_1, r) < \FPR(\pos_2, r), \\
-%\begin{tikzpicture}[baseline=-0.5ex] \node [draw=none, fill=red!80!black, fill opacity=0.4, text opacity=0.9, rounded corners] (blah) {$(b)$}; \end{tikzpicture}
-(b)\quad \FPR(\pos_2, r) > \tprsymb &\rightarrow \FPR(\pos_1, r) > \FPR(\pos_2, r).
+\begin{tikzpicture}[baseline=-0.5ex] \node [draw=none, fill=cyan!80!black, fill opacity=0.4, text opacity=0.9, rounded corners] (blah) {$(a)$}; \end{tikzpicture}
+\quad \FPR(\pos_2, r) < \tprsymb &\rightarrow \FPR(\pos_1, r) < \FPR(\pos_2, r), \\
+\begin{tikzpicture}[baseline=-0.5ex] \node [draw=none, fill=red!80!black, fill opacity=0.4, text opacity=0.9, rounded corners] (blah) {$(b)$}; \end{tikzpicture}
+\quad \FPR(\pos_2, r) > \tprsymb &\rightarrow \FPR(\pos_1, r) > \FPR(\pos_2, r).
 \end{align*}
-(a) corresponds to a ranking and cutoff that is better than random (i.e. $\TPR(\pos,r) > \FPR(\pos,r)$).% whereas (b) corresponds to a ranking and cutoff that is worse than random.% (see Figure~\ref{fig:lemma-size-fpr}).
-\end{replemma}
+(a) corresponds to a ranking and cutoff that is better than random (i.e. $\TPR(\pos,r) > \FPR(\pos,r)$) whereas (b) corresponds to a ranking and cutoff that is worse than random.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{lemma_size_fpr.pdf}
+  \caption[]{Illustration of Lemma~\ref*{lemma-size-fpr}, with $\pos_A \subset \overall$, $\pos_B \subset \overall$, $\pos_C \subset \overall$, \begin{tikzpicture}[baseline=-0.5ex] \node [draw=none, fill=cyan!80!black, fill opacity=0.4, text opacity=0.9, rounded corners] (blah) {$|\pos_A| > |\pos_C|$}; \end{tikzpicture} and \begin{tikzpicture}[baseline=-0.5ex] \node [draw=none, fill=red!80!black, fill opacity=0.4, text opacity=0.9, rounded corners] (blah) {$|\pos_B| > |\pos_C|$}; \end{tikzpicture}. If two sets of positives $\pos_1$ and $\pos_2$ achieve a given TPR at the same rank $r$, e.g. $\TPR(\pos_1,r)=\TPR(\pos_2,r)$ and $|\pos_1| > |\pos_2|$ then $\FPR(\pos_1,r) < \FPR(\pos_2,r)$ if $\FPR(\pos_2,r) < \TPR(\pos_2,r)$ and otherwise $\FPR(\pos_1,r) > \FPR(\pos_2,r)$.} 
+  \label{fig:lemma-size-fpr}
+\end{figure}
+
+\textbf{Proof}: take the derivative of FPR to $|\pos|$ while fixing $\ranksymb$, based on Equation~\eqref{tpr-fpr}:
+\begin{align}
+\frac{d\FPR(\pos, \ranksymb)}{d|\pos|} &= \frac{\ranksymb-\tprsymb\cdot|\overall|}{(|\overall|-|\pos|)^2}, \nonumber \\
+&= \frac{\ranksymb-\tprsymb\cdot|\pos| - \tprsymb \cdot|\overall-\pos|}{(|\overall|-|\pos|)^2}. \label{FPR_ifv_gamma}
+\end{align}
+$r-\tprsymb\cdot|\pos|$ is the number of negatives in the top ranking (false positives) and $\tprsymb\cdot|\overall - \pos|$ is the number of false positives at $\FPR=\tprsymb$. The derivative is negative if the $\FPR$ is below $\tprsymb$ and vice versa, therefore if the ranking is better than random ($\TPR = \tprsymb > \FPR$), increasing $|\pos|$ leads to a lower $\FPR$ at rank $\ranksymb$ and vice versa. \hfill $\blacksquare$
+\end{lemma}
 
 Lemma~\ref*{lemma-size-fpr} has a large practical impact. If the ranking of $\knownpos$ is better than random, then over and under estimating $\hat{\pfrac}$ is useful to obtain a (loose) upper/lower bound on performance curves, respectively. In other words, given bounds or a CI on $\pfrac$, that is $\hat{\pfrac}_{lo} \leq \pfrac \leq \hat{\pfrac}_{up}$, we can use $\hat{\pfrac}_{lo}$ and $\hat{\pfrac}_{up}$ to estimate a lower and upper bound on the true ROC or PR curve. Bounds computed based on a CI for $\pfrac$ constitute a CI for the performance metric (at the same confidence level), assuming the rank CDF of $\latentpos$ is contained by the confidence band on the rank CDF. Tighter bounds on $\pfrac$ translate directly to tighter bounds on performance estimates. Finally, treating the full unlabeled set as negative results underestimates performance, since $\hat{\pfrac}=0 < \pfrac$. The effect of varying $\hat{\pfrac}$ is shown in Figure~\ref{fig:roc-ifv-beta}.
 

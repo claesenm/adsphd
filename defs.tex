@@ -39,6 +39,7 @@
 %	\fullcite{#1}
 	\end{graybox}
 	\vfill
+	\vspace{-5mm}
 	\paragraph{Contributions}
 	#2
 	\section*{Abstract}
@@ -48,6 +49,22 @@
 \newcommand{\chapterfrontpagesubmitted}[3]{
 	\begin{graybox}
 	This chapter has been submitted as: \\
+%	\ \newline
+	#1
+	% http://gking.harvard.edu/files/bibentry2.pdf
+%	\bibentry{#1}
+%	\fullcite{#1}
+	\end{graybox}
+	\vfill
+	\paragraph{Contributions}
+	#2
+	\section*{Abstract}
+	#3
+}
+
+\newcommand{\chapterfrontpagetosubmit}[4]{
+	\begin{graybox}
+	This chapter will be submitted to \emph{#4} as:\\
 %	\ \newline
 	#1
 	% http://gking.harvard.edu/files/bibentry2.pdf
