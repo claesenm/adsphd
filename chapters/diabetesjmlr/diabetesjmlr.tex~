@@ -197,7 +197,7 @@ vectorization	 & description	 & $\dmeds$ \\
 \subsubsection{Representation of Provision Records} \label{nomenclature}
 When considering a specific time period, we can describe records by a (sparse) three-dimensional tensor containing frequency counts as illustrated in Figure \ref{fig:provisions-tensor}. We filtered all provisions with a description containing \emph{diabetes}, \emph{insulin} and \emph{glucose} and provisions not recorded with a physician identifier. After filtering, 5,799 distinct provision codes remain (denoted by $\# provisions$).
 
-\begin{figure}[!h]
+\begin{figure}[!p]
   \centering
   \includegraphics[width=\textwidth]{provisions-tensor.pdf}
   \caption{Tensor formulation of medical provisions with three components: patients, physicians and provisions. Each entry in the tensor is the frequency of the given tuple. This provision tensor is very sparse. The patient matrix is obtained by summing counts over all physicians (transposed). The physician matrix is obtained by summing counts over all patients. These matrices capture complementary information.} 

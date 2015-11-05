@@ -13,7 +13,7 @@ The challenge of incorporating unlabeled data into an evaluation metric is knowi
 We begin by considering given sets of positives within an overall ranking. Proofs of all lemmas can be found in Appendix~\ref*{proofs}, along with figures to illustrate the associated property.
 
 \begin{replemma}{lemma-rank-fpr}
-Given a rank $\ranksymb$ and two disjoint subsets of positives $\pos_1$ and $\pos_2$ within an overall ranking $\overall$. If $|\pos_1|=|\pos_2|$ and $\TPR(\pos_1, \ranksymb) > \TPR(\pos_2,\ranksymb)$, then $\FPR(\pos_1,\ranksymb) < \FPR(\pos_2,\ranksymb)$.
+Given a rank $\ranksymb$ and two disjoint subsets of positives $\pos_1$ and $\pos_2$ within an overall ranking $\overall$. If $|\pos_1|=|\pos_2|$ and $\TPR(\pos_1, \ranksymb) > \TPR(\pos_2,\ranksymb)$, then $\FPR(\pos_1,\ranksymb) < \FPR(\pos_2,\ranksymb)$. If $\TPR(\pos_1, \ranksymb) = \TPR(\pos_2,\ranksymb)$, then $\FPR(\pos_1, \ranksymb) = \FPR(\pos_2,\ranksymb)$.
 \end{replemma}
 
 

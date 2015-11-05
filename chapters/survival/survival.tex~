@@ -208,9 +208,6 @@ Compared to their associated matched controls, patients on metformin monotherapy
 
 Comparable differences were seen in survival of patients without a history of cardiovascular (CV) events, with the lowest survival rates in therapies involving both insulin and SU (up to 29\% difference after 5 years) (Table~\ref{table:survival-results}). Patients with a history of CV events consistently exhibited lower survival than patients without a CV history, but excess mortality compared to matched controls was comparable for both subgroups. Of note, the survival of patients with a CV history on metformin monotherapy was not significantly different from the survival of the associated controls.  The observed survival benefit of metformin monotherapy disappeared in combination therapy cohorts (Table~\ref{table:survival-results}).
 
-% TODO FIX ME
-\todo{fix table}
-%\ifx
 \begin{table}[!p]
 \begin{tabular}{lcccl}
 \toprule

@@ -82,7 +82,7 @@ Given an overall ranking $\overall$ consisting of disjoint sets of known positiv
 
 \textbf{Proof}: Step 1: assign a set of surrogate positives $\surrpos$:\footnote{A surrogate positive is an example that we treat as if its ground truth label is positive (even though in reality its ground truth label is unknown) when constructing a contingency table.}
 \begin{align}
-\surrpos = &\argmin_{\surrposopt\subset\ \unlabeled}\ \TPR(\surrposopt, \ranksymb), \\ \label{eq:surrpos-def} 
+\surrpos = &\argmin_{\surrposopt\subset\ \unlabeled}\ \TPR(\surrposopt, \ranksymb), \label{eq:surrpos-def}  \\ 
 &\subjectto\ \TPR(\surrposopt,\ranksymb) \geq \mathcal{T}_{ub}(\ranksymb) \text{ and } |\surrposopt|=\pfrac\cdot|\unlabeled|, \nonumber
 \end{align}
 then $\TPR(\surrpos,\ranksymb) \geq \TPR(\latentpos,\ranksymb)$ by construction. If $|\topfun(\unlabeled, r)| < \pfrac\mathcal{T}_{ub}(\ranksymb)\cdot |\unlabeled|$, then no $\surrpos$ exists that satisfies the constraint $\TPR(\surrpos, \ranksymb) \geq \mathcal{T}_{ub}(\ranksymb)$ in Equation~\eqref{eq:surrpos-def}.\footnote{An infeasibility implies that $\mathcal{T}_{ub}(\ranksymb)$ and/or $\pfrac$ are too high.} In this case, treat all instances in $\topfun(\unlabeled, \ranksymb)$ as surrogate positive, which trivially implies $\TPR(\surrpos, \ranksymb) \geq \TPR(\latentpos, \ranksymb)$.

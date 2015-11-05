@@ -196,6 +196,9 @@ test:
 # Default build target
 default: $(PDFFILE)
 
+rebuttal.pdf: rebuttal.tex
+	pdflatex rebuttal.tex
+
 ##############################################################################
 ### BUILD PDF/PS (with relaxed dependencies on bibtex, nomenclature, glossary)
 

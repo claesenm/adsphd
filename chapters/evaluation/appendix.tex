@@ -1,7 +1,7 @@
 \section{Proofs} \label{proofs}
 
 \begin{lemma} \label{lemma-rank-fpr}
-Given a rank $\ranksymb$ and two disjoint subsets of positives $\pos_1$ and $\pos_2$ within an overall ranking $\overall$. If $|\pos_1|=|\pos_2|$ and $\TPR(\pos_1, \ranksymb) > \TPR(\pos_2,\ranksymb)$, then $\FPR(\pos_1,\ranksymb) < \FPR(\pos_2,\ranksymb)$ (see Figure~\ref{fig:lemma-rank-fpr}).
+Given a rank $\ranksymb$ and two disjoint subsets of positives $\pos_1$ and $\pos_2$ within an overall ranking $\overall$. If $|\pos_1|=|\pos_2|$ and $\TPR(\pos_1, \ranksymb) > \TPR(\pos_2,\ranksymb)$, then $\FPR(\pos_1,\ranksymb) < \FPR(\pos_2,\ranksymb)$ (see Figure~\ref{fig:lemma-rank-fpr}). If $\TPR(\pos_1, \ranksymb) = \TPR(\pos_2,\ranksymb)$, then $\FPR(\pos_1, \ranksymb) = \FPR(\pos_2,\ranksymb)$.
 
 \begin{figure}[!h]
   \centering
@@ -14,7 +14,9 @@ Given a rank $\ranksymb$ and two disjoint subsets of positives $\pos_1$ and $\po
 \begin{align}
 \FPR(\pos, \ranksymb) &= \frac{\ranksymb - \TPR(\pos, r) \cdot |\pos|}{|\overall|-|\pos|} \label{tpr-fpr}.
 \end{align}
-Since $|\pos_1|=|\pos_2|$, the denominators of $\FPR(\pos_1,\ranksymb)$ and $\FPR(\pos_2,\ranksymb)$ are equal, so $\TPR(\pos_1,\ranksymb)>\TPR(\pos_2,\ranksymb) \leftrightarrow \FPR(\pos_1,\ranksymb) < \FPR(\pos_2,\ranksymb)$.\hfill$\blacksquare$
+Since $|\pos_1|=|\pos_2|$, the denominators of $\FPR(\pos_1,\ranksymb)$ and $\FPR(\pos_2,\ranksymb)$ are equal, so $\TPR(\pos_1,\ranksymb)>\TPR(\pos_2,\ranksymb) \leftrightarrow \FPR(\pos_1,\ranksymb) < \FPR(\pos_2,\ranksymb)$.
+
+$\TPR(\pos_1, \ranksymb) = \TPR(\pos_2,\ranksymb)$ trivially implies $\FPR(\pos_1, \ranksymb) = \FPR(\pos_2,\ranksymb)$ via Equation~\ref{tpr-fpr}, as all terms in the right hand side are equal for $\mathcal{P}_1$ and $\mathcal{P}_2$. \hfill$\blacksquare$
 \end{lemma}
 
 
