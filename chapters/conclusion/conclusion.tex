@@ -22,9 +22,38 @@ In Chapter~\ref{ch:evaluation} we described how to compute any contingency table
 
 
 \section{Screening for type 2 diabetes} \label{conclusion:screening}
-We set out to investigate the extent to which health expenditure data enables clinical applications like screening for T2D, and thereby improve healthcare. During this research we have successfully developed a proof-of-concept screening method for type 2 diabetes, based exclusively on readily-available health expenditure data collected by the largest Belgian mutual health insurer. Our performance benchmarks have indicated competitiveness to existing screening approaches for T2D that have proven useful in international contexts. Our work can serve as the basis for cost-effective population-wide screening for type 2 diabetes which would strengthen secondary prevention of the disease.
+We set out to investigate the extent to which health expenditure data enables clinical applications like screening for T2D, and thereby improve healthcare. During this research we have successfully developed a proof-of-concept screening method for type 2 diabetes, based exclusively on readily-available health expenditure data collected by the largest Belgian mutual health insurer. Our performance benchmarks have indicated competitiveness to existing screening approaches for T2D that have proven useful in international contexts. Our work can serve as the basis for cost-effective population-wide screening for type 2 diabetes which would strengthen early detection of the disease.
 
 Principally, our screening method identifies patients that likely require glucose lowering agents. This omits patients with less progressed diabetes. Given the way we approached the task, we likely have problems identifying patients suffering from mild (pre)diabetes. That said, we treated such patients as negatives in all performance evaluations, and hence the performance we reported is correctly estimated. In fact, our performance estimates are conservative under the reasonable assumption that the claims history of patients with mild diabetes is somewhere between the claims histories of healthy patients and those of patients with GLA-treated diabetes. Finally, additional experiments indicate that our approach can identify patients years before GLA therapy is initiated.
+
+\subsection{Weaknesses and limitations of our approach}
+The screening approach we developed has a number of weaknesses, related to the labeling of NACM members, limitations of health expenditure data and limitations of machine learning in general.% Each of these are discussed below in more detail.
+
+\subsubsection{Labeling issues}
+The quality of learned models hinges upon the quality of the ground truth on which they are based, that is the representativeness of the sets of known positives and (ideally) known negatives for the positive and negative class, respectively. Any labeling bias will perpetuate throughout the modeling process and bias resulting models and performance estimates to some extent.
+
+\paragraph{Positives} We identified diabetes patients (positives) based on the routine use of glucose-lowering pharmacotherapy. This labeling omits patients that are exclusively on lifestyle interventions and hence only identifies more severe cases of diabetes. By implication, our models are able to identify patients with profiles that are similar to those on GLA therapy, i.e., patients that likely require GLA therapy, though identifying early stage patients is problematic. A more severe problem is that of false positives, i.e., patients on GLA therapy but not for their glucose-lowering effects. Fortunately, the number of false positives can reasonably be assumed negligible, though an exact estimate remains unavailable.
+
+\paragraph{Negatives} As explained in Section~\ref{intro:pulearning}, we had to use semi-supervised learning approaches because it is impossible to directly identify negatives (persons without diabetes). A fully supervised dataset with both positive and negative labels would facilitate learning better models. One way to reliably identify negatives would be to contact individual NACM members to inquire about their health, though this approach may be cost-prohibitive.
+
+\subsubsection{Limitations of health expenditure data}
+An important weakness of screening for type 2 diabetes based on health expenditure records is the fact this data source lacks direct indicators for several key risk factors, including lifestyle, diet and genetic predisposition. Luckily, some of this information may nonetheless be available via proxies, e.g., obesity may be subtlely indicated by treatments of hypertension \citep{rahmouni2005obesity}, asthma \citep{sin2008obesity, sutherland2008association}, joint diseases \citep{symmons1997blood, cooper2000risk} and many more health issues.
+
+Additional problems arise when relevant information is omitted from health expenditure databases, e.g., when patients forget to claim refunds. Finally, we must be aware of potentially relevant biases against certain population segments. For example, poverty, lower health literacy and social exclusion are known barriers to accessing healthcare \citep{qualityequality, pleis2009summary, world2010poverty, accesstohealth} while unfortunately the affected population segments are often exposed to elevated health risks \citep{qualityequality, marmot2008closing}. These increased risks include diseases like obesity and diabetes \citep{riste2001high}.
+
+\subsubsection{Machine learning limitations}
+Machine learning approaches have shown impressive performance on a wide variety of tasks, but it is important to note that machine learning is not a silver bullet that can solve all problems in data analysis. Contemporary machine learning is constrained by limitations which are similar to those imposed on computing in general since the early days of Babbage's Analytical Engine:
+
+\begin{center}
+\begin{minipage}{0.93\textwidth}
+``\emph{The Analytical Engine has no pretensions whatever to originate anything. It can only do whatever we know how to order it to perform. It can follow analysis, but it has no power of anticipating any analytical revelations or truths. Its province is to assist us in making available what we are already acquainted with.}''
+-- Ada Byron, Countess of Lovelace, 1815 -- 1852
+\end{minipage}
+\end{center}
+
+The notion of generalization performance in machine learning does not defy Lady Lovelace's statement, since generalization performance of learned models is entirely contingent upon the degree to which the assumptions underpinning the learning approach hold. These assumptions are made when designing learning algorithms and object representations. An additional crucial factor is the informativeness of the training data and quality of prior knowledge (if any), as is aptly summarized by the mantra of ``\emph{garbage in, garbage out}''.% both of which are often hard to assess objectively.
+
+The key assumption underlying this entire work is that the health expenditure profiles of undiagnosed diabetes patients are similar in some sense to the health expenditure profiles of patients that started glucose-lowering pharmacotherapy. Furthermore, as we used linear SVM (base) models, the assumed similarity should be captured in the input space representation of persons (cfr. Section~\ref{data}). The performance of our approach indicates that our assumptions are reasonable, though our method is not fit to identify atypical diabetes patients. Such limitations can only be overcome by universal screening.
 
 \subsection{Future work} 
 

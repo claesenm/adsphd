@@ -747,6 +747,14 @@ dist:
 	./distribute.sh
 	
 
+.PHONY: desperate
+desperate: thesis.tex
+	make clean
+	make
+	pdflatex thesis.tex
+	pdflatex thesis.tex
+	make
+
 
 ##############################################################################
 
