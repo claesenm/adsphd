@@ -1,0 +1,49 @@
+\chapter*{Preface}                                  \label{ch:preface}
+
+Ever since I was little, I have been fascinated with computers and programming. I started my journey in the digital realm as an avid \emph{Digger} player on a now-prehistoric 8086 MS-DOS PC, moved on to study computer science and mathematical modelling and finally ended up specializing in machine learning to design a screening tool for diabetes. What a long, strange trip it's been \ldots
+
+Before I started my Master's, I never anticipated becoming a PhD student, at least partly due to my ignorance about what scientific research actually means. Now, at the end of my doctoral studies, I am happy to reflect on one of the best choices of my life. The past five years have been inspiring, challenging and rewarding. I am proud to have worked on various meaningful projects and of the promising results we obtained through joint efforts involving many intelligent, creative and fun researchers. I feel priviliged to be a small cog in the giant machine that is scientific research along with so many talented, passionate people.
+
+This thesis summarizes my research work as a PhD student at the STADIUS lab of the Dept. of Electrical Engineering (ESAT) of KU Leuven. My work was done in close collaboration with the National Alliance of Christian Mutualities (NACM), the Dept. of Clinical and Experimental Endocrinology of UZ Leuven and the Dept. of Computer Science of KU Leuven. 
+
+First, I want to thank my promotors Bart De Moor and Frank De Smet for making the project happen and for giving me the freedom to explore different avenues and to define my own research focus. In particular, Frank's help and guidance throughout the project has been invaluable, especially during the initial phases. Secondly, I am grateful to all my supervisors for their guidance and input in the project. Finally, I want to thank all jury members for their highly constructive comments on my work and for their suggestions on how to improve it further. I have learned so much from all of you.
+
+My research would have been impossible without the medical expertise of Profs. Chantal Mathieu and Pieter Gillard. Thank you for all your input and for patiently teaching me about the key aspects of diabetes and its treatment. I am proud to have collaborated with you, and I have always felt flattered by your enthusiasm about the project and the results we obtained.
+
+I am grateful to have been able to learn about machine learning from many talented professors and colleagues. First, I would like to thank Prof. Johan Suykens for his invaluable input in various machine learning aspects and especially for helping me get on track during the initial phase of the project. Thanks to Prof. Yves Moreau for organizing group meetings which taught me a great deal about bioinformatics and for involving me in various projects. Finally, I feel blessed by the collaboration with Prof. Jesse Davis, which taught me a lot about expressing complex ideas and the importance of rewriting until an idea is explained just right.
+
+I want to thank everyone at STADIUS for making the lab an inspiring workplace. Thanks to all my current and former office buddies for the friendships, collaborations and (most importantly?) the lunch breaks! First, thanks to Jaak and Dusan for being such productive coauthors. Next, thanks to Nico, Dusan, Arnaud and Yousef for all the interesting discussions, Gorana for (force?) feeding me cookies and Oliver for his endless supply of bad puns. Thanks to all BIOI members for making the past few years a fantastic experience. I am also grateful to Inge for her help in writing and managing project proposals. The administrative support of Ida, Elsy, John and Wim has been fantastic, as was the technical support by Maarten and Liesbeth.
+
+I received a lot of help from many people at CM and hence I want to thank everyone there for the pleasant and productive collaboration. I would like to specifically show my appreciation to Michael Callens for coordinating the project and advocating in its favor. Thanks also to Koen Cornelis, Bernard Debbaut and Frie Niesten for enlightening me about different aspects of Belgian health insurance and the database infrastructure of CM.
+
+I am grateful to the Flemish Institute of Science and Innovation (IWT) for granting me a doctoral scholarship. Additionally, I feel priviliged to have been able to take part in various workshops and entrepeneurial training sessions organized by iMinds and KU Leuven Research \& Development.
+
+I want to thank all fellow teaching assistants of courses I've been involved in for the nice teamwork. I specifically want to thank Devy for the fun collaboration on the control theory sessions and Nico for making the management of an army of job students enjoyable. Finally, kudos to Mauricio for his incredible dedication to teaching, evidenced by his excellent coordination of the course of CACSD and all the effort that went into setting up the online learning platform.
+
+\newpage
+I owe a debt of gratitude to all my friends, and specifically to Alexander Vandersmissen for showing interest in whatever I do and patiently listening to various rants when their time is due. Thank you for only making moderate amounts of fun of me. Your understanding, support and advice have been extremely motivating and inspiring. 
+
+I want to thank my parents for their incessant patience, support and trust throughout my life. I am grateful to my entire family, which has recently expanded into a global conglomerate. 
+
+In closing, I would like to express my deepest gratitude to my \emph{maganda} wife Joanne. Thank you for your patience and continuous support through the difficult and busy phases of my doctoral studies. You have always kept your faith in me, even when I doubted myself. You are my rock.
+
+\ \newline
+
+{\hfill
+\begin{minipage}{0.4\textwidth}
+Marc\newline
+
+Diepenbeek\newline
+December 2015
+\end{minipage}
+}
+
+%\instructionspreface
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Keep the following \cleardoublepage at the end of this file, 
+% otherwise \includeonly includes empty pages.
+\cleardoublepage
+
+% vim: tw=70 nocindent expandtab foldmethod=marker foldmarker={{{}{,}{}}}
