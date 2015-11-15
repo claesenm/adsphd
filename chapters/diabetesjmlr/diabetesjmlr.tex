@@ -6,7 +6,7 @@ Claesen, M., De Smet, F., Gillard, P., Mathieu, C.\& De Moor, B. (2015). \textbf
 }{
 Marc Claesen has performed all data extractions and preprocessing and developed the learning pipeline. He took the lead in writing the corresponding paper.
 }{
-Early diagnosis is important for type 2 diabetes (T2D) to improve patient prognosis, prevent complications and reduce long-term treatment costs. We present a novel risk profiling approach based exclusively on health expenditure data that is available to Belgian mutual health insurers. We used expenditure data related to drug purchases and medical provisions to construct models that predict whether a patient will start glucose-lowering pharmacotherapy in the coming years, based on that patient's recent medical expenditure history. The design and implementation of the modeling strategy are discussed in detail and several learning methods are benchmarked for our application. Our best performing model obtains between $74.9\%$ and $76.8\%$ area under the ROC curve, which is comparable to state-of-the-art risk prediction approaches for T2D based on questionnaires. In contrast to other methods, our approach can be implemented on a population-wide scale at virtually no extra operational cost. Possibly, our approach can be further improved by additional information about some risk factors of T2D that is unavailable in health expenditure data.
+Early diagnosis is important for type 2 diabetes (T2D) to improve patient prognosis, prevent complications and reduce long-term treatment costs. We present a novel risk profiling approach based exclusively on health expenditure data that is available to Belgian mutual health insurers. We used expenditure data related to drug purchases and medical provisions to construct models that predict whether a patient will require glucose-lowering pharmacotherapy in the coming years, based on that patient's recent medical expenditure history. The design and implementation of the modeling strategy are discussed in detail and several learning methods are benchmarked for our application. Our best performing model obtains between $74.9\%$ and $76.8\%$ area under the ROC curve, which is comparable to state-of-the-art risk prediction approaches for T2D based on questionnaires. In contrast to other methods, our approach can be implemented on a population-wide scale at virtually no extra operational cost. Possibly, our approach can be further improved by additional information about some risk factors of T2D that is unavailable in health expenditure data.
 }
 
 \newcommand{\dmeds}{d_{\rm meds}}
@@ -17,15 +17,15 @@ Type 2 diabetes mellitus (T2D) is a chronic metabolic disorder characterized by 
 
 Several studies have indicated that one third to one half of T2D patients are undiagnosed \citep{harris1998prevalence, king1998global, rubin1994health}. Additionally, patients often remain undiagnosed for extended periods of time, with average diagnose-free intervals ranging from 4 to 7 years \citep{harris1992onset}. The prognosis of untreated patients can deteriorate rapidly as prolonged hyperglycemia can cause serious damage to many of the body's systems. Timely diagnosis of T2D proves challenging in contemporary medicine, as many patients already present signs of complications of the disease at the time of clinical diagnosis of T2D \citep{harris1998risk, rajala1998prevalence, kohner1998united,ballard1988epidemiology,harris2000early, hu2002elevated}.
 
-Earlier diagnosis and subsequent treatment is believed to prevent or delay complications and improve prognosis \citep{pauker1993deciding, engelgau2000screening}. When impaired glucose tolerance is diagnosed early, initial treatment can often be limited to lifestyle changes \citep{pan1997effects,tuomilehto2001prevention,diabetes2002reduction}. Compared to pharmacotherapy, lifestyle changes are simple, fully manageable by the patient and far less likely to cause serious treatment-induced complications like hypoglycemia \citep{seltzer1989drug, zammitt2005hypoglycemia}. Complementary to health benefits, early diagnosis of T2D poses a health economical advantage, as patients that do not require acute or intensive long-term treatment are far less demanding on the health care system.
+Earlier diagnosis and subsequent treatment is believed to prevent or delay complications and improve prognosis \citep{pauker1993deciding, engelgau2000screening}. When impaired glucose tolerance is diagnosed early, initial treatment can often be limited to lifestyle changes \citep{pan1997effects,tuomilehto2001prevention,diabetes2002reduction}. Compared to pharmacotherapy, lifestyle changes are simple, fully manageable by the patient and far less likely to cause serious treatment-induced complications like hypoglycemia \citep{seltzer1989drug, zammitt2005hypoglycemia}. Complementary to health benefits, early diagnosis and prediction of future T2D pose a health economical advantage, as patients that do not require acute or intensive long-term treatment are far less demanding on the health care system.
 
 Universal screening for T2D is cost-prohibitive \citep{wareham2001should, engelgau2000screening}, but many organizations advise opportunistic screening of high-risk subgroups \citep{world1994prevention, alberti1998report, engelgau2000screening,american2014standards}. Several risk profiling strategies have been developed to aid in the timely diagnosis of T2D \citep{baan1999performance,stern2002identification, lindstrom2003diabetes,mcneely2003comparison,glumer2004danish,heikes2008diabetes,schwarz2009finnish}. Risk profiling is typically done by assessing some of the key risk factors for T2D, which include obesity \citep{mokdad2003prevalence}, genetic predisposal \citep{shai2006ethnicity,interact2013link}, lifestyle \citep{reis2011lifestyle} and various clinical parameters. Existing risk profiling approaches are implemented via questionnaires, potentially augmented with clinical information that is available to the patient's general practitionner \citep{griffin2000diabetes,spijkerman2004performance,lindstrom2003diabetes,glumer2004danish, schulze2007accurate, heikes2008diabetes}. Commonly required information includes BMI, family history, exercise and smoking habits and various clinical parameters.
 
-In this work, we present an alternative approach for risk profiling which only requires data that is already available to Belgian mutual health insurers. This work was done in  collaboration with the National Alliance of Christian Mutualities (NACM). NACM is the largest Belgian mutual health insurer with over four million members. Our approach does not require any questionnaires or additional clinical information and predicts whether a patient will start taking GLAs in the next few years. Interestingly, our approach works well despite the fact that Belgian health insurer data contains little direct information regarding key risk factors of T2D, that is weight, lifestyle and family history are all unavailable.
+In this work, we present an alternative approach for risk profiling which only requires data that is already available to Belgian mutual health insurers. This work was done in  collaboration with the National Alliance of Christian Mutualities (NACM). NACM is the largest Belgian mutual health insurer with over four million members. Our approach does not require any questionnaires or additional clinical information and predicts whether a patient will require GLAs in the next few years. Interestingly, our approach works well despite the fact that Belgian health insurer data contains little direct information regarding key risk factors of T2D, that is weight, lifestyle and family history are all unavailable.
 
 
 \section{Existing Type 2 Diabetes Risk Profiling Approaches} \label{sec:stateoftheart}
-The Cambridge Risk Score (CRS) was developed to assess the probability of undiagnosed T2D based on data that is routinely available in primary care records, including age, sex, medication use, family history of diabetes, BMI and smoking status \citep{griffin2000diabetes}, The CRS has been shown to be useful on multiple occasions \citep{griffin2000diabetes, park2002performance, spijkerman2004performance}, though its AUC seems to depend heavily on the population in which it is used, ranging between $67\%$ \citep{spijkerman2004performance} and $80\%$ \citep{griffin2000diabetes}. The information used in the CRS is comparable to another approach which obtained AUCs ranging between $70\%$ and $78\%$ \citep{baan1999performance}.
+The Cambridge Risk Score (CRS) was developed to assess the probability of undiagnosed T2D based on data that is routinely available in primary care records, including age, sex, medication use, family history of diabetes, BMI and smoking status \citep{griffin2000diabetes}, The CRS has been shown to be useful on multiple occasions \citep{griffin2000diabetes, park2002performance, spijkerman2004performance}, though its AUC seems to depend heavily on the population in which it is used, ranging between $67\%$ \citep{spijkerman2004performance} and $80\%$ \citep{griffin2000diabetes}. The information used in the CRS is comparable to the approach of Baan et al. \citep{baan1999performance} which obtained AUCs ranging between $70\%$ and $78\%$.
 
 The FINDRISC score is based on a 10-year follow-up using age, BMI, waist circumference, history of antihypertensive drugs and high blood glucose, physical activity and diet with reported AUCs of $85\%$ and $87\%$ in predicting drug-treated diabetes \citep{lindstrom2003diabetes}. The strongest reported predictors in this study were BMI, waist circumference, history of high blood glucose and physical activity. Gl{\"u}mer et al. \citep{glumer2004danish} developed a risk score based on age, sex, BMI, known hypertension, physical activity and family history of diabetes with AUC ranging from $72\%$ to $87.6\%$. The German diabetes risk score reached AUCs ranging from $75\%$ to $83\%$ on validation data and is based on age, waist circumference, height, history of hypertension, physical activity, smoking, and diet \citep{schulze2007accurate}.
 
@@ -112,8 +112,7 @@ The entire data analysis pipeline was implemented using open-source software. Fo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Experimental Setup} \label{setup}
-We gathered all expenditure records during the 4-year interval of 2008 up to 2012. The selection protocol and representations of patients' medical resource-use are discussed in detail in Section~\ref{data}. All vector representations of patients include age (in years), an indicator variable for gender and positive entries related to the patient's medical resource-use. A patient vector $\mathbf{p}$ can be written in the following general form, where $\dmeds$ and $\dprovs$ denote the number of features in the vectorization of medication and provision use, respectively:
-
+We gathered all expenditure records during the 4-year interval of 2008 up to 2012 and labeled patients that used GLA therapy in $[2012, 2014]$ as positive. The selection protocol and representations of patients' medical resource-use are discussed in detail in Section~\ref{data}. All vector representations of patients include age (in years), an indicator variable for gender and positive entries related to the patient's medical resource-use. A patient vector $\mathbf{p}$ can be written in the following general form, where $\dmeds$ and $\dprovs$ denote the number of features in the vectorization of medication and provision use, respectively:
 \begin{equation}
 \mathbf{p} \in \mathbb{R}^{2 + \dmeds + \dprovs}_+ = 
 \begin{bmatrix} 
@@ -141,7 +140,7 @@ We used Optunity's particle swarm optimizer to identify suitable hyperparameters
 \paragraph{Computing ROC curves} Full label knowledge is required to compute ROC curves. In previous work, we introduced a method to compute bounds on ROC curves based on positive and unlabeled data \citep{claesen2015icml}. Briefly, it is based on the positions of known positives in a ranking produced by a given classifier and requires two things:
 \begin{itemize}
 \item The rank distributions of labeled and latent positives must be comparable. This holds when known and latent positives follow the same distribution in input space (ie. the vector representation of patients). This is a fair assumption in our application, since we specifically ignore records after the start of glucose-lowering pharmacotherapy while identifying the set of positives (see Section~\ref{data}), so the medication regimen of known positives has not yet diverged from the regimen of untreated patients.
-\item An estimate $\hat{\beta}$ of the fraction of latent positives in the unlabeled set is needed, that is the fraction of members that have never used GLAs but are likely to start glucose-lowering pharmacotherapy. In the period $2010$--$2014$ roughly $8\%$ of members of NACM aged 40 or higher started using GLAs. Underestimating $\hat{\beta}$ results in an underestimated ROC curve and vice versa  \citep{claesen2015icml}. We opted to be conservative and used $\hat{\beta}_{lo} = 5\%$ to estimate lower bounds and $\hat{\beta}_{up}=10\%$ for upper bounds.
+\item An estimate $\hat{\beta}$ of the fraction of latent positives in the unlabeled set is needed, that is the fraction of members that have never used GLAs but are likely to start glucose-lowering pharmacotherapy. In the period $2010$--$2014$ roughly $8\%$ of members of NACM aged 40 or higher started using GLAs.\footnote{The true value of $\beta$ is higher than $8\%$, as this estimate omits all undiagnosed patients.} Underestimating $\hat{\beta}$ results in an underestimated ROC curve and vice versa  \citep{claesen2015icml}. We opted to be conservative and used $\hat{\beta}_{lo} = 5\%$ to estimate lower bounds and $\hat{\beta}_{up}=10\%$ for upper bounds.
 \end{itemize} 
 We consistently used the \emph{lower} bounds for hyperparameter search. All our performance reports contain lower and upper bounds, based on $\hat{\beta}_{lo}$ and $\hat{\beta}_{up}$, respectively.
 
@@ -337,20 +336,20 @@ The target class we used in this work is stricter than in the risk prediction me
 All competing methods use either clinical information or direct knowledge of risk factors that is unavailable to us. Furthermore, some of the characteristics that are lacking in our data have been reported to be the most informative to assess risk for T2D \citep{lindstrom2003diabetes,stern2002identification, mcneely2003comparison}. We obtained generalization performances that are comparable to existing approaches, despite these missing predictors. Finally, our approach is the only one that is based exclusively on existing data that is always available, without requiring additional patient contacts or clinical tests.
 
 
-\subsection{Performance Curves for RESVM} \label{resvmroc}
-The RESVM model based on \textsc{atc $|$ provs} vectorization had the best overall performance. Figure~\ref{fig:diabetes-performance-curves} shows bounds on the ROC and PR curves for this model. These bounds were computed using the technique described by Claesen et al. \citep{claesen2015icml}. The true curve is unknown because we do not dispose of negative labels.
+\subsection{Performance Curves} \label{resvmroc}
+The RESVM model based on \textsc{atc $|$ provs} vectorization had the best overall performance. Figure~\ref{fig:diabetes-performance-curves} shows bounds on the ROC and PR curves for this model and includes curves for the CWSVM model based on age and gender and a random model for reference. These bounds were computed using the technique described in Chapter~\ref{ch:evaluation}. The true curve is unknown because we do not dispose of negative labels.
 
 ROC curves enable us to determine a cutoff to use in practice, based on a suitable balance between true and false positive rate (sensitivity and 1-specificity, respectively). Determining a suitable balance requires a tradeoff between the relative importance of identifying undiagnosed patients (true positives) vis-\`a-vis increased amounts of screening tests on patients that are in fact healthy (false positives).
 
-\begin{figure}%
+\begin{figure}[!p]
 \centering
 \subfloat[Receiver Operating Characteristic curve.\label{fig:roc-diabetes}]{\includegraphics[width=0.48\textwidth]{resvm_roc.pdf}}\hfill
 \subfloat[Precision-Recall curve.\label{fig:pr-diabetes}]{\includegraphics[width=0.48\textwidth]{resvm_pr.pdf}}
-\caption{Performance curves for the best model: RESVM classifier based on \textsc{atc $|$ provs} vectorization. The lower and upper bounds are estimated using $\hat{\beta}_{lo}=5\%$ and $\hat{\beta}_{up}=10\%$, respectively. }
+\caption{Performance curves for RESVM classifier based on \textsc{atc $|$ provs} vectorization, CWSVM based on age and gender and a random model. The lower and upper bounds are estimated using $\hat{\beta}_{lo}=5\%$ and $\hat{\beta}_{up}=10\%$, respectively.}
 \label{fig:diabetes-performance-curves}
 \end{figure}
 
-It should be noted that precision depends on class balance, and therefore the PR curve shown in Figure~\ref{fig:pr-diabetes} is not representative for screening an overall population, since the overall population has a higher fraction of negatives than our custom data set (i.e. precision would be lower in practice). In contrast, the bounds in ROC space are representative because ROC curves are insensitive to changes in class distribution \citep{Fawcett:2006:IRA:1159473.1159475}.
+It should be noted that precision depends on class balance, and therefore the PR curve shown in Figure~\ref{fig:pr-diabetes} is not representative for screening an overall population, since the overall population has a higher fraction of negatives than our custom data set (i.e. precision would be lower in practice). In contrast, the bounds in ROC space are representative because ROC curves are insensitive to changes in class distribution \citep{Fawcett:2006:IRA:1159473.1159475}. What matters in the PR curves is the shape of the curve for RESVM, which peaks at low recall, while the curves for CWSVM and a random model do not. The CWSVM approach is similar to the existing guidelines outlined in Table~\ref{intro:diabetes-liga-risk}, which essentially identify persons at high risk through age and a handful additional risk factors. The performance curves indicates that the RESVM model is good for case finding (which requires high precision) and far outperforms screening based on only age and gender.
 
 
 \subsection{Feature Importance Analysis for the RESVM Model} \label{features}
@@ -359,12 +358,57 @@ The RESVM model is implicitly nonlinear due to its majority voting rule to aggre
 f_i(\mathbf{z}) = \langle \mathbf{w}_i, \mathbf{z}\rangle + \rho_i = \mathbf{w}_i^T\mathbf{z} + \rho_i,
 \end{equation*}
 where $\mathbf{w}_i$ is the separating hyperplane and $\rho_i$ is a bias term. A simple linear approximation of such ensemble models can be computed as the average of all base model hyperplanes:
-\begin{equation*}
-\bar{\mathbf{w}} = \sum_{i=1}^{n_{\rm models}} \mathbf{w}_i / n_{\rm models}.
-\end{equation*}
+\begin{equation}
+\bar{\mathbf{w}} = \sum_{i=1}^{n_{\rm models}} \mathbf{w}_i / n_{\rm models}. \label{eq:featureweights}
+\end{equation}
 Feature importance can then be determined based on the coefficients in $\bar{\mathbf{w}}$. The range of every feature is comparable, since we normalized all features to the unit interval $[0,1]$. This allows us to conclude that the features with largest (positive) coefficients in $\bar{\mathbf{w}}$ contribute most to risk according to our model. 
 
-Via this approach, the risk associated to use of cardiovascular medication (ATC main category \textsc{c}) far outweights all other ATC main categories. This is not surprising, as diabetes is known to be strongly related to cardiovascular problems \citep{doi:10.1001/jama.1979.03290450033020, grundy1999diabetes, hu2002elevated}. The relative importance of features and associated medical implications will be discussed in detail in a forthcoming medical paper.
+%Via this approach, the risk associated to use of cardiovascular medication (ATC main category \textsc{c}) far outweights all other ATC main categories. This is not surprising, as diabetes is known to be strongly related to cardiovascular problems \citep{doi:10.1001/jama.1979.03290450033020, grundy1999diabetes, hu2002elevated}. 
+
+Table~\ref{diab:features} depicts the level 3 ATC codes that contribute most to diabetes risk based on the metric outlined above. As expected, cardiovascular medication (ATC \texttt{C*}) is identified as a clear risk indicator \citep{doi:10.1001/jama.1979.03290450033020, grundy1999diabetes, hu2002elevated}. However, a number of less obvious indicators are also revealed, specifically antipsychotics (\texttt{N05A}), antidepressants (\texttt{N06A}) and antigout preparations (\texttt{M04A}), for which associations with T2D are known \citep{clark2004consensus, anderson2001prevalence, mokdad2003prevalence}. The relative importance of features and associated medical implications will be discussed in detail in a forthcoming medical paper.
+
+
+\newcommand{\plotweight}[1]{
+\begin{tikzpicture}[baseline=1ex]
+    \begin{axis}[hide axis,clip=false,
+	xmin=0,xmax=1,xlabel={X},
+	ymin=-1,ymax=1,
+	x=8.5cm, y=0.8em,
+	]
+%\addplot[gray, thick, dashed] coordinates {(0.0, -1) (0.0, 1)};
+%\addplot[gray, thick, dashed] coordinates {(1.0, -1) (1.0, 1)};
+%\addplot[gray, thick, dashed] coordinates {(0.71, -1) (0.71, 1)};
+%\addplot[gray, thick, dashed] coordinates {(0.83, -1) (0.83, 1)};
+%\addplot[black, dotted] coordinates {(0.25, -1) (0.25, 1)};
+%\addplot[black, dotted] coordinates {(0.50, -1) (0.50, 1)};
+%\addplot[black, dotted] coordinates {(0.75, -1) (0.75, 1)};
+%\addplot[color=white] coordinates {(0, -1) (0, 1)};
+\draw [color=cyan!80!black, opacity=0.8] (axis cs: 0, -0.7) rectangle (axis cs: #1, 0.6);
+\fill [color=cyan!80!black, opacity=0.4, fill] (axis cs: 0, -0.7) rectangle (axis cs: #1, 0.6);
+    \end{axis}
+\end{tikzpicture}
+}
+
+\begin{table}[!p]
+\begin{tabular}{cl}
+\toprule
+feature & normalized weight as per Equation~\eqref{eq:featureweights} \\
+\midrule
+\texttt{C09B} & \plotweight{1.000} 788.3 \\
+\texttt{C09D} & \plotweight{0.829} 653.8 \\
+\texttt{C10A} & \plotweight{0.638} 503.0 \\
+\texttt{N05A} & \plotweight{0.551} 434.3 \\
+\texttt{C03E} & \plotweight{0.524} 412.7 \\
+\texttt{C03C} & \plotweight{0.513} 404.2 \\
+\texttt{N06A} & \plotweight{0.511} 403.1 \\
+\texttt{M04A} & \plotweight{0.504} 397.0 \\
+\texttt{A02B} & \plotweight{0.480} 378.5 \\
+\texttt{C09A} & \plotweight{0.432} 340.1 \\
+\bottomrule
+\end{tabular}
+\caption{Level 3 ATC codes with highest normalized feature weight.} \label{diab:features}
+\end{table}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

@@ -145,7 +145,7 @@ C_{\positive} = C_{\unlabeled} \times w_{pos} \times \frac{n_{unl}}{n_{pos}}. \l
 
 $w_{pos}$ enables reweighting labeled and unlabeled instances after equalizing class imbalance. In bagging SVM, $w_{pos}$ is always fixed to $1$. 
 
-\newpage
+%\newpage
 The RESVM training approach has been summarised in Algorithm~\ref{RESVM}. The algorithm uses $5$ hyperparameters plus additional kernel parameters.
 
 \newlength\mydatalen
@@ -237,7 +237,7 @@ To assess what situations are favorable per approach, we have investigated three
 \begin{enumerate}
 \item \textbf{supervised}: no contamination in $\positive$ or $\unlabeled$ ($\unlabeled$ is the negative class).
 \item \textbf{PU learning}: contamination in $\unlabeled$ but not in $\positive$. %This is the setting for which CWSVM and bagging SVM were designed.
-\item \textbf{semi-supervised}: contamination in both $\positive$ and $\unlabeled$. The contamination levels in $\positive$ and $\unlabeled$ were always chosen equal.
+\item \textbf{semi-supervised}: contamination in both $\positive$ and $\unlabeled$. The contamination levels in $\positive$ and $\unlabeled$ were always chosen equal (except in Section~\ref{varycontamination}).
 \end{enumerate}
 
 The contamination levels we used were chosen per data set based on when differences between the three approaches become visible. A summary is available in Table~\ref{table:datasets} in Section~\ref{resvm:data}. When applicable, contamination was introduced by flipping class labels (e.g. true positives in $\unlabeled$ and true negatives in $\positive$). This effectively changes the empirical densities of the classes in the training set (illustrated in Figure~\ref{fig:densities} in the next Section).
@@ -295,15 +295,21 @@ We used a synthetic data set and 5 publicly available data sets:\footnote{Public
 \item \texttt{sensit}: SensIT Vehicle (combined), vehicle classification \citep{duarte2004vehicle}. This data set contains 3 classes with an uneven distribution. We performed one-versus-all classification for each class. This data set has $100$ features, $78,823$ training instances and $19,705$ testing instances.
 \end{itemize}
 
-Most data sets have a prespecified test set, except for \texttt{synthetic} and \texttt{cancer}. We used the prespecified test sets when available. We used the RBF kernel for all data sets except \texttt{mnist} (linear kernel). Note that both RESVM and bagging SVM models are always implicitly nonlinear due to their majority voting scheme, even when using linear base models.
+Most data sets have a prespecified test set, except for \texttt{synthetic} and \texttt{cancer}. We used the prespecified test sets when available. We used the RBF kernel for all data sets except \texttt{mnist} (linear kernel). Note that both RESVM and bagging SVM models are always implicitly nonlinear due to their majority voting scheme, even when using linear base models, as illustrated in Figure~\ref{resvm:piecewise}.
 
-\begin{figure}[!h]
+\begin{figure}[!p]
   \centering
   \includegraphics[width=0.40\textwidth]{densities.pdf}
   \caption{Empirical densities of the \texttt{synthetic} data used for training per problem setting (visualized in input space). The supervised densities (top row) are based on samples of the underlying positive and negative classes. The use of high contamination ($30\%$) induces similar empirical densities for $\positive$ and $\unlabeled$ in the semi-supervised setting (bottom row).} % This poses a challenging learning problem.} 
   \label{fig:densities}
 \end{figure}
 
+\begin{figure}[!p]
+  \centering
+  \includegraphics[width=0.80\textwidth]{piecewise.pdf}
+  \caption{The effect of majority voting in an ensemble $\Omega$ with three linear base models ({\color{blue!80!black}$\psi_1$}, {\color{red!80!black}$\psi_2$}, {\color{green!80!black}$\psi_3$}). The thick black line represents the overall decision boundary of $\Omega$. The use of majority voting generally induces nonlinear decision boundaries, e.g., when using linear base models the ensemble has a piecewise linear decision boundary.}
+  \label{resvm:piecewise}
+\end{figure}
 
 In every setting each original data set was resampled without replacement to construct training sets to use in the simulations. The resampled training sets are typically significantly smaller than what is available in the original data sets to show that some methods can obtain good models even with few training instances. An overview of the actual training sets we constructed is presented in Table~\ref{table:datasets}. 
 

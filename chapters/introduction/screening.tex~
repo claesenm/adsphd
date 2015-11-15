@@ -1,6 +1,13 @@
-\subsection{Early detection and intervention in type 2 diabetes} \label{intro:screening}
+\section{Early detection and intervention in type 2 diabetes} \label{intro:screening}
 %\paragraph{Secondary prevention of T2D is effective} 
-Studies have convincingly shown that early detection and treatment of T2D can prevent or delay complications of the disease \citep{haffner1990cardiovascular,engelgau2000screening, genuth2003implications, holman200810, gaede2008effect, echouffo2011screening}. Additionally, treatment of early-stage T2D is often relatively simple and cheap (e.g. lifestyle changes, often specifically targetted towards weight loss) compared to the treatment of progressed T2D, which typically involves strict pharmacological therapy along with the treatment of potential complications \citep{pan1997effects,tuomilehto2001prevention,diabetes2002reduction,zammitt2005hypoglycemia}, indicating the value of early detection.
+Studies have convincingly shown that early detection and treatment of T2D can prevent or delay complications of the disease \citep{haffner1990cardiovascular,engelgau2000screening, diabetes2002reduction, genuth2003implications, holman200810, gaede2008effect, echouffo2011screening}. Additionally, treatment of early-stage T2D is often relatively simple and cheap (e.g. lifestyle changes, often specifically targetted towards weight loss) compared to the treatment of progressed T2D, which typically involves strict pharmacological therapy along with the treatment of potential complications \citep{pan1997effects,tuomilehto2001prevention,diabetes2002reduction,zammitt2005hypoglycemia}, indicating the value of early detection. The successive steps of a typical diagnostic process are shown in Figure~\ref{intro:screening-funnel}.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=\textwidth]{screening-funnel.pdf}
+  \caption{The stages of the medical diagnostic process: screening is used to identify patients at high risk, which are then forwarded to diagnostic tests. The cost and invasiveness of tests increase as patients move down the funnel, hence each step aims to remove negatives while retaining positives. } 
+  \label{intro:screening-funnel}
+\end{figure}
 
 %\paragraph{T2D is often diagnosed very late} 
 Despite its widely-recognized importance, early detection of T2D proves to be problematic, as one fourth up to one third of T2D patients are estimated to be undiagnosed in developed countries \citep{diabetesliga, beagley2014global, american2014standards} and typically years pass between the onset of T2D and its clinical diagnosis \citep{harris1992onset}. In fact, the clinical diagnosis of T2D often follows signs of serious complications, which have developed during the latent stage of the disease \citep{rajala1998prevalence,harris2000early, hu2002elevated, american2014standards}. 
@@ -22,13 +29,12 @@ Both IFG and IGT are associated with insulin resistance and increased risk of di
 In the remainder of this Section we will discuss current diagnostic tests, existing screening programmes and the Belgian situation and recommendations.
 
 
-
-\subsubsection{Diagnosis of diabetes} \label{diagnosis-diabetes}
+\subsection{Diagnosis of diabetes} \label{diagnosis-diabetes}
 The gold standard to diagnose hyperglycemia is the oral glucose-tolerance test (OGTT), which determines how quickly glucose is cleared from the blood \citep{alberti1998definition, world2006definition}. In this test, patients are administered glucose after fasting for 12 hours and afterwards the patient's blood glucose levels are measured, sometimes at multiple intervals, but typically after 2 hours \citep{diabetesliga}.
 
 Type 1 diabetes has a sufficiently pronounced clinical onset characterized by acute, extreme elevations in glucose concentrations combined with symptoms which make its diagnosis fairly unambiguous and typically timely \citep{international2009international}. Type 2 diabetes, however, has a more gradual onset making its diagnosis less straightforward and causing the diagnostic criteria to be debated regularly \citep{world2006definition, international2009international}.  The diagnostic criteria as currently recommended by the WHO are listed in Table~\ref{intro:who-diagnosis}.
 
-The OGTT as diagnostic test was widely agreed upon, though in 2003 the American Diabetes Association (ADA) modified its recommendations in favor of using fasting plasma glucose to diagnose asymptomatic T2D \citep{world2006definition}. More recently, the use of the A1C assays for diagnosis was considered, though current point-of-care A1C assays were considered insufficiently accurate \citep{international2009international}.
+The OGTT was widely agreed upon as diagnostic test, though in 2003 the American Diabetes Association (ADA) modified its recommendations in favor of using fasting plasma glucose to diagnose asymptomatic T2D \citep{world2006definition}. More recently, the use of the A1C assays for diagnosis was considered, though current point-of-care A1C assays were considered insufficiently accurate \citep{international2009international}.
 
 \begin{table}[!h]
 \colorbox{gray!20!white}{\parbox{\textwidth}{
@@ -50,11 +56,11 @@ The OGTT as diagnostic test was widely agreed upon, though in 2003 the American 
 \end{itemize}
 \end{itemize}
 }}
-\caption{Diagnostic criteria for T2D as recommended by the WHO \citep{world2006definition}.} \label{intro:who-diagnosis}
+\caption{Diagnostic criteria for diabetes and related metabolic abnormalities as recommended by the WHO \citep{world2006definition}.} \label{intro:who-diagnosis}
 \end{table}
 
-\subsubsection{Existing screening approaches} \label{intro:screening-existing}
-The clinical inertia in diagnosing type 2 diabetes is being tackled by a wide variety of screening approaches, which commonly rely on information that is already available or relatively easy to obtain. The main method to implement such screening methods is via questionnaires, possibly paired with clinical information such as parameters recorded in patients' electronic health records or by general practioners.
+\subsection{Existing screening and prescreening approaches} \label{intro:screening-existing}
+The clinical inertia in diagnosing type 2 diabetes is being tackled by a wide variety of screening approaches, which commonly rely on information that is already available or relatively easy to obtain. The main method to implement such screening methods is via questionnaires, possibly paired with clinical information such as parameters recorded in patients' electronic health records or by general practioners. 
 
 The Cambridge Risk Score (CRS) was developed to assess the probability of undiagnosed T2D based on data that is routinely available in primary care records, including age, sex, medication use, family history of diabetes, BMI and smoking status \citep{griffin2000diabetes}, The CRS and comparable scores have been shown to be useful on multiple occasions \citep{baan1999performance,griffin2000diabetes, park2002performance, spijkerman2004performance}. 
 The FINDRISC score is based on a 10-year follow-up using age, BMI, waist circumference, history of antihypertensive drugs and high blood glucose, physical activity and diet and is used to predict drug-treated diabetes \citep{lindstrom2003diabetes}. The strongest reported predictors in this study were BMI, waist circumference, history of high blood glucose and physical activity. Gl{\"u}mer et al. \citep{glumer2004danish} developed a risk score based on age, sex, BMI, known hypertension, physical activity and family history of diabetes. The German diabetes risk score is based on age, waist circumference, height, history of hypertension, physical activity, smoking, and diet \citep{schulze2007accurate}.
@@ -75,7 +81,7 @@ More complex risk scores include various clinical parameters \citep{heikes2008di
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 
 
-\subsubsection{Situation in Belgium} \label{intro:screening-belgium}
+\subsection{Situation in Belgium} \label{intro:screening-belgium}
 The IDF estimates over 170,000 undiagnosed diabetes patients in Belgium \citep{IDFatlas}. The Diabetes Liga estimates that currently one out of three T2D patients are undiagnosed, that one out of ten Belgians will have type 2 diabetes in 2030 and that $8\%$ and $6.5\%$ of the Belgian population currently has diabetes or prediabetes, respectively \citep{diabetesliga}. Domus Medica\footnote{A non-profit organization of general practionners that focuses on preventive medicine.} advises against population-wide screening, though it recommends case finding in high-risk subpopulations \citep{wens2005aanbeveling}, for instance via the risk factors listed in Table~\ref{intro:diabetes-liga-risk}.
 \begin{table}[!h]
 \colorbox{gray!20!white}{\parbox{\textwidth}{

@@ -1,10 +1,12 @@
 \chapter{Introduction}\label{ch:introduction}
 
-In this work we explored the ability of screening for (type 2) diabetes mellitus based on Belgian health insurance data from a machine learning perspective. The thesis is organized as a collection of papers concerning various aspects related to this application. This chapter provides some context of the project, both in terms of the medical situation and the challenges in terms of data analysis. 
+In this work we explored the ability of screening for (type 2) diabetes mellitus based on Belgian health insurance data from a machine learning perspective. The thesis is organized as a collection of papers concerning various aspects related to this application.\footnote{Some chapters have minor differences compared to the papers on which they are based.} This chapter provides some context of the project, including the medical background of diabetes and its treatment, a summary of the Belgian health insurance system and this project's data analysis challenges. 
 
-This work aligns with the overall trend towards eHealth and the rising use of all sorts of data for evidence-based medicine. However, relevant policies are still in flux, specifically those related to the use of patient records vis-\`a-vis privacy. The key novelty of this work -- the effective use of health expenditure data for clinical applications -- adds another dimension to this important ongoing debate.
+This work aligns with the overall trend towards eHealth and the rising use of all sorts of data for evidence-based medicine. Our work is the first data-driven medical application based on health expenditure records and demonstrates the potential use of this data in clinical applications that might improve patient outcomes while simultaneously reducing healthcare costs. Building useful medical applications based on health expenditure data can be considered a modern interpretation of one of the key missions of Belgian mutual health insurers as defined by law, namely to promote the physical, psychological and social well-being of their members \citep{ziekenfondswet}.
 
-We will first briefly introduce diabetes mellitus and describe the main characteristics of the disease, its treatment and existing screening approaches in Section~\ref{intro:diabetes}. The Belgian health insurance landscape is described in Section~\ref{intro:health-insurance}. Subsequently, Section~\ref{intro:machine-learning} contains a discussion of the main challenges of this project from a machine learning perspective to explain the necessity of each aspect of our research. Finally, Section~\ref{intro:structure} summarizes the structure of the text and indicates how all chapters (papers) are related to each other.
+To meet our objective we tackled various machine learning challenges, of both theoretical and practical nature. This work contains contributions to machine learning, including open-source implementations of all proposed methods, and a detailed description of our steps towards building a reliable screening approach for type 2 diabetes that can be applied on a population-wide scale.
+
+We will first briefly introduce diabetes mellitus in Section~\ref{intro:diabetes}. We proceed to describe early detection and intervention of type 2 diabetes (T2D) -- the most common variant of diabetes mellitus -- in Section~\ref{intro:screening}. Next, the Belgian health insurance landscape is described in Section~\ref{intro:health-insurance}. Subsequently, Section~\ref{intro:machine-learning} contains a discussion of the main challenges of this project from a machine learning perspective to explain the necessity of each aspect of our research. Finally, Section~\ref{intro:structure} summarizes the structure of the text and indicates how all chapters (papers) are related to each other.
 
 %\instructionsintroduction
 
@@ -12,11 +14,12 @@ We will first briefly introduce diabetes mellitus and describe the main characte
 %               DIABETES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Diabetes mellitus} \label{intro:diabetes}
+\section{Diabetes mellitus} 
+\label{intro:diabetes}
 Diabetes mellitus is a metabolic disorder characterized by chronic hyperglycemia, which is primarily caused by insufficient insulin secretion and/or insulin resistance \citep{alberti1998definition}. The worldwide incidence of diabetes has increased dramatically over the last century due to changes in human behaviour and lifestyle \citep{zimmet2001global, chen2012worldwide}. Diabetes is one of the main threats to human health world wide \citep{king1998global, zimmet2001global, zimmet2000globalization} and is projected to be the 7th leading cause of death by 2030 \citep{mathers2006projections}. Some key facts related to diabetes mellitus are summarized in the diabetes atlas made by the International Diabetes Federation (IDF) (Figure~\ref{intro:diabetes-infogram}).
 
-
-In the remainder of this Section we provide a brief overview of various aspects of the disease: the underlying biological problem, common complications and comorbidities, a classification of diabetes based on etiology, the prevalence and burden of the disorder and finally treatment and existing screening approaches.
+An overview of the medical background of diabetes mellitus is described in Appendices~\ref{intro:regulation} to \ref{intro:treatment}, which discuss various aspects of the disease, namely the underlying biological problem, common complications and comorbidities, a classification of diabetes based on etiology, the prevalence and burden of the disorder and finally treatment approaches with an emphasis on pharmacotherapy. 
+We will focus on type 2 diabetes (T2D) in the remainder of the text. T2D accounts for about $90\%$ of diabetes mellitus patients, but early detection of this highly prevalent disease poses significant challenges to contemporary medicine.
 
 \begin{figure}[p]
   \centering
@@ -24,193 +27,6 @@ In the remainder of this Section we provide a brief overview of various aspects 
   \caption{Diabetes atlas released by the International Diabetes Federation (IDF). Reuse of this material was granted by the IDF. The original is available at \url{http://www.idf.org/worlddiabetesday/toolkit/gp/facts-figures}.} 
   \label{intro:diabetes-infogram}
 \end{figure}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%      REGULATION OF BLOOD GLUCOSE LEVEL       %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Regulation of blood glucose levels}
-To allow a better understanding of the underlying problems inherent to diabetes mellitus, we will briefly describe the critical role of insulin in the regulation of blood glucose levels.
-
-Insulin is a peptide hormone which regulates the metabolism of fats, carbohydrates and proteins. In normal circumstances, insulin is released in response to changes in blood glucose concentration to prevent glucose levels from reaching toxic concentrations. Specifically, insulin promotes the absorption of glucose from the blood to skeletal muscles and fat tissue, thereby lowering the glucose level in the bloodstream, and additionally inhibits hepatic glucose output \citep{sonksen2000insulin}. Insulin is exclusively produced by pancreatic $\beta$ cells, which are located in clusters known as the islets of Langerhans. 
-
-Hyperglycemia occurs when the regulation of the blood glucose level fails and hence toxic concentrations of glucose remain in the bloodstream. Such failures are typically caused by excessive glucose intake, insufficient insulin secretion and/or insulin resistance. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%         COMPLICATIONS AND COMORBIDITIES      %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Complications and comorbidities}
-Exposure to chronic hyperglycemia can cause serious damage to many of the body's systems, including dysfunction and failure of various organs.
-
-The leading complication of type 2 diabetes is cardiovascular disease, with about half of type 2 diabetes patient deaths attributable to a cardiovascular cause \citep{doi:10.1001/jama.2009.476, beulens2010global}. Microvascular complications also contribute considerably to the morbidity of the disease, specifically diabetes mellitus may lead to the progressive development of retinopathy (which potentially results in blindless), neuropathy (which can induce problems like foot ulcers), nephropathy (which can lead to renal failure) \citep{atkins2010diabetic} and small vessel vasculopathy causing lower extremity amputation \citep{beulens2010global}. Finally, patients with diabetes mellitus are at increased risk for peripheral vascular and cerebrovascular disease. 
-
-
-% The global burden of diabetes and its complications: an emerging pandemic
-% Cardiovascular disease (CVD) is the leading complication of type 2 diabetes and approximately one half of patients with type 2 diabetes will die of a cardiovascular cause. Angina, myocardial infarction, stroke, peripheral artery disease, and congestive heart failure are all common among patients with type 2 diabetes. IFG or IGT and the risks are further compounded by smoking, abnormal blood lipids, high blood pressure, and the other determinants of vascular risk established in nondiabetic populations [1,18].
-
-
-% http://www.who.int/mediacentre/factsheets/fs312/en/
-% What are common consequences of diabetes?
-% Over time, diabetes can damage the heart, blood vessels, eyes, kidneys, and nerves.
-% Diabetes increases the risk of heart disease and stroke. In a multinational study, 50% of people with diabetes die of cardiovascular disease (primarily heart disease and stroke) (6). Combined with reduced blood flow, neuropathy (nerve damage) in the feet increases the chance of foot ulcers, infection and eventual need for limb amputation. Diabetic retinopathy is an important cause of blindness, and occurs as a result of long-term accumulated damage to the small blood vessels in the retina. One percent of global blindness can be attributed to diabetes (7). Diabetes is among the leading causes of kidney failure (4). The overall risk of dying among people with diabetes is at least double the risk of their peers without diabetes (8).
-% (2) World Health Organization. Global Health Estimates: Deaths by Cause, Age, Sex and Country, 2000-2012. Geneva, WHO, 2014. 
-% (3) Mathers CD, Loncar D. Projections of global mortality and burden of disease from 2002 to 2030. PLoS Med, 2006, 3(11):e442.
-% (4) Global status report on noncommunicable diseases 2010. Geneva, World Health Organization, 2011. 
-% (5) Definition, diagnosis and classification of diabetes mellitus and its complications. Part 1: Diagnosis and classification of diabetes mellitus. Geneva, World Health Organization, 1999 (WHO/NCD/NCS/99.2). 
-% (6) Morrish NJ, Wang SL, Stevens LK, Fuller JH, Keen H. Mortality and causes of death in the WHO Multinational Study of Vascular Disease in Diabetes. Diabetologia 2001, 44 Suppl 2:S14–S21.
-% (7) Global data on visual impairments 2010. Geneva, World Health Organization, 2012.
-% (8) Roglic G, Unwin N, Bennett PH, Mathers C, Tuomilehto J, Nag S et al. The burden of mortality attributable to diabetes: realistic estimates for the year 2000. Diabetes Care, 2005, 28(9):2130–2135.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%         CLASSIFICATION OF DIABETES            %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Classification of diabetes mellitus}
-
-Diabetes mellitus is a disorder of multiple etiologies and is subdivided into several more specific classes. The primary distinction between subclasses is essentially whether or not external insulin is necessary for survival. The first widely accepted classification was made by the World Health Organization (WHO) in 1980 \citep{WHO1980}, proposing two main classes of diabetes mellitus:
-\begin{itemize}
-\item \textbf{Type 1 diabetes (T1D)} refers to a condition characterized by insufficient insulin secretion caused by the autoimmune-mediated destruction of pancreatic $\beta$-cells. T1D patients require insulin for survival. T1D can start at an early age and has a strong genetic component.
-\item \textbf{Type 2 diabetes (T2D)} results from defect(s) in insulin secretion, almost always paired with insulin resistance. T2D includes patients that require insulin for metabolic control and those that don't require insulin at all. The often asymptomatic onset of T2D typically occurs after 50 years of age\footnote{Though a case-study reported a 3 year-old child diagnosed with T2D at this year's European Association for the Study of Diabetes (EASD) meeting \citep[``\emph{A toddler with type 2 diabetes}'', pp. 152--153]{3yeardolddiabetic}.} and is often a result of genetic susceptibility combined with chronic obesity, a sedentary lifestyle and overly rich nutrition \citep{zimmet2001global, smyth2006diabetes}. Since obesity is such a common comorbidity of T2D \citep{smyth2006diabetes}, the terms \emph{diabesity} and \emph{obesity dependent diabetes mellitus} have been suggested \citep{shafrir1996development, astrup2000redefining}.
-\end{itemize}
-In the original proposal, T1D and T2D were aliased insulin-dependent diabetes mellitus (IDDM) and noninsulin-dependent diabetes mellitus (NIDDM), respectively \citep{WHO1980}. However, since then the WHO has deprecated the terms IDDM and NIDDM as their use frequently led to patients being classified based on treatment, rather than pathogenesis \citep{alberti1998definition}. Hence, contemporary terminology exclusively uses type 1 and type 2 to denote the main classes of diabetes mellitus. 
-
-Though our work focuses on type 1 and particularly type 2 diabetes mellitus, it must be noted that more forms exist, such as gestational diabetes mellitus which may occur during pregnancy and then disappear or progress into T2D.
-
-T2D accounts for over $90\%$ of diabetes patients and has long been considered an epidemic that affects both developing and developed nations \citep{zimmet1999diabetes,zimmet2001global,rocchini2002childhood,nathan2007impaired,chen2012worldwide, lam2012worldwide} effectively rendering it a pandemic \citep{beulens2010global}. T2D is often a manifestation of a much broader underlying disorder \citep{reaven1988role, zimmet1999diabetes}, including the \emph{metabolic syndrome} which is a cluster of cardiovascular disease risk factors that includes hyperinsulinemia, dislipidemia, hypertension, visceral obesity, hypercoagulability and microalbuminuria \citep{alberti2005metabolic, zimmet2001global, federation2010idf}. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%         PREVALENCE AND BURDEN            %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Prevalence and burden of diabetes}
-The number of diabetes patients, particularly type 2 diabetes, is increasing rapidly. In developed countries, this increase is driven by population aging, lifestyle changes (particularly rising levels of obesity and inactivity) but also by greater longevity among diabetes patients \citep{stovring2003rising,beulens2010global}. The majority of social and economic burden of type 2 diabetes patients is attributable to vascular complications \citep{beulens2010global}, with pharmacy costs generating the majority of diabetes-related health expenditure \citep{nichols2002impact, gandra2006total}.
-
-\paragraph{Prevalence} In 1995 an estimated 135 million people worldwide had diabetes, which has increased to 285 million patients worldwide in 2010 \citep{shaw2010global, chen2012worldwide} and is predicted by the WHO to increase further to at least 366 million by 2030 \citep{smyth2006diabetes}. WHO estimated the global prevalence of diabetes to be $9\%$ among adults over 18 years of age \citep{alwan2011global}. A recent study estimated the prevalence of diabetes in adults aged 20--79 in Belgium and Europe to be $8\%$ and $6.9\%$, respectively \citep{shaw2010global}. Typically, the prevalence of prediabetes is estimated even higher \citep{cowie2009full,yang2010prevalence,chen2012worldwide}.
-
-\paragraph{Mortality} 
-The premature mortality attributable to diabetes is widely underestimated because only a minority of persons with diabetes die from a cause that is uniquely attributable to the disease \citep{beulens2010global}. One study reported about 2.9 million deaths worldwide attributable to diabetes \citep{roglic2005burden} and indicated that this excess mortality accounts for over $8\%$ of deaths in developed countries. More recently, the global excess mortality in adults directly related to diabetes has been estimated to 3.8 million deaths \citep{beulens2010global}. The main causes of premature deaths in type 2 diabetes patients are due to cardiovascular and renal problems \citep{morrish2001mortality, beulens2010global}. 
-Chapter~\ref{ch:survival} reports the survival of patients starting various glucose lowering pharmacotherapies in Belgium and confirms excess mortality in patients with diabetes compared to the general population. Additionally, our analysis indicates that the excess mortality is significantly associated with the type of pharmacotherapy, which is related to the patient's health status.
-
-
-\paragraph{Cost} Managing diabetes and its complications is expensive, both to the affected individuals and healthcare systems around the world.  The International Diabetes Federation (IDF), estimates that diabetes already accounts for one ninth of the total healthcare budget in many countries in 2014 \citep{IDFfacts}. The IDF further reports an average cost per diabetes patient of 5,679 USD in Belgium \citep{IDFatlas}. Other sources report comparable numbers: the CoDiM study estimated that in Germany in 2001, annual direct mean costs per diabetic patient are $5,262$ EUR with an additional $5,019$ EUR indirect costs, compared to $2,755$ EUR and $3,691$ EUR for non-diabetics \citep{koster2006cost}. K\"oster et al. \citep{koster2006cost} also note that the direct costs of diabetic patients account for $14.2\%$ of total healthcare costs. Patients of type 2 diabetes with macrovascular complications generate costs that are three times higher than type 2 diabetes patients without macrovascular complications and seven times higher than people with neither type 2 diabetes nor macrovascular diseases \citep{beulens2010global}. The primary origin of diabetes-related healthcare expenditure are pharmacy costs \citep{nichols2002impact, gandra2006total}. The complications of diabetes constitute a large portion of the burden of the disease, with diabetes being a leading cause of blindness, lower limb amputation and kidney failure \citep{beulens2010global}. 
-
-
-% http://europepmc.org/abstract/med/18350480
-% http://download.springer.com/static/pdf/651/art%253A10.1007%252Fs00125-002-0860-3.pdf?originUrl=http%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2Fs00125-002-0860-3&token2=exp=1440768601~acl=%2Fstatic%2Fpdf%2F651%2Fart%25253A10.1007%25252Fs00125-002-0860-3.pdf%3ForiginUrl%3Dhttp%253A%252F%252Flink.springer.com%252Farticle%252F10.1007%252Fs00125-002-0860-3*~hmac=7111eff228db17edf0730fb32261e2f1d4a0400afbf88526eaa03e1bf6fe3f23
-% http://informahealthcare.com/doi/abs/10.1185/030079905x65349
-% http://cpr.sagepub.com/content/17/1_suppl/s3.full
-
-
-
-\subsection{Treatment of diabetes mellitus} \label{intro:treatment}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%v TODO   %%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\todo{TODO prevention of complications http://www.nature.com/nature/journal/v414/n6865/full/414782a.html}
-The fact chronic hyperglycemia may manifest in various ways is reflected in a wide variety of treatments for diabetes mellitus. Treatment of type 1 diabetes patients revolves around timely administration of external insulin, which they need for survival. In contrast, a wide range of treatment options exist for patients with type 2 diabetes.
-
-Management of type 2 diabetes includes several lifestyle interventions, often specifically targetted towards weight loss, including healthy eating (specifically high-fiber, low-fat foods like fruits and vegetables), regular exercise and blood sugar monitoring and management. Pharmacotherapy via glucose lowering agents (GLAs) is used when lifestyle changes alone are insufficient for adequate glycemic control or when diabetes is already in a progressed stage at the time of clinical diagnosis. 
-
-\newcommand{\regist}[1]{\emph{#1}\textsuperscript{\textregistered}}
-
-We will elaborate on pharmacological treatment of type 2 diabetes, as this has played a crucial role in our work. Pharmacological therapies for (type 2) diabetes may be based on various biological mechanisms:
-\begin{itemize}
-\item \textbf{External insulin} is administered when insufficient insulin is secreted by the pancreas. External insulin is always necessary to treat type 1 diabetes but may also be required to treat insulin deficiency in type 2 diabetes. Insulin cannot be taken as a pill because it would be broken down during digestion just like protein in food. Instead, it must be injected or inhaled. \\
-\item \textbf{Sensitizers} reduce the insulin resistance that is central in type 2 diabetes.
-\begin{itemize}
-        \item Biguanides suppress hepatic glucose output and increase uptake of glucose by the periphery. The most common agent in this class is \emph{metformin} (brand names include \regist{Glucophage}, \regist{Glucovance}) \citep{kirpichnikov2002metformin}. \\ % https://en.wikipedia.org/wiki/Metformin#Mechanism_of_action
-        % https://en.wikipedia.org/wiki/Biguanide
-        \item Thiazolidinediones (TZDs) enhance the effects of insulin by increasing insulin-dependent glucose disposal and reducing hepatic glucose output (as a result of increased hepatic insulin sensitivity) \citep{saltiel1996thiazolidinediones, yki2004thiazolidinediones}. 
-        An example of TZDs is \emph{pioglitazone} (brand name \regist{Actos}). \\
-\end{itemize}
-\item \textbf{Secretagogues} increase insulin output from the pancreas. The main type of secretagogues -- sulfonylurea (SU) -- stimulate endogenous insulin secretion from pancreatic $\beta$-cells \citep{proks2002sulfonylurea}. Hypoglycemia is a major concern when using sulfonylureas \citep{bodmer2008metformin}.
-        The most common SU are \emph{glimepiride} (brand name \regist{Amaryl}), \emph{glibenclamide} (\regist{Euglucon} and \regist{Daonil}), \emph{gliclazide} (\regist{Diamicron}), \emph{glipizide} (\regist{Glucotrol}) and \emph{gliquidone} (\regist{Glurenorm}). \\
-        % https://en.wikipedia.org/wiki/Sulfonylurea
-\item \textbf{Alpha-glucosidase inhibitors} slow down digestion of starch in the small intestine, thereby reducing the rate at which the resulting glucose enters the bloodstream. These agents do not have a direct effect on insulin secretion or sensitivity, but can (i) be sufficiently efficient in early stages of impaired glucose tolerance or (ii) be used in combination with other antidiabetic agents. 
-A common alpha-glucosidase inhibitor is \emph{acarbose} (brand name \regist{glucobay}). \\
-\item \textbf{Incretin-based therapies} use the antidiabetic properties of the incretin hormone glucagon-like peptide 1 (GLP-1), namely that GLP-1 augments glucose-induced insulin secretion in a highly glucose-dependent manner \citep{nauck2009incretin,lovshin2009incretin}. As this form of insulin secretion occurs in a glucose-dependent manner, incretin-based therapies are less prone to cause hypoglycemia.
-\begin{itemize}
-        \item GLP-1 receptor agonists activate GLP-1 receptors, resulting in increased insulin synthesis and release \citep{drucker1987glucagon}. Common GLP-1 receptor agonists include \emph{liraglutide} (brand name \regist{Victoza}), \emph{exenatide} (\regist{Byetta}) and \emph{lixisenatide} (brand name \regist{Lyxumia}). \\
-        \item Dipeptidyl peptidase-4 (DPP-4) inhibitors increase the blood concentration of GLP-1 by inhibiting its degradation caused by the enzyme DPP-4. Common DPP-4 inhibitors include \emph{sitagliptin} (brand name \regist{Januvia}), \emph{vildagliptin} (brand name \regist{Galvus}).  \\
-\end{itemize}
-\end{itemize} 
-
-%Not all therapies are suitable for every patient, due to contraindications such as abnormal kidney function.+ statins, bitherapy, ...hypoglycemia
-
-
-% http://www.hindawi.com/journals/ijvm/2012/918267/fig1/
-% http://www.hindawi.com/journals/ijvm/2012/918267/
-
-% http://www.nature.com/nm/journal/v12/n1/full/nm0106-75.html
-
-\ifx
-\subsection{Glucose level regulation as a state-space system}
-With significant simplifications, we can summarize the glucose level regulatory mechanism as a dynamical system that is controlled via a basic feedback loop. This coarse approximation allows us to understand the main mechanisms of diabetes mellitus treatments on a mathematical level.
-
-The system's states are $[glucose](t)$ and $[insulin](t)$ (concentrations) and its inputs are $\Delta glucose(t) \geq 0$ and $\Delta insulin(t) \geq 0$ which enter the bloodstream. 
-\begin{itemize}
-\item The glucose concentration is influenced negatively by the concentration of insulin ($A_{i\rightarrow g} < 0$) and positively by external input $\Delta glucose(t)$ ($B_g > 0$):
-\begin{equation*}
-\frac{d [glucose](t)}{d t} = A_{i\rightarrow g} [insulin](t) + B_g \Delta glucose(t)
-\end{equation*}
-\item The insulin concentration is influenced by insulin injection $\Delta insulin(t)$ and insulin secretion $\mathcal{S}_{insulin}(t)$, which in turn is influenced by the glucose level, i.e. $\mathcal{S}_{insulin}(t) = K[glucose](t)$ (with $K > 0$, $B_s > 0$ and $B_i > 0$):
-\begin{align*}
-\frac{d [insulin](t)}{d t} &= B_s \mathcal{S}_{insulin}(t) + B_i \Delta insulin(t), \\
-        &= B_s K [glucose](t) + B_i \Delta insulin(t),
-\end{align*}
-where $B_i$ is a normalization based on volume and $K$ is a positive constant defining the amount of insulin secreted at a given glucose level.
-\end{itemize}
-
-This can be written as the following state-space system with two inputs:
-\begin{align*}
-\begin{bmatrix}
-\frac{d [glucose]}{d t} \\
-\frac{d [insulin]}{d t}
-\end{bmatrix}
-&= 
-\begin{bmatrix}
-0                    & A_{i\rightarrow g} \\
-B_s K   & 0
-\end{bmatrix}
-\begin{bmatrix}
-[glucose](t) \\
-[insulin](t)
-\end{bmatrix}
-+
-\begin{bmatrix}
-B_g & 0 \\
-0   & B_i
-\end{bmatrix} 
-\begin{bmatrix} 
-\Delta glucose(t) \\
-\Delta insulin(t)
-\end{bmatrix}.
-\end{align*}
-
-Nature has somehow determined an optimal feedback gain $K^\star$ that usually works (or none of us would be here). The essential problems underlying diabetes can now be formalized as follows:
-\begin{itemize}
-\item Insufficient insulin secretion can be formalized as $K < K^\star$,
-\item Insulin resistance can be formalized as $A_{i\rightarrow g} > A_{i\rightarrow g}^\star$.
-\end{itemize}
-Both of these effects imply a real control action that is smaller than optimal, directly leading to hyperglycemia. Treatment of diabetes mellitus generally attempts to do one of the following:
-\begin{itemize}
-\item   Decrease the amount of glucose entering the bloodstream.\\ 
-        Equivalent to $\Delta glucose(t)\shortarrow{7}$.
-\item   Increase insulin levels manually by injecting insulin, or increase secretion. \\ 
-        Equivalent to $\Delta insulin(t)\shortarrow{1}$ and $K\shortarrow{1}$, respectively.
-\item   Decrease insulin resistance in cells, to make them absorb glucose faster.\\ 
-        Equivalent to $A_{i\rightarrow g}\shortarrow{7}$.
-\end{itemize}
-
-The approximated state-space system also indicates that for type 1 diabetes -- in which $\mathcal{S}_{insulin}(t)$ has a low saturation level -- treatments that attempt to increase insulin secretion or decrease insulin resistance are ineffective. Hence, treatment of type 1 diabetes requires insulin injections which explains its alias of insulin-dependent diabetes mellitus (IDDM).
-\fi
 
 \input{chapters/introduction/screening.tex}
 
@@ -228,6 +44,10 @@ The approximated state-space system also indicates that for type 1 diabetes -- i
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{chapters/introduction/structure.tex}
+
+\begin{subappendices}
+\input{chapters/introduction/diabetes.tex}
+\end{subappendices}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
